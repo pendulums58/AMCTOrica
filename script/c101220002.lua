@@ -1,0 +1,55 @@
+--무상의 직시자
+function c101220002.initial_effect(c)
+	--무효
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(101220002,0))
+	e1:SetCategory(CATEGORY_NEGATE)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e1:SetCode(EVENT_SUMMON_SUCCESS)
+	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY+EFFECT_FLAG_CARD_TARGET)
+	e1:SetTarget(c101220002.target)
+	e1:SetCountLimit(1,101220002)
+	e1:SetOperation(c101220002.operation)
+	c:RegisterEffect(e1)
+	local e2=e1:Clone()
+	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
+	c:RegisterEffect(e2)
+	local e3=Effect.CreateEffect(c)
+	e3:SetCategory(CATEGORY_NEGATE)
+	e3:SetType(EFFECT_TYPE_IGNITION)
+	e3:SetRange(LOCATION_GRAVE)
+	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e3:SetTarget(c101220002.target)
+	e3:SetCost(aux.bfgcost)
+	e3:SetCountLimit(1,101220002)
+	e3:SetOperation(c101220002.operation)
+	c:RegisterEffect(e3)
+end
+function c101220002.nfilter(c)
+	return c:IsFaceup() and c:IsType(TYPE_EFFECT) and not c:IsDisabled()
+end
+function c101220002.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c101220002.nfilter(chkc) end
+	if chk==0 then return Duel.IsExistingTarget(c101220002.nfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+	Duel.SelectTarget(tp,c101220002.nfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
+end
+function c101220002.operation(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local tc=Duel.GetFirstTarget()
+	if tc:IsRelateToEffect(e) and tc:IsFaceup() and not tc:IsDisabled() then
+		Duel.NegateRelatedChain(tc,RESET_TURN_SET)
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_DISABLE)
+		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
+		tc:RegisterEffect(e1)
+		local e2=Effect.CreateEffect(c)
+		e2:SetType(EFFECT_TYPE_SINGLE)
+		e2:SetCode(EFFECT_DISABLE_EFFECT)
+		e2:SetValue(RESET_TURN_SET)
+		e2:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
+		tc:RegisterEffect(e2)
+	end
+end

@@ -1,0 +1,111 @@
+--혼합음료 블루 페어리
+function c101236014.initial_effect(c)
+	--소재 불가 부여
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_CANNOT_BE_FUSION_MATERIAL)
+	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e1:SetValue(1)
+	c:RegisterEffect(e1)
+	local e2=e1:Clone()
+	e2:SetCode(EFFECT_CANNOT_BE_SYHCHRO_MATERIAL)
+	c:RegisterEffect(e2)
+	local e3=e1:Clone()
+	e3:SetCode(EFFECT_CANNOT_BE_XYZ_MATERIAL)
+	c:RegisterEffect(e3)
+	local e4=e1:Clone()
+	e4:SetCode(EFFECT_CANNOT_BE_LINK_MATERIAL)
+	c:RegisterEffect(e4)
+	local e5=e1:Clone()
+	e5:SetCode(EFFECT_CANNOT_BE_ACCESS_MATERIAL)
+	c:RegisterEffect(e5)
+	local e6=e1:Clone()
+	e6:SetCode(EFFECT_CANNOT_BE_PAIRING_MATERIAL)
+	c:RegisterEffect(e6)
+	--2번 효과
+	local e7=Effect.CreateEffect(c)
+	e7:SetCategory(CATEGORY_RECOVER)
+	e7:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_DELAY)
+	e7:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e7:SetCode(EVENT_BLEND)
+	e7:SetTarget(c101236014.blendtg)
+	e7:SetOperation(c101236014.blendop)
+	c:RegisterEffect(e7)
+	--3번 효과
+	local e8=Effect.CreateEffect(c)
+	e8:SetCategory(CATEGORY_RECOVER)
+	e8:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_DELAY)
+	e8:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e8:SetRange(LOCATION_MZONE)
+	e8:SetCode(EVENT_DAMAGE)
+	e8:SetCondition(c101236014.sumcon)
+	e8:SetOperation(c101236014.sumop)
+	c:RegisterEffect(e8)
+end
+function c101236014.blendtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetTargetParam(2000)
+	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,2000)
+end
+function c101236014.blendop(e,tp,eg,ep,ev,re,r,rp)
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Recover(p,d,REASON_EFFECT)
+end
+function c101236014.sumcon(e,tp,eg,ep,ev,re,r,rp)
+	return ep==tp and bit.band(r,REASON_EFFECT)~=0
+end
+function c101236014.sumop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if Duel.Destroy(c,REASON_EFFECT)>0 then
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e1:SetProperty(EFFECT_FLAG_DELAY)
+		e1:SetCode(EVENT_CHAINING)
+		e1:SetCondition(c101236014.drcon1)
+		e1:SetOperation(c101236014.drop1)
+		e1:SetReset(RESET_PHASE+PHASE_END)
+		Duel.RegisterEffect(e1,tp)
+		local e2=Effect.CreateEffect(c)
+		e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e2:SetCode(EVENT_CHAINING)
+		e2:SetCondition(c101236014.regcon)
+		e2:SetOperation(c101236014.regop)
+		e2:SetReset(RESET_PHASE+PHASE_END)
+		Duel.RegisterEffect(e2,tp)
+		local e3=Effect.CreateEffect(c)
+		e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e3:SetCode(EVENT_CHAIN_SOLVED)
+		e3:SetCondition(c101236014.reccon)
+		e3:SetOperation(c101236014.recop)
+		e3:SetReset(RESET_PHASE+PHASE_END)
+		Duel.RegisterEffect(e3,tp)
+	end
+end
+function c101236014.drcon1(e,tp,eg,ep,ev,re,r,rp)
+	return rp~=tp and re:IsActiveType(TYPE_MONSTER)
+		and (not re:IsHasType(EFFECT_TYPE_ACTIONS) or re:IsHasType(EFFECT_TYPE_CONTINUOUS))
+end
+function c101236014.drop1(e,tp,eg,ep,ev,re,r,rp)
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Hint(HINT_CARD,0,101236014)
+	Duel.Recover(tp,800,REASON_EFFECT)
+end
+function c101236014.regcon(e,tp,eg,ep,ev,re,r,rp)
+	return rp~=tp and re:IsActiveType(TYPE_MONSTER)
+		and re:IsHasType(EFFECT_TYPE_ACTIONS) and not re:IsHasType(EFFECT_TYPE_CONTINUOUS)
+end
+function c101236014.regop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.RegisterFlagEffect(tp,101236014,RESET_CHAIN,0,1)
+end
+
+function c101236014.reccon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetFlagEffect(tp,101236014)>0
+end
+function c101236014.recop(e,tp,eg,ep,ev,re,r,rp)
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	local n=Duel.GetFlagEffect(tp,101236014)
+	Duel.ResetFlagEffect(tp,101236014)
+	Duel.Hint(HINT_CARD,0,101236014)
+	Duel.Recover(tp,800,REASON_EFFECT)
+end
