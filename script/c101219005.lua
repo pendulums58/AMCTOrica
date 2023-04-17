@@ -18,7 +18,7 @@ s.listed_names={101219004}
 function s.ritualfil(c)
 	return c:IsSetCard(SETCARD_RADIANT)
 end
-function s.ritualfil(c)
+function s.ritualfil1(c)
 	return c:IsSetCard(SETCARD_RADIANT) and c:IsPublic()
 end
 function s.exfilter0(c)
