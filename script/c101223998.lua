@@ -20,6 +20,9 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	e:SetLabel(g:GetCount())
 	Duel.SendtoHand(g,nil,REASON_COST)
 end
+function s.eqchk(c)
+	return c:IsType(TYPE_EQUIP) and c:IsFaceup()
+end
 function s.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsOnField() and chkc:IsControler(1-tp) end
 	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil)
