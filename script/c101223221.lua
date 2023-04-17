@@ -30,6 +30,7 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
+	local c=e:GetHandler()
 	if tc:IsRelateToEffect(e) and tc:IsNegatable() then
 		Duel.NegateRelatedChain(tc,RESET_TURN_SET)
 		local e1=Effect.CreateEffect(c)
