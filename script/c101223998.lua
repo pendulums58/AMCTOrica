@@ -1,6 +1,7 @@
 --기프트 테스트 카드(pre)
 local s,id=GetID()
 function s.initial_effect(c)
+	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetRange(LOCATION_EXTRA)
