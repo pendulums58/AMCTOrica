@@ -50,7 +50,7 @@ function s.geffect(e,c)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=e:GetHandler()GetEquipGroupCount()
-	if chk==0 then #g>0 end
+	if chk==0 then return #g>0 end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,1,tp,LOCATION_SZONE)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
