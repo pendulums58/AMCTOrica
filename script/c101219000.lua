@@ -54,7 +54,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.spfilter(c,e,tp)
-	return c:IsSetCard(SETCARD_RADIANT) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsType(TYPE_RITUAL)
+	return c:IsSetCard(SETCARD_RADIANT) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

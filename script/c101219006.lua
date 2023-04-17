@@ -9,11 +9,13 @@ function s.initial_effect(c)
 	e1:SetCost(s.cost)
 	e1:SetCondition(s.npcon)
 	e1:SetTarget(s.sptg)
+	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
 	--특수 소환(공개 상태)
 	local e2=e1:Clone()
 	e2:SetCondition(s.pubcon)
 	e2:SetTarget(s.sptg1)
+	e2:SetOperation(s.spop)
 	c:RegisterEffect(e2)
 end
 s.listed_names={101219004}
