@@ -805,7 +805,7 @@ function Card.AddStoryTellerAttribute(c,tc)
 	c:RegisterEffect(e7,true)	
 end
 
-Debug.Message("Cyan.lua Version 23/04/10 loaded.")
+Debug.Message("Cyan.lua Version 23/04/17 loaded.")
 pcall(dofile,"repositories/OricaPack/script/orica_constant.lua")
 pcall(dofile,"repositories/OricaPack/script/cyan_utility.lua")
 pcall(dofile,"repositories/OricaPack/script/key_system.lua")

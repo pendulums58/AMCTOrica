@@ -1,4 +1,4 @@
-TYPE_GIFT=0x80000000
+TYPE_GIFT=0x10000000
 
 --기프트 시스템
 function Duel.CheckGiftEffect(tp,tf)
