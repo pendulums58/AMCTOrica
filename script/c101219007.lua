@@ -81,7 +81,7 @@ end
 function s.cfilter(c)
 	return c:IsSetCard(SETCARD_RADIANT) and c:IsType(TYPE_MONSTER) and c:IsType(TYPE_RITUAL) and not c:IsPublic()
 end
-function s.cfilter(c)
+function s.cfilter1(c)
 	return c:IsSetCard(SETCARD_RADIANT) and c:IsType(TYPE_SPELL) and c:IsType(TYPE_RITUAL) and not c:IsPublic()
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)

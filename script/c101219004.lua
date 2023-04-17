@@ -33,7 +33,7 @@ function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetMatchingGroup(s.npchk,tp,LOCATION_HAND,0,nil)
 	if chk==0 then return #g>0 end
 	if #g>2 then
-		Duel.SetOperationInfo(0,CATEGORY_TOHAND+CATEGORY_DRAW,nil,g:GetCount()/2,tp,LOCATION_DECK)
+		Duel.SetOperationInfo(0,CATEGORY_TOHAND+CATEGORY_DRAW,nil,math.floor(g:GetCount()/2),tp,LOCATION_DECK)
 	end
 end
 function s.drop(e,tp,eg,ep,ev,re,r,rp)
@@ -47,8 +47,8 @@ function s.drop(e,tp,eg,ep,ev,re,r,rp)
 		tc:RegisterEffect(e1)			
 		tc=g:GetNext()
 	end
-	if #g>2 then
-		Duel.Draw(tp,g:GetCount()/2,REASON_EFFECT)
+	if #g>1 then
+		Duel.Draw(tp,math.floor(g:GetCount()/2),REASON_EFFECT)
 	end
 end
 function s.npchk(c)

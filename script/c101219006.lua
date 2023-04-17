@@ -58,7 +58,7 @@ function s.sptg1(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,loc)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
-	if not Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then return end
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<1 then return end
 	local tc=e:GetLabelObject()
 	local loc=LOCATION_HAND
 	if tc:IsCode(101219004) then loc=loc+LOCATION_DECK end	
