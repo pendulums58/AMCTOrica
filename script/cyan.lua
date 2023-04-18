@@ -204,12 +204,17 @@ function Card.RegisterEffect(c,e,forced,...)
 		e:SetTarget(cyan.fustg(e:GetTarget()))
 		e:SetOperation(cyan.fusop(e:GetOperation()))
 	end
-	
+		
 end
 function cyan.fustg(f)
 	return function(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		global_fusion_processing=true
-		f(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+		if chk==0 then
+			local tf=f(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+			global_fusion_processing=false
+			return tf
+		end
+		
 		global_fusion_processing=false
 	end
 end
