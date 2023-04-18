@@ -21,8 +21,9 @@ EFFECT_OPPO_FIELD_FUSION=101223080
 EFFECT_LP_CANNOT_CHANGE=101223150
 FLOWERHILL_THIMMUNE=103554020
 EFFECT_PREVENT_NEGATION=101223182
+EFFECT_ALL_SETCARD=101223229
 
-global_deco_check=false
+global_fusion_processing=false
 
 function Card.IsOwner(c,p)
 	return c:GetOwner()==p
@@ -95,7 +96,6 @@ end
 function cyan.brokercheck2(c,tc)
 	return c:IsLevel(tc:GetLevel()) and c:IsRace(tc:GetRace()) and c:IsAttribute(tc:GetAttribute()) and not c:IsCode(tc:GetCode())
 end
-
 function Card.IsCanBeFusionMaterialParareal(c)
 	if c:IsStatus(STATUS_FORBIDDEN) then
 		return false
@@ -127,24 +127,18 @@ function Card.IsSetCardList(c,setcode)
 	while set>0 do
 		code=math.floor(set%0x10000)
 		if c:IsSetCard(code) then return true end
+		if c:IsHasEffect(EFFECT_ALL_SETCARD) then return true end
 		set=math.floor(set/0x10000)
 	end
 	return false
 end
 
 
--- local cisc=Card.IsSetCard
--- function Card.IsSetCard(c,sc)
-	-- if not cisc(c,0xeff) then return cisc(c,sc) end
-	-- local tp=c:GetControler()
-	-- local g=Duel.GetMatchingGroup(cic,0,0xff,0xff,nil,cgc(c))
-	-- local tc=g:GetFirst()
-	-- while tc do
-		-- if cisc(tc,sc) then return true end
-		-- tc=g:GetNext()
-	-- end
-	-- return cisc(c,sc)
--- end
+local cisc=Card.IsSetCard
+function Card.IsSetCard(c,sc)
+	if c:IsHasEffect(EFFECT_ALL_SETCARD) then return true end
+	return cisc(c,sc)
+end
 local dclc=Duel.CheckLPCost
 function Duel.CheckLPCost(p,vl)
 	if Duel.IsPlayerAffectedByEffect(p,101223030) then return dclc(p,vl*2) end
@@ -205,8 +199,27 @@ function Card.RegisterEffect(c,e,forced,...)
 		end
 	end
 
-end
 
+	if e:IsHasCategory(CATEGORY_FUSION_SUMMON) then
+		e:SetTarget(cyan.fustg(e:GetTarget()))
+		e:SetOperation(cyan.fusop(e:GetOperation()))
+	end
+	
+end
+function cyan.fustg(f)
+	return function(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+		global_fusion_processing=true
+		f(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+		global_fusion_processing=false
+	end
+end
+function cyan.fusop(f)
+	return function(e,tp,eg,ep,ev,re,r,rp)
+		global_fusion_processing=true
+		f(e,tp,eg,ep,ev,re,r,rp)
+		global_fusion_processing=false
+	end
+end
 function cyan.tuneop(op)
 	return function(e,tp,eg,ep,ev,re,r,rp)
 		op(e,tp,eg,ep,ev,re,r,rp)
