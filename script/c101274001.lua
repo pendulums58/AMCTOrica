@@ -21,8 +21,7 @@ function s.initial_effect(c)
 	e3:SetCategory(CATEGORY_TOHAND)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e3:SetProperty(EFFECT_FLAG_DELAY)
-	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e3:SetRange(LOCATION_GRAVE)
+	e3:SetCode(EVENT_BE_MATERIAL)
 	e3:SetCountLimit(1,id)
 	e3:SetCondition(s.drcon)
 	e3:SetTarget(s.target)
@@ -65,7 +64,7 @@ function s.drconfilter(c,tp)
 	return c:IsFaceup() and c:IsSummonPlayer(tp) and c:IsSetCard(SETCARD_MORSTAR) and c:IsType(TYPE_SYNCHRO)
 end
 function s.drcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.drconfilter,1,nil,tp)
+	return e:GetHandler():IsLocation(LOCATION_GRAVE) and r==REASON_SYNCHRO
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToHand() end

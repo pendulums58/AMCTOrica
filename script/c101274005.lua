@@ -21,7 +21,7 @@ function s.initial_effect(c)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetTargetRange(LOCATION_ONFIELD,0)
 	e2:SetTarget(s.imtg)
-	e2:SetValue(aux.tgoval)   
+	e2:SetValue(1)
 	c:RegisterEffect(e2)
 end
 function s.imtg(e,c)
