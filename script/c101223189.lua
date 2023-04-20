@@ -55,7 +55,7 @@ function s.rmop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.rmchk(c)
-	return Duel.GetTurnCount()~=c:GetTurnID() or c:IsReason(REASON_RETURN)
+	return Duel.GetTurnCount()==c:GetTurnID() or c:IsReason(REASON_RETURN)
 end
 function s.dmtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
