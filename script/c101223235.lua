@@ -22,7 +22,7 @@ end
 function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.kfilter,tp,LOCATION_HAND,0,1,nil,tp)
 		and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
-	local g=Duel.SelectMatchingCard(tp,s.kfilter,tp,LOCATION_HAND,0,1,1,nil,tp)
+	local g=Duel.SelectMatchingCard(tp,s.kfilter,tp,LOCATION_HAND,0,1,1,nil,tp):GetFirst()
 	e:SetLabelObject(g)
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
@@ -30,7 +30,7 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local g1=Duel.SelectMatchingCard(tp,Card.IsDiscardable,tp,LOCATION_HAND,0,1,1,g)
 	if g1:GetCount()>0 then
 		Duel.SendtoGrave(g1,REASON_DISCARD+REASON_EFFECT)
-		local tc=g:GetFirst()
+		local tc=g
 		local code=tc:GetOriginalCode()
 		local mt=_G["c"..code]
 		local ct=0
