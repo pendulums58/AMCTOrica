@@ -23,8 +23,7 @@ function s.initial_effect(c)
 	e3:SetRange(LOCATION_HAND)
 	e3:SetCountLimit(1,id)
 	e3:SetCost(s.cost)
-	e3:SetTarget(s.target)
-	e3:SetOperation(s.operation)
+	cyan.JustSearch(e3,LOCATION_DECK,Card.IsSetCard,SETCARD_MORSTAR,Card.IsType,TYPE_MONSTER,Card.IsNotType,TYPE_TUNER)
 	c:RegisterEffect(e3)
 end
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
@@ -63,19 +62,4 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return c:IsDiscardable() end
 	Duel.SendtoGrave(c,REASON_COST+REASON_DISCARD)
-end
-function s.filter(c)
-	return c:IsSetCard(SETCARD_MORSTAR) and c:IsMonster() and c:IsAbleToHand() and not c:IsType(TYPE_TUNER)
-end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end
-	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
-end
-function s.operation(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil)
-	if #g>0 then
-		Duel.SendtoHand(g,nil,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,g)
-	end
 end
