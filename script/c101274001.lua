@@ -16,20 +16,19 @@ function s.initial_effect(c)
 	e2:SetCondition(s.descon)
 	e2:SetOperation(s.desop)
 	c:RegisterEffect(e2)
-	--자가 회수
+	--서치
 	local e3=Effect.CreateEffect(c)
-	e3:SetCategory(CATEGORY_TOHAND)
-	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e3:SetProperty(EFFECT_FLAG_DELAY)
-	e3:SetCode(EVENT_BE_MATERIAL)
+	e3:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
+	e3:SetType(EFFECT_TYPE_IGNITION)
+	e3:SetRange(LOCATION_HAND)
 	e3:SetCountLimit(1,id)
-	e3:SetCondition(s.drcon)
+	e3:SetCost(s.cost)
 	e3:SetTarget(s.target)
 	e3:SetOperation(s.operation)
 	c:RegisterEffect(e3)
 end
 function s.synval(e,mc,sc)
-	return sc:IsSetCard(SETCARD_MORSTAR)
+	return sc:IsType(TYPE_SYNCHRO)
 end
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	return r==REASON_SYNCHRO and e:GetHandler():IsPreviousLocation(LOCATION_HAND)
@@ -60,19 +59,23 @@ function s.addop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Destroy(c,REASON_EFFECT)
 	end
 end
-function s.drconfilter(c,tp)
-	return c:IsFaceup() and c:IsSummonPlayer(tp) and c:IsSetCard(SETCARD_MORSTAR) and c:IsType(TYPE_SYNCHRO)
+function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
+	if chk==0 then return c:IsDiscardable() end
+	Duel.SendtoGrave(c,REASON_COST+REASON_DISCARD)
 end
-function s.drcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsLocation(LOCATION_GRAVE) and r==REASON_SYNCHRO
+function s.filter(c)
+	return c:IsSetCard(SETCARD_MORSTAR) and (c:IsSpell() or c:IsTrap()) and c:IsAbleToHand()
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return e:GetHandler():IsAbleToHand() end
-	Duel.SetOperationInfo(0,CATEGORY_TOHAND,e:GetHandler(),1,tp,LOCATION_GRAVE)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if c:IsRelateToEffect(e) then
-		Duel.SendtoHand(c,nil,REASON_EFFECT)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil)
+	if #g>0 then
+		Duel.SendtoHand(g,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,g)
 	end
 end

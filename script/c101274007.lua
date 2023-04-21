@@ -2,7 +2,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	--싱크로 소환
-	Synchro.AddProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,SETCARD_MORSTAR),1,1,Synchro.NonTunerEx(Card.IsType,TYPE_SYNCHRO),1,99)
+	Synchro.AddProcedure(c,aux.FilterBoolFunction(s.sfilter1),1,1,Synchro.NonTunerEx(Card.IsType,TYPE_SYNCHRO),1,99)
 	c:EnableReviveLimit()   
 	--효과파괴내성
 	local e1=Effect.CreateEffect(c)
@@ -15,41 +15,37 @@ function s.initial_effect(c)
 	--신성한 구체
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_ATKCHANGE+CATEGORY_DEFCHANGE+CATEGORY_LVCHANGE)
-	e2:SetProperty(EFFECT_FLAG_DELAY)
-	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e2:SetType(EFFECT_TYPE_QUICK_O)
+	e2:SetCode(EVENT_FREE_CHAIN)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetCountLimit(1)
 	e2:SetTarget(s.chtg)
 	e2:SetOperation(s.chop)
 	c:RegisterEffect(e2)
-	--공업
-	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(id,0))
-	e3:SetCategory(CATEGORY_ATKCHANGE+CATEGORY_DEFCHANGE)
-	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
-	e3:SetCode(EVENT_BATTLE_START)
-	e3:SetCondition(s.atkcon)
-	e3:SetOperation(s.atkop)
-	c:RegisterEffect(e3)
 end
-function s.chfilter(c)
-	return c:IsFaceup()
+function s.sfilter1(c)
+	return c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsLevel(3)
 end
-function s.chtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.chfilter,tp,0,LOCATION_MZONE,1,nil) end
+function s.chtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsOnField() and chkc:IsControler(1-tp) end
+	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local g=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,1,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DISABLE+CATEGORY_ATKCHANGE+CATEGORY_DEFCHANGE,nil,0,tp,3)
 end
 function s.chop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(s.chfilter,tp,0,LOCATION_MZONE,nil)
-	if #g==0 then return end
-	for tc in g:Iter() do
+	local tc=Duel.GetFirstTarget()
+	if tc:IsFaceup() and tc:IsRelateToEffect(e) then
+		Duel.NegateRelatedChain(tc,RESET_TURN_SET)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_DISABLE)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 		tc:RegisterEffect(e1)
 		local e2=Effect.CreateEffect(e:GetHandler())
-		e2:SetType(EFFECT_TYPE_SINGLE)
 		e2:SetCode(EFFECT_DISABLE_EFFECT)
-		e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+		e2:SetValue(RESET_TURN_SET)
 		tc:RegisterEffect(e2)
 		local e3=Effect.CreateEffect(e:GetHandler())
 		e3:SetType(EFFECT_TYPE_SINGLE)
@@ -82,22 +78,5 @@ function s.chop(e,tp,eg,ep,ev,re,r,rp)
 		e9:SetCode(EFFECT_SET_DEFENSE)
 		e9:SetValue(500)
 		tc:RegisterEffect(e9)
-	end
-end
-
-function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local bc=c:GetBattleTarget()
-	return bc and bc:IsFaceup() and bc:IsAttribute(ATTRIBUTE_LIGHT+ATTRIBUTE_DARK)
-end
-function s.atkop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if c:IsFaceup() and c:IsRelateToEffect(e) then
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_SET_ATTACK_FINAL)
-		e1:SetValue(c:GetAttack()*2)
-		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_DAMAGE)
-		c:RegisterEffect(e1)
 	end
 end

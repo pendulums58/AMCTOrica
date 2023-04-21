@@ -2,7 +2,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	--싱크로 소환
-	Synchro.AddProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,SETCARD_MORSTAR),1,1,Synchro.NonTuner(nil),1,99)
+	Synchro.AddProcedure(c,nil,1,1,Synchro.NonTuner(nil),1,99)
 	c:EnableReviveLimit()   
 	--서치
 	local e1=Effect.CreateEffect(c)
@@ -12,18 +12,17 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_DELAY)
 	cyan.JustSearch(e1,LOCATION_DECK,Card.IsSetCard,SETCARD_MORSTAR,Card.IsType,TYPE_SPELL+TYPE_TRAP)
 	c:RegisterEffect(e1)
-	--대상 내성 부여
+	--대상 내성
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD)
-	e2:SetRange(LOCATION_MZONE)
 	e2:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
-	e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
 	e2:SetRange(LOCATION_MZONE)
+	e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
 	e2:SetTargetRange(LOCATION_ONFIELD,0)
-	e2:SetTarget(s.imtg)
-	e2:SetValue(1)
+	e2:SetTarget(s.tgtg)
+	e2:SetValue(aux.tgoval)
 	c:RegisterEffect(e2)
 end
-function s.imtg(e,c)
-	return c:IsSetCard(SETCARD_MORSTAR) or c:IsFacedown()
+function s.tgtg(e,c)
+	return (c:IsSetCard(SETCARD_MORSTAR) or c:IsFacedown()) and c~=e:GetHandler()
 end
