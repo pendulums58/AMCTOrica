@@ -31,7 +31,7 @@ function s.initial_effect(c)
 	e3:SetOperation(s.dmop)
 	c:RegisterEffect(e3)
 end
-function s.atop(e,tp,eg,ep,ev,re,r,rp)
+function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsFaceup() then
 		local ct=eg:GetCount()

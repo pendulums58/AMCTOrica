@@ -27,9 +27,8 @@ end
 function Effect.SetUnlock(e,code)
 	e:SetTarget(cyan.UnlockTarget(code))
 	e:SetOperation(cyan.UnlockOperation(code))
-	-- local code=e:GetHandler():GetOriginalCode()
-	-- local mt=_G["c"..code]
-	-- mt.unlock_op=e
+	e:SetValue(code)
+	e:SetCategory(CATEGORY_SPECIAL_SUMMON)
 end
 
 local cics=Card.IsCanBeSpecialSummoned
