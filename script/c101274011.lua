@@ -51,10 +51,10 @@ function s.thfilter(c)
 end
 function s.desfilter(c,e)
 	return c:IsSetCard(SETCARD_MORSTAR) and c:IsType(TYPE_SYNCHRO)
-		and c:IsDestructable(e) and not c:IsStatus(STATUS_DESTROY_CONFIRMED+STATUS_BATTLE_DESTROYED)
+		and not c:IsStatus(STATUS_DESTROY_CONFIRMED+STATUS_BATTLE_DESTROYED)
 end
 function s.tdfilter(c)
-	return c:IsSetCard(SET_MORSTAR) and c:IsAbleToDeck()
+	return c:IsSetCard(SETCARD_MORSTAR) and c:IsAbleToDeck()
 end
 function s.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.tdfilter(chkc) end
