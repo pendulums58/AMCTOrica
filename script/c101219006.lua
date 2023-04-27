@@ -74,3 +74,6 @@ end
 function s.forcedgroup(c,e,tp)
 	return c:IsLocation(LOCATION_HAND+LOCATION_ONFIELD)
 end
+function s.chlimit(e,ep,tp)
+	return tp==ep
+end
