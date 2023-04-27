@@ -336,3 +336,17 @@ function Card.IsType(c,tp)
 	end	
 	return ity(c,tp)
 end
+function Card.IsPairContains(c,g)
+	if not c:IsType(TYPE_PAIRING) then 
+		Debug.Message("Card.IsPairContains : Parameter 1 should be pairing monster.")
+		return false
+	end
+	local g1=c:GetPair()
+	local tc=g1:GetFirst()
+	while tc do
+		if g:IsContains(tc) then
+			return true
+		end
+	end
+	return false
+end
