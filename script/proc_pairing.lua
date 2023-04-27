@@ -347,6 +347,7 @@ function Card.IsPairContains(c,g)
 		if g:IsContains(tc) then
 			return true
 		end
+		tc=g1:GetNext()
 	end
 	return false
 end
