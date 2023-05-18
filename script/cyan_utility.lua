@@ -464,7 +464,10 @@ end
 function Card.IsNotHandler(c,e)
 	return not c==e:GetHandler()
 end
-
+function Card.IsNotThisTurn(c,chk)
+	local id=Duel.GetTurnCount()
+	return not c:GetTurnID()==id
+end
 
 
 --기타 (대분류에 속하지 않는 기타 함수)

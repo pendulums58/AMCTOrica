@@ -33,6 +33,9 @@ function Auxiliary.AddXyzProcedure(c,f,lv,ct,alterf,alterdesc,maxct,alterop)
 	if not maxct then maxct=ct end
 	Xyz.AddProcedure(c,f,lv,ct,alterf,alterdesc,maxct,alterop,mustbemat,exchk)
 end
+function Card.IsSynchroType(c,ty)
+	return c:IsType(ty)
+end
 
 function Auxiliary.AddLinkProcedure(c,f,min,max,gf)
 	if max==nil then max=c:GetLink() end
