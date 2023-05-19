@@ -70,10 +70,10 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
-	local loc=Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_LOCATION)
+	local loc=re:GetHandler():GetLocation()
 	local pos=re:GetHandler():GetPosition()
 	local own=re:GetHandler():GetControler()
-	return re:IsActiveType(TYPE_MONSTER) and loc==LOCATION_MZONE and (pos&POS_DEFENSE)~=0 and own==(1-tp)
+	return re:IsActiveType(TYPE_MONSTER) and (loc&LOCATION_MZONE)~=0 and (pos&POS_DEFENSE)~=0 and own==(1-tp)
 end
 function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateEffect(ev)

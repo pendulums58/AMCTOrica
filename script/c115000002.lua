@@ -63,6 +63,9 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local g=eg:Filter(Card.IsControler,nil,tp)
 	return c:IsPairContains(g)
 end
+function s.spfilter(c)
+	return c:IsSetCard(0xad4) and c:IsMonster() and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.spfilter(chkc,e,tp) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
