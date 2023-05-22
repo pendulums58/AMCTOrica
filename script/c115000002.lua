@@ -37,14 +37,14 @@ function s.mfilter(c,pair)
 	return c:IsPosition(POS_FACEUP_ATTACK)==pair:IsPosition(POS_FACEUP_ATTACK)
 		or c:IsPosition(POS_FACEUP_DEFENSE)==pair:IsPosition(POS_FACEUP_DEFENSE)
 end
-function s.filter(c)
+function s.filter1(c)
 	return c:IsSetCard(0xad4) and c:IsCanChangePosition()
 end
 function s.postg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.filter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil) end
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.filter1(chkc) end
+	if chk==0 then return Duel.IsExistingTarget(s.filter1,tp,LOCATION_MZONE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_POSCHANGE)
-	local g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil)
+	local g=Duel.SelectTarget(tp,s.filter1,tp,LOCATION_MZONE,0,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_POSITION,g,1,0,0)
 end
 function s.posop(e,tp,eg,ep,ev,re,r,rp)
@@ -63,8 +63,11 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local g=eg:Filter(Card.IsControler,nil,tp)
 	return c:IsPairContains(g)
 end
+function s.spfilter(c,e,tp)
+	return c:IsSetCard(0xad4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.spfilter(chkc,e,tp) end
+	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_GRAVE) and s.spfilter(chkc,e,tp) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and Duel.IsExistingTarget(s.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
