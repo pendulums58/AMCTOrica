@@ -43,7 +43,7 @@ end
 function s.lcheck(g,lc,sumtype,tp)
 	return g:IsExists(Card.IsType,1,nil,TYPE_LINK,lc,sumtype,tp)
 end
-function s.disable(e,c)
+function s.tg(e,c)
 	local cc=e:GetHandler()
 	return cc:GetLinkedGroup():IsContains(c)
 end
