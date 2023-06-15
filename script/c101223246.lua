@@ -25,7 +25,7 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND+LOCATION_GRAVE+LOCATION_MZONE,0,1,1,e:GetHandler(),tp)
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
-function s.cfilter(c)
+function s.cfilter(c,tp)
 	return c:IsType(TYPE_MONSTER) and (c:IsAttack(1400) or c:IsDefense(1400)) and c:IsAbleToRemoveAsCost()
 		and Duel.GetLocationCount(tp,LOCATION_MZONE,c)>0
 end
