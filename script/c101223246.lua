@@ -21,12 +21,12 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.rmfilter,tp,LOCATION_HAND+LOCATION_GRAVE+LOCATION_MZONE,0,1,e:GetHandler(),tp) end
-	local g=Duel.SelectMatchingCard(tp,s.rmfilter,tp,LOCATION_HAND+LOCATION_GRAVE+LOCATION_MZONE,0,1,1,e:GetHandler(),tp)
-	Duel.SendtoGrave(g,REASON_COST)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND+LOCATION_GRAVE+LOCATION_MZONE,0,1,e:GetHandler(),tp) end
+	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND+LOCATION_GRAVE+LOCATION_MZONE,0,1,1,e:GetHandler(),tp)
+	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
-function s.rmfilter(c)
-	return c:IsType(TYPE_MONSTER) and (c:IsAttack(1500) or c:IsDefense(1500)) and c:IsAbleToRemoveAsCost()
+function s.cfilter(c)
+	return c:IsType(TYPE_MONSTER) and (c:IsAttack(1400) or c:IsDefense(1400)) and c:IsAbleToRemoveAsCost()
 		and Duel.GetLocationCount(tp,LOCATION_MZONE,c)>0
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -95,7 +95,7 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		elseif rarity==3 then
 			token=rare[Duel.GetRandomNumber(1,#rare)]
 		end
-		if not goods:IsContains(Card.IsCode,nil,token) then
+		if not goods:IsExists(Card.IsCode,1,nil,token) then
 			token=Duel.CreateToken(tp,token)
 			goods:AddCard(token)
 		end
