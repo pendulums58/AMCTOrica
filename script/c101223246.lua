@@ -78,14 +78,24 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	-- 커먼 확률 60%, 언커먼 확률 30%, 레어 확률 10%
 	local goods=Group.CreateGroup()
 	local rarity=0
+	local maxrare=0
 	while #goods<3 do
 		local gacha=Duel.GetRandomNumber(1,100)
 		if gacha<=60 then
 			rarity=1
+			if maxrare < rarity then
+				maxrare=rarity
+			end
 		elseif gacha<=90 then
 			rarity=2
+			if maxrare < rarity then
+				maxrare=rarity
+			end
 		else
 			rarity=3
+			if maxrare < rarity then
+				maxrare=rarity
+			end
 		end
 		local token=0
 		if rarity==1 then
@@ -99,6 +109,13 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 			token=Duel.CreateToken(tp,token)
 			goods:AddCard(token)
 		end
+	end
+	if maxrare == 3 then
+		local a = Duel.SelectOption(tp,aux.Stringid(id,0))
+	elseif maxrare == 2 then
+		local a = Duel.SelectOption(tp,aux.Stringid(id,1))
+	else
+		local a = Duel.SelectOption(tp,aux.Stringid(id,2))
 	end
 	 local g=goods:Select(tp,1,1,nil)
 	 if g:GetCount()>0 then
