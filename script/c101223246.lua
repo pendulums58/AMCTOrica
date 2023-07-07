@@ -45,6 +45,9 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
+	s.purchase(tp,true)
+end
+function s.purchase(tp,chk)
 	--거래 개시
 	--거래 풀에서 무작위로 3개 선택(겹치지 않도록)
 	--카드 등급은 커먼, 언커먼, 레어로 구분하여 각 등급별 확률 적용
@@ -53,9 +56,8 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	-- 오리카
 	-- 범용 태그에서 : 강건한 수호의 적수, 점적천석의 저항자, 오더메이드 워블러, 뱀부스피어 제너럴, 신위에 앉은 거북이, 
 	-- 비오리카
-	-- 
-	local common={101223078,101223134,101223168,101223186,101223228}
-	
+	-- 드로우 카드 : 탐욕의 항아리, 요술망치, 치킨게임, 활로를 향한 희망, 어둠의 증산공장
+	local common={101223078,101223134,101223168,101223186,101223228,67169062,85852291,67616300,80036543,9064354}
 	-- 언커먼 등급 카드
 	-- 비오리카
 	-- 패트랩 : 하루 우라라, 증식의 G, 유령토끼, 저택 와라시, 이펙트 뵐러, 무한포영
@@ -73,8 +75,6 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	-- 비오리카
 	-- 금지 카드 : 대 한파, 댄디라이언, 이차원으로부터의 귀환, 허리케인
 	local rare={101223183,60682203,15341821,27174286,42703248}
-	
-	
 	-- 커먼 확률 60%, 언커먼 확률 30%, 레어 확률 10%
 	local goods=Group.CreateGroup()
 	local rarity=0
@@ -110,17 +110,27 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 			goods:AddCard(token)
 		end
 	end
+	if chk==true then
+		local reroll=Duel.CreateToken(tp,101223247)
+		goods:AddCard(token)
+	end
 	if maxrare == 3 then
 		local a = Duel.SelectOption(tp,aux.Stringid(id,0))
 	elseif maxrare == 2 then
 		local a = Duel.SelectOption(tp,aux.Stringid(id,1))
 	else
-		local a = Duel.SelectOption(tp,aux.Stringid(id,2))
+		local a = Duel.SelectOption(tp,aux.Stringid(id,3))
 	end
 	 local g=goods:Select(tp,1,1,nil)
-	 if g:GetCount()>0 then
-		Duel.SendtoHand(g,nil,REASON_EFFECT)
-	 end
+	if g:GetFirst():IsCode(101223247) then
+		s.purchase(tp,false)
+	else
+		if g:GetCount()>0 then
+			Duel.SendtoHand(g,nil,REASON_EFFECT)
+		end	
+	end
+	
+	 
 end
 function s.rmfilter(c)
 	return c:IsAbleToRemoveAsCost() and c:IsType(TYPE_MONSTER)
