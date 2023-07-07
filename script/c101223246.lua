@@ -112,7 +112,7 @@ function s.purchase(tp,chk)
 	end
 	if chk==true then
 		local reroll=Duel.CreateToken(tp,101223247)
-		goods:AddCard(token)
+		goods:AddCard(reroll)
 	end
 	if maxrare == 3 then
 		local a = Duel.SelectOption(tp,aux.Stringid(id,0))
