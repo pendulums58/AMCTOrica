@@ -54,7 +54,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.Release(g,REASON_COST)~=0 then
 		local g1=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
 		if g1:GetCount()>0 then
-			Duel.SpecialSummon(g1,SUMMON_TYPE_RITUAL,tp,tp,false,false,POS_FACEUP)
+			Duel.SpecialSummon(g1,SUMMON_TYPE_RITUAL,tp,tp,true,false,POS_FACEUP)
 		end
 	end
 end

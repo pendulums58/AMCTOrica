@@ -25,7 +25,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 	--서치
 	local e4=Effect.CreateEffect(c)
-	e4:SetCategory(CATEGORY_SEARCH+CATEGOTY_TOHAND)
+	e4:SetCategory(CATEGORY_SEARCH+CATEGORY_TOHAND)
 	e4:SetRange(LOCATION_GRAVE)
 	e4:SetType(EFFECT_TYPE_IGNITION)
 	e4:SetCountLimit(1,{1,id})
