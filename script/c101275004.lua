@@ -65,7 +65,7 @@ function s.sptg1(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function s.spop1(e,tp,eg,ep,ev,re,r,rp)
    local tc=Duel.GetFirstTarget()
-   if tc:IsRelateToEffect(e) and c:IsRelateToEffect(e) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then
+   if tc:IsRelateToEffect(e) and e:GetHandler():IsRelateToEffect(e) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then
       Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
    end
 end
