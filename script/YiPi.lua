@@ -232,3 +232,5 @@ yipi.DrinkRecipe={
 --문블라스트
 [101236021]={2,0,1,1},
 }
+
+pcall(dofile,"repositories/OricaPack/script/Hunter.lua")
