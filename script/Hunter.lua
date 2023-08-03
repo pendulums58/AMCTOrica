@@ -9,7 +9,7 @@ function YiPi.HunterEffect(e)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	if c:IsRelateToEffect(e) and c:IsLocation(LOCATION_SZONE) then
 		if c:IsCanBeSpecialSummoned(e,0,tp,false,false) then
-			if Duel.CheckReleaseGroup(tp,YiPi.HunterCostFilter,1,false,nil,nil,ft,tp) then
+			if Duel.IsExistingMatchingCard(YiPi.HunterCostFilter,tp,LOCATION_MZONE,0,1,nil,ft,tp) then
 				local op=Duel.SelectOption(tp,1152,1105)
 				if op==0 then
 					local g=Duel.SelectReleaseGroupCost(tp,YiPi.HunterCostFilter,1,1,false,nil,nil,ft,tp)
@@ -27,7 +27,7 @@ function YiPi.HunterEffect(e)
 	end
 end
 function YiPi.HunterCostFilter(c,ft,tp)
-	return c:IsFaceup() and c:IsSetCard(SETCARD_HUNTER)
+	return c:IsFaceup() and c:IsSetCard(SETCARD_HUNTER) and c:IsReleasableByEffect()
 		and (ft>0 or (c:IsControler(tp) and c:GetSequence()<5))
 end
 function YiPi.HunterCheck(c)
