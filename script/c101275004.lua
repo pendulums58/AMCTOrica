@@ -39,13 +39,13 @@ function s.spchk(c)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
    if chk==0 then return Duel.GetLocationCount(1-tp,LOCATION_MZONE)>0 
-      and Duel.IsPlayerCanSpecialSummonMonster(tp,s+99,0xf,0x4011,0,0,8,RACE_DRAGON,ATTRIBUTE_EARTH,POS_FACEUP,1-tp)end
+      and Duel.IsPlayerCanSpecialSummonMonster(tp,101275999,0xf,0x4011,0,0,8,RACE_DRAGON,ATTRIBUTE_EARTH,POS_FACEUP,1-tp)end
    
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
    local c=e:GetHandler()
    if c:IsRelateToEffect(e) and Duel.GetLocationCount(1-tp,LOCATION_MZONE)>0 then
-      local token=Duel.CreateToken(tp,s+99)
+      local token=Duel.CreateToken(tp,101275999)
       Duel.SpecialSummonStep(token,0,tp,1-tp,false,false,POS_FACEUP)
       local e1=Effect.CreateEffect(c)
       e1:SetType(EFFECT_TYPE_SINGLE)
