@@ -30,3 +30,11 @@ function YiPi.HunterCostFilter(c,ft,tp)
 	return c:IsFaceup() and c:IsSetCard(SETCARD_HUNTER)
 		and (ft>0 or (c:IsControler(tp) and c:GetSequence()<5))
 end
+function YiPi.HunterCheck(c)
+	local lv=c:GetLevel()
+	if c:IsType(TYPE_XYZ) then lv=c:GetRank() end
+	return lv>=8
+end
+function YiPi.HunterSpChk(c)
+	return c:IsType(TYPE_CONTINUOUS) and c:IsType(TYPE_SPELL)
+end
