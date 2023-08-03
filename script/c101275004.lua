@@ -58,7 +58,8 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.sptg1(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
    if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_SZONE) and s.spfilter(chkc,e,tp) end
-   if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
+   if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
+	and Duel.IsExistingTarget(s.spfilter,tp,LOCATION_SZONE,0,1,nil,e,tp) end
    local tc=Duel.SelectTarget(tp,s.spfilter,tp,LOCATION_SZONE,0,1,1,nil,e,tp)
    Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,tc,1,tp,LOCATION_SZONE)
 end
@@ -70,5 +71,5 @@ function s.spop1(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.spfilter(c,e,tp)
    local ty=c:GetOriginalType()
-   return bit.band(ty,TYPE_MONSTER)==TYPE_MONSTER and chkc:IsCanBeSpecialSummoned(e,0,tp,false,false)
+   return bit.band(ty,TYPE_MONSTER)==TYPE_MONSTER and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
