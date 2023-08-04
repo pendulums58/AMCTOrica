@@ -17,7 +17,8 @@ function s.lvtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingTarget(s.chk,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
 	e:SetLabel(0)
 	local tc=Duel.SelectTarget(tp,s.chk,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
-	if not (tc:HasLevel() or tc:HasRank()) then Duel.SetOperationInfo(0,CATEGORY_DESTROY,tc,1,0,0) end
+	local tcc=tc:GetFirst()
+	if not (tcc:HasLevel() or tcc:HasRank()) then Duel.SetOperationInfo(0,CATEGORY_DESTROY,tc,1,0,0) end
 	if Duel.IsExistingMatchingCard(YiPi.HunterCheck,tp,0,LOCATION_MZONE,1,nil) then e:SetLabel(1) end
 end
 function s.lvop(e,tp,eg,ep,ev,re,r,rp)
