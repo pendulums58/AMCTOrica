@@ -14,7 +14,8 @@ function s.initial_effect(c)
 end
 function s.lvtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return s.chk(chkc) and chkc:IsLocation(LOCATION_MZONE) end
-	if chk==0 then return Duel.IsExistingTarget(s.chk,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) and e:SetLabel(1) end
+	if chk==0 then return Duel.IsExistingTarget(s.chk,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
+	e:SetLabel(0)
 	local tc=Duel.SelectTarget(tp,s.chk,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
 	if tc:IsLevelBelow(0) or tc:IsRankBelow(0) then Duel.SetOperationInfo(0,CATEGORY_DESTROY,tc,1,0,0) end
 	if Duel.IsExistingMatchingCard(YiPi.HunterCheck,tp,0,LOCATION_MZONE,1,nil) then e:SetLabel(1) end
