@@ -41,6 +41,7 @@ SETCARD_MIRAGESWORD=0x627	-- 환영검
 
 -- ■ 링크
 SETCARD_EMBERFOX=0x638	-- 잔불여우
+SETCARD_NEGATIMID=0x66a -- 네거티미드
 
 -- ■ 페어링
 SETCARD_UNIATE=0x634	-- 유니에이트

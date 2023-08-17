@@ -3,6 +3,8 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--발동
 	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e1:SetRange(LOCATION_HAND)
 	e1:SetCategory(CATEGORY_REMOVE)
 	e1:SetCode(EVENT_TO_HAND)
 	e1:SetCountLimit(1,id)

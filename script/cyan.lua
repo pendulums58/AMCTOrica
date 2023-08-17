@@ -133,6 +133,19 @@ function Card.IsSetCardList(c,setcode)
 	return false
 end
 
+function Card.IsNotSetCardList(c,setcode)
+	local set=tonumber(setcode)
+	local code=0
+	if not set then return true end
+	while set>0 do
+		code=math.floor(set%0x10000)
+		if c:IsSetCard(code) then return false end
+		if c:IsHasEffect(EFFECT_ALL_SETCARD) then return false end
+		set=math.floor(set/0x10000)
+	end
+	return true
+end
+
 
 local cisc=Card.IsSetCard
 function Card.IsSetCard(c,sc)
