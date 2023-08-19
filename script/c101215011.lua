@@ -22,6 +22,7 @@ function s.cfilter(c,tp)
 		and Duel.IsExistingMatchingCard(s.cfilter1,tp,LOCATION_DECK,0,1,nil,c)
 end
 function s.cfilter1(c,tc)
+	local tp=c:GetControler()
 	return c:CheckUniqueOnField(tp,LOCATION_ONFIELD,tc) and c:IsType(TYPE_SPELL) and c:IsType(TYPE_CONTINUOUS)
 		and c:IsSetCardList(tc:GetSetCode()) and not c:IsForbidden() 
 end
