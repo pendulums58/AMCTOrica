@@ -40,7 +40,7 @@ function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local tc=Duel.SelectTarget(tp,s.tgfilter,tp,LOCATION_MZONE,0,1,1,nil)
 end
 function s.tgfilter(c)
-	return c:IsType(TYPE_XYZ) and c:IsRank(5) c:GetOverlayCount()>0
+	return c:IsType(TYPE_XYZ) and c:IsRank(5) and c:GetOverlayCount()>0
 end
 function s.thfilter(c)
 	return c:IsSetCard(SETCARD_STARGEAR) and c:IsAbleToHand() and c:IsType(TYPE_MONSTER)
