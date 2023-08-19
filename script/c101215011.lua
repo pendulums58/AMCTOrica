@@ -15,7 +15,7 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_SZONE,0,1,nil,tp) end
 	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_SZONE,0,1,1,nil,tp)
 	Duel.SendtoGrave(g,REASON_COST)
-	e:SetLabel(g:GetFirst():GetSetCode())
+	e:SetLabel(g:GetFirst():GetSetCard())
 end
 function s.cfilter(c,tp)
 	return c:IsType(TYPE_SPELL) and c:IsType(TYPE_CONTINUOUS)
@@ -24,7 +24,7 @@ end
 function s.cfilter1(c,tc)
 	local tp=c:GetControler()
 	return c:CheckUniqueOnField(tp,LOCATION_ONFIELD,tc) and c:IsType(TYPE_SPELL) and c:IsType(TYPE_CONTINUOUS)
-		and c:IsSetCardList(tc:GetSetCode()) and not c:IsForbidden() 
+		and c:IsSetCardList(tc:GetSetCard()) and not c:IsForbidden() 
 end
 function s.cfilter2(c,code)
 	return c:CheckUniqueOnField(tp) and c:IsType(TYPE_SPELL) and c:IsType(TYPE_CONTINUOUS)

@@ -1,14 +1,9 @@
 --편환성검 하프크레센트
+local s,id=GetID()
 function c103551005.initial_effect(c)
 	--장착
-	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_EQUIP+CATEGORY_TOHAND)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_CONTINUOUS_TARGET)
-	e1:SetTarget(c103551005.target)
-	e1:SetOperation(c103551005.operation)
-	c:RegisterEffect(e1)
+	local e0=aux.AddEquipProcedure(c,nil,aux.FilterBoolFunction(Card.IsRace,RACE_WARRIOR))
+	e0:SetCountLimit(1,id)
 	--추가 일반 소환
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(103551005,1))
@@ -18,13 +13,6 @@ function c103551005.initial_effect(c)
 	e2:SetCode(EFFECT_EXTRA_SUMMON_COUNT)
 	e2:SetTarget(c103551005.nsfilter)
 	c:RegisterEffect(e2)
-	--장착 제한
-	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_SINGLE)
-	e3:SetCode(EFFECT_EQUIP_LIMIT)
-	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e3:SetValue(c103551005.eqlimit)
-	c:RegisterEffect(e3)
 	--묘지로 보낸다
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_SINGLE)
