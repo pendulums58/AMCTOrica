@@ -40,7 +40,7 @@ end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local code=e:GetLabel()
 	local g=Duel.SelectMatchingCard(tp,s.cfilter2,tp,LOCATION_DECK,0,1,1,nil,code)
-	Duel.MoveToField(g,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+	Duel.MoveToField(g:GetFirst(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	Duel.AddGiftEffect(e,s.gfilter,s.geffect,2200,1000)	
 end
 function s.geffect(e,c)
