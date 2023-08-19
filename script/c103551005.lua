@@ -2,7 +2,7 @@
 local s,id=GetID()
 function c103551005.initial_effect(c)
 	--장착
-	local e0=aux.AddEquipProcedure(c,nil,aux.FilterBoolFunction(Card.IsRace,RACE_WARRIOR))
+	local e0=aux.AddEquipProcedure(c,nil,aux.FilterBoolFunction(Card.IsRace,RACE_WARRIOR),nil,nil,s.tg,s.op)
 	e0:SetCountLimit(1,id)
 	--추가 일반 소환
 	local e2=Effect.CreateEffect(c)
@@ -31,14 +31,14 @@ end
 function c103551005.eqfilter1(c)
 	return c:IsFaceup() and c:IsRace(RACE_WARRIOR)
 end
-function c103551005.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function s.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c103551005.eqfilter1(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(c103551005.eqfilter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
 	Duel.SelectTarget(tp,c103551005.eqfilter1,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
 end
-function c103551005.operation(e,tp,eg,ep,ev,re,r,rp)
+function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	if c:IsRelateToEffect(e) and tc:IsRelateToEffect(e) and tc:IsFaceup() and c:CheckUniqueOnField(tp) then
