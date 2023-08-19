@@ -17,6 +17,7 @@ function s.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e2:SetCondition(s.thcon)
 	e2:SetTarget(s.thtg)
+	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)
 	--회복
 	local e3=Effect.CreateEffect(c)
@@ -45,7 +46,7 @@ end
 function s.thfilter(c)
 	return c:IsSetCard(SETCARD_STARGEAR) and c:IsAbleToHand() and c:IsType(TYPE_MONSTER)
 end
-function s.thtg(e,tp,eg,ep,ev,re,r,rp)
+function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if e:GetHandler():IsRelateToEffect(e) and tc:IsRelateToEffect(e)
 		and tc:RemoveOverlayCard(tp,1,1,REASON_EFFECT)~=0 then
