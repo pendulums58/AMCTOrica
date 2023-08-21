@@ -38,3 +38,18 @@ end
 function YiPi.HunterSpChk(c)
 	return c:IsType(TYPE_CONTINUOUS) and c:IsType(TYPE_SPELL)
 end
+
+
+function YiPi.IsHuntingTargetExists(p,sf,of)
+	local m=0
+	local o=0
+	if sf==1 then m=LOCATION_MZONE end
+	if of==1 then o=LOCATION_MZONE end
+	return Duel.IsExistingMatchingCard(YiPi.HunterCheck,p,m,o,1,nil)
+end
+function YiPi.IsBackupExists(p)
+	return Duel.IsExistingMatchingCard(YiPi.SpellHunterCheck,p,LOCATION_SZONE,0,1,nil)
+end
+function YiPi.SpellHunterCheck(c)
+	return c:IsSetCard(SETCARD_HUNTER) and c:IsType(TYPE_SPELL) and c:IsType(TYPE_CONTINUOUS) and c:IsFaceup()
+end
