@@ -22,7 +22,7 @@ function s.initial_effect(c)
    c:RegisterEffect(e2)
 end
 function s.ngcon(e,tp,eg,ep,ev,re,r,rp)
-   return YiPi.HunterSpChk(e:GetHandler()) and Duel.IsExistingMatchingCard(YiPi.HunterCheck,tp,0,LOCATION_MZONE,1,nil)
+   return YiPi.SpellHunterCheck(e:GetHandler()) and Duel.IsExistingMatchingCard(YiPi.HunterCheck,tp,0,LOCATION_MZONE,1,nil)
 end
 function s.ngtg(e,tp,eg,ep,ev,re,r,rp,chk)
    if chk==0 then return Duel.IsExistingMatchingCard(s.negfilter,tp,0,LOCATION_MZONE,1,nil) end

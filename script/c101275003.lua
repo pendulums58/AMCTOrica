@@ -58,12 +58,12 @@ end
 function s.buftg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return YiPi.IsAbleToTag(c,e,tp) end
-	Duel.SetOperation(0,CATEGORY_SPECIAL_SUMMON,c,1,tp,LOCATION_SZONE)
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,tp,LOCATION_SZONE)
 end
 function s.bufop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) then
-		local g=Duel.SelectMatchingcard(tp,Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
+		local g=Duel.SelectMatchingCard(tp,Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
 		local tc=g:GetFirst()
 		local e1=Effect.CreateEffect(c)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
