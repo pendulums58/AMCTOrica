@@ -1,6 +1,6 @@
 --수렵표적 리오레우스
 local s,id=GetID()
-function c101275006.initial_effect(c)
+function s.initial_effect(c)
 	YiPi.HuntTarget(c)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_TRIGGER_F+EFFECT_TYPE_SINGLE)
