@@ -18,17 +18,17 @@ function c101275006.initial_effect(c)
 	e3:SetOperation(s.setop)
 	c:RegisterEffect(e3)
 end
-function s.spfilter(c)
+function s.spfilter(c,e,tp)
 	return c:IsSetCard(SETCARD_HUNTER) and c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,1-tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.spfilter,1-tp,0,LOCATION_DECK,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.spfilter,1-tp,0,LOCATION_DECK,1,nil,e,tp) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,1-tp,LOCATION_DECK)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(1-tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_SPSUMMON)
-	local tc=Duel.SelectMatchingCard(1-tp,s.spfilter,1-tp,0,LOCATION_DECK,1,1,nil,e,1-tp):GetFirst()
+	local tc=Duel.SelectMatchingCard(1-tp,s.spfilter,1-tp,0,LOCATION_DECK,1,1,nil,e,tp):GetFirst()
 	if tc then
 		Duel.SpecialSummon(tc,0,1-tp,1-tp,false,false,POS_FACEUP)
 	end
@@ -37,11 +37,11 @@ function s.filter(c)
 	return c:IsSetCard(SETCARD_HUNTTOOL) and c:IsSSetable() and c:IsType(TYPE_SPELL)
 end
 function s.settg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c101235004.filter,tp,LOCATION_DECK,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end
 end
 function s.setop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
-	local g=Duel.SelectMatchingCard(tp,c101235004.filter,tp,LOCATION_DECK,0,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil)
 	if g:GetCount()>0 then
 		Duel.SSet(tp,g:GetFirst())
 	end
