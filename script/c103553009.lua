@@ -76,7 +76,7 @@ function c103553009.activate(e,tp,eg,ep,ev,re,r,rp)
 end
 function c103553009.cfilter(c,tp,rp)
 	return c:IsPreviousPosition(POS_FACEUP) and c:IsPreviousControler(tp)
-		and c:IsPreviousCode(103553000)
+		and c:IsCode(103553000)
 		and (c:IsReason(REASON_BATTLE) or (rp==1-tp and c:IsReason(REASON_EFFECT)))
 end
 function c103553009.spcon(e,tp,eg,ep,ev,re,r,rp)
