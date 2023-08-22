@@ -38,3 +38,14 @@ function YiPi.Tag(c,e,tp)
 		end
 	end
 end
+
+function YiPi.HuntTarget(c)
+	c:SetUniqueOnField(1,0,aux.FilterBoolFunction(Card.IsSetCard,SETCARD_HUNTTARGET),LOCATION_MZONE)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_SPSUMMON_PROC)
+	e1:SetRange(LOCATION_HAND)
+	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_SPSUM_PARAM)
+	e1:SetTargetRange(0,POS_FACEUP_ATTACK)
+	c:RegisterEffect(e1)	
+end
