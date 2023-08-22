@@ -27,7 +27,7 @@ end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	local chk=e:GetLabel()
 	local ct=1
-	if chk then ct=2 end
+	if chk>0 then ct=2 end
 	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,ct,nil)
 	if g:GetCount()>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
