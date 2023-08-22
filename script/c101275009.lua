@@ -1,4 +1,4 @@
---G급 수렵자 니나
+--수렵 접수원 여우
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
