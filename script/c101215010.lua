@@ -57,10 +57,11 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.rcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.rchk,1,nil) and rp==1-tp
+	return eg:IsExists(s.rchk,1,nil,tp) and rp==1-tp
 end
-function s.rchk(c)
+function s.rchk(c,tp)
 	return c:IsType(TYPE_MONSTER) and c:IsReason(REASON_BATTLE+REASON_EFFECT)
+		and c:GetPreviousControler(tp)
 end
 function s.rtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

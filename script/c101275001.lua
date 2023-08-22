@@ -17,7 +17,8 @@ function s.initial_effect(c)
    --파괴
    local e3=Effect.CreateEffect(c)
    e3:SetCategory(CATEGORY_DESTROY)
-   e3:SetType(EFFECT_TYPE_IGNITION)
+   e3:SetType(EFFECT_TYPE_QUICK_O)
+   e3:SetCode(EVENT_FREE_CHAIN)
    e3:SetRange(LOCATION_SZONE)
    e3:SetCountLimit(1,{id,1})
    e3:SetCondition(s.ngcon)
@@ -49,7 +50,8 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
    end
 end
 function s.ngcon(e,tp,eg,ep,ev,re,r,rp)
-   return YiPi.HunterSpChk(e:GetHandler()) and Duel.IsExistingMatchingCard(YiPi.HunterCheck,tp,0,LOCATION_MZONE,1,nil)
+	local ph=Duel.GetCurrentPhase()
+	return (ph==PHASE_MAIN1 or ph==PHASE_MAIN2) and YiPi.SpellHunterCheck(c) and YiPi.IsHuntingTargetExists(tp,0,1)
 end
 function s.ngtg(e,tp,eg,ep,ev,re,r,rp,chk)   
    local cg=e:GetHandler():GetColumnGroup()
@@ -57,9 +59,13 @@ function s.ngtg(e,tp,eg,ep,ev,re,r,rp,chk)
    Duel.SetOperationInfo(0,CATEGORY_DESTROY,cg,cg:GetCount(),tp,LOCATION_ONFIELD)
 end
 function s.ngop(e,tp,eg,ep,ev,re,r,rp)
-   if e:GetHandler():IsRelateToEffect(e) then
-      local cg=e:GetHandler():GetColumnGroup()
-      Duel.Destroy(cg,REASON_EFFECT)
-      YiPi.HunterEffect(e)
-   end
+	if e:GetHandler():IsRelateToEffect(e) then
+		local cg=e:GetHandler():GetColumnGroup()
+		Duel.Destroy(cg,REASON_EFFECT)
+		if YiPi.IsAbleToTag(c,e,tp) and Duel.SelectYesNo(tp,1152) then
+			YiPi.Tag(c,e,tp)
+		else
+			Duel.SendtoHand(c,nil,REASON_EFFECT)
+		end
+	end
 end
