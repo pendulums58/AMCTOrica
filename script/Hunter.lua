@@ -46,6 +46,6 @@ function YiPi.HuntTarget(c)
 	e1:SetCode(EFFECT_SPSUMMON_PROC)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_SPSUM_PARAM)
-	e1:SetTargetRange(0,POS_FACEUP_ATTACK)
+	e1:SetTargetRange(POS_FACEUP_ATTACK,1)
 	c:RegisterEffect(e1)	
 end
