@@ -22,7 +22,7 @@ function s.spfilter(c)
 	return c:IsSetCard(SETCARD_HUNTER) and c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,1-tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.spfilter,tp,0,LOCATION_DECK,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.spfilter,1-tp,0,LOCATION_DECK,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,1-tp,LOCATION_DECK)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
