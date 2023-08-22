@@ -23,7 +23,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetLocation(tp,LOCATION_SZONE)>0 end
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
