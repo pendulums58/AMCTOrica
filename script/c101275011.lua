@@ -39,5 +39,37 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetValue(RESET_TURN_SET)
 		tc:RegisterEffect(e2)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+		if e:GetLabel()==1 then
+			local g=Duel.SelectMatchingCard(tp,Card.IsAbleToRemove,tp,0,LOCATION_ONFIELD,1,1,nil)
+			if g:GetCount()>0 then
+				local g1=g:GetFirst()
+				if Duel.Remove(g1,0,REASON_EFFECT+REASON_TEMPORARY)~=0 then
+					local e1=Effect.CreateEffect(e:GetHandler())
+					e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+					e1:SetCode(EVENT_PHASE+PHASE_END)
+					e1:SetCountLimit(1)
+					e1:SetLabel(Duel.GetTurnCount())
+					e1:SetLabelObject(tc)
+					if Duel.GetCurrentPhase()==PHASE_END and Duel.GetTurnPlayer()~=tp then
+					e1:SetLabel(Duel.GetTurnCount())
+					e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END+RESET_OPPO_TURN,2)
+					else
+					e1:SetLabel(0)
+					e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END+RESET_OPPO_TURN)
+					end
+					e1:SetCondition(s.retcon)
+					e1:SetOperation(s.retop)
+					Duel.RegisterEffect(e1,tp)					
+				end
+			end
+		end
 	end
+end
+function s.retcon(e,tp,eg,ep,ev,re,r,rp)
+	local tc=e:GetLabelObject()
+	return Duel.GetTurnCount()~=e:GetLabel() and Duel.GetTurnPlayer()~=tp
+		and tc and tc:GetReasonEffect() and tc:GetReasonEffect():GetHandler()==e:GetHandler()
+end
+function s.retop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.ReturnToField(e:GetLabelObject())
 end
