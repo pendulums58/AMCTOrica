@@ -31,11 +31,13 @@ function s.checkop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.RegisterFlagEffect(p,id,RESET_PHASE+PHASE_END,0,1)
 	end
 end
-function s.accon1(e,tp)
-	return Duel.GetFlagEffect(tp,id)>=1
+function s.accon1(e)
+	p=e:GetHandlerPlayer()
+	return Duel.GetFlagEffect(p,id)>=1
 end
-function s.accon2(e,tp)
-	return Duel.GetFlagEffect(1-tp,id)>=1
+function s.accon2(e)
+	p=e:GetHandlerPlayer()
+	return Duel.GetFlagEffect(1-p,id)>=1
 end
 function s.aclimit(e,re,tp)
 	local cd=re:GetHandler()
