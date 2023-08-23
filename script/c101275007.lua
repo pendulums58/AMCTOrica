@@ -7,22 +7,35 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetCode(EFFECT_CANNOT_ACTIVATE)
 	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
-	e1:SetTargetRange(1,1)
+	e1:SetTargetRange(1,0)
 	e1:SetRange(LOCATION_MZONE)
-	e1:SetCondition(s.accon)
+	e1:SetCondition(s.accon1)
 	e1:SetValue(s.aclimit)
 	c:RegisterEffect(e1)
-	Duel.AddCustomActivityCounter(id,ACTIVITY_CHAIN,s.chainfilter)
+	local e2=e1:clone()
+	e2:SetTargetRange(0,1)
+	e2:SetCondition(s.accon2)
+	c:RegisterEffect(e2)
+	aux.GlobalCheck(s,function()
+		local ge1=Effect.CreateEffect(c)
+		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge1:SetCode(EVENT_CHAINING)
+		ge1:SetOperation(s.checkop)
+		Duel.RegisterEffect(ge1,0)
+	end
 end
-function s.chainfilter(re,tp,cid)
+function s.checkop(e,tp,eg,ep,ev,re,r,rp)
 	local p=re:GetHandlerPlayer()
 	local cd=re:GetHandler()
-	if Duel.GetFlagEffect(p,id)==0 then return true end
-	return not (cd:IsType(TYPE_MONSTER) and cd:GetSummonLocation()==LOCATION_EXTRA)
+	if cd:IsType(TYPE_MONSTER) and cd:GetSummonLocation()==LOCATION_EXTRA then
+		Duel.RegisterFlagEffect(p,id,RESET_PHASE+PHASE_END,0,1)
+	end
 end
-function s.accon(e,re)
-	local p=re:GetHandlerPlayer()
-	return Duel.GetCustomActivityCount(id,p,ACTIVITY_CHAIN)>0
+function s.accon1(e,tp)
+	return Duel.GetFlagEffect(tp,id)>=1
+end
+function s.accon2(e,tp)
+	return Duel.GetFlagEffect(1-tp,id)>=1
 end
 function s.aclimit(e,re,tp)
 	local cd=re:GetHandler()
