@@ -21,11 +21,11 @@ function s.initial_effect(c)
 end
 function s.chainfilter1(re,tp,cid)
 	if Duel.GetFlagEffect(tp,id)==0 then return true end
-	return not (re:IsType(TYPE_MONSTER) and re:GetSummonLocation()==LOCATION_EXTRA)
+	return not (re:GetHandler():IsType(TYPE_MONSTER) and re:GetHandler():GetSummonLocation()==LOCATION_EXTRA)
 end
 function s.chainfilter2(re,tp,cid)
 	if Duel.GetFlagEffect(1-tp,id)==0 then return true end
-	return not (re:IsType(TYPE_MONSTER) and re:GetSummonLocation()==LOCATION_EXTRA)
+	return not (re:GetHandler():IsType(TYPE_MONSTER) and re:GetHandler():GetSummonLocation()==LOCATION_EXTRA)
 end
 function s.accon1(e)
 	local p=e:GetHandlerPlayer()
@@ -36,5 +36,5 @@ function s.accon2(e)
 	return Duel.GetCustomActivityCount(id,1-p,ACTIVITY_CHAIN)>0
 end
 function s.aclimit(e,re,tp)
-	return re:IsType(TYPE_MONSTER) and re:GetSummonLocation()==LOCATION_EXTRA
+	return re:GetHandler():IsType(TYPE_MONSTER) and re:GetHandler():GetSummonLocation()==LOCATION_EXTRA
 end
