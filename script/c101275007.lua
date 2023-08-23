@@ -27,11 +27,13 @@ function s.chainfilter2(re,tp,cid)
 	if Duel.GetFlagEffect(1-tp,id)==0 then return true end
 	return not (c:IsType(TYPE_MONSTER) and c:GetSummonLocation()==LOCATION_EXTRA)
 end
-function s.accon1(e,tp)
-	return Duel.GetCustomActivityCount(id,tp,ACTIVITY_CHAIN)>0
+function s.accon1(e)
+	local p=e:GetHandlerPlayer()
+	return Duel.GetCustomActivityCount(id,p,ACTIVITY_CHAIN)>0
 end
-function s.accon2(e,tp)
-	return Duel.GetCustomActivityCount(id,1-tp,ACTIVITY_CHAIN)>0
+function s.accon2(e)
+	local p=e:GetHandlerPlayer()
+	return Duel.GetCustomActivityCount(id,1-p,ACTIVITY_CHAIN)>0
 end
 function s.aclimit(e,re,tp)
 	return c:IsType(TYPE_MONSTER) and c:GetSummonLocation()==LOCATION_EXTRA
