@@ -21,11 +21,11 @@ function s.initial_effect(c)
 end
 function s.chainfilter1(re,tp,cid)
 	if Duel.GetFlagEffect(tp,id)==0 then return true end
-	return not (c:IsType(TYPE_MONSTER) and c:GetSummonLocation()==LOCATION_EXTRA))
+	return not (c:IsType(TYPE_MONSTER) and c:GetSummonLocation()==LOCATION_EXTRA)
 end
 function s.chainfilter2(re,tp,cid)
 	if Duel.GetFlagEffect(1-tp,id)==0 then return true end
-	return not (c:IsType(TYPE_MONSTER) and c:GetSummonLocation()==LOCATION_EXTRA))
+	return not (c:IsType(TYPE_MONSTER) and c:GetSummonLocation()==LOCATION_EXTRA)
 end
 function s.accon1(e,tp)
 	return Duel.GetCustomActivityCount(id,tp,ACTIVITY_CHAIN)>0
