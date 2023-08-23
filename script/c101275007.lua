@@ -7,34 +7,24 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetCode(EFFECT_CANNOT_ACTIVATE)
 	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
-	e1:SetTargetRange(1,0)
+	e1:SetTargetRange(1,1)
 	e1:SetRange(LOCATION_MZONE)
-	e1:SetCondition(s.accon1)
+	e1:SetCondition(s.accon)
 	e1:SetValue(s.aclimit)
 	c:RegisterEffect(e1)
-	local e2=e1:Clone()
-	e2:SetTargetRange(0,1)
-	e2:SetCondition(s.accon2)
-	c:RegisterEffect(e2)
-	Duel.AddCustomActivityCounter(id,ACTIVITY_CHAIN,s.chainfilter1)
-	Duel.AddCustomActivityCounter(id,ACTIVITY_CHAIN,s.chainfilter2)
+	Duel.AddCustomActivityCounter(id,ACTIVITY_CHAIN,s.chainfilter)
 end
-function s.chainfilter1(re,tp,cid)
-	if Duel.GetFlagEffect(tp,id)==0 then return true end
-	return not (re:GetHandler():IsType(TYPE_MONSTER) and re:GetHandler():GetSummonLocation()==LOCATION_EXTRA)
+function s.chainfilter(re,tp,cid)
+	local p=re:GetHandlerPlayer()
+	local cd=re:GetHandler()
+	if Duel.GetFlagEffect(p,id)==0 then return true end
+	return not (cd:IsType(TYPE_MONSTER) and cd:GetSummonLocation()==LOCATION_EXTRA)
 end
-function s.chainfilter2(re,tp,cid)
-	if Duel.GetFlagEffect(1-tp,id)==0 then return true end
-	return not (re:GetHandler():IsType(TYPE_MONSTER) and re:GetHandler():GetSummonLocation()==LOCATION_EXTRA)
-end
-function s.accon1(e)
-	local p=e:GetHandlerPlayer()
+function s.accon(e,re)
+	local p=re:GetHandlerPlayer()
 	return Duel.GetCustomActivityCount(id,p,ACTIVITY_CHAIN)>0
 end
-function s.accon2(e)
-	local p=e:GetHandlerPlayer()
-	return Duel.GetCustomActivityCount(id,1-p,ACTIVITY_CHAIN)>0
-end
 function s.aclimit(e,re,tp)
-	return re:GetHandler():IsType(TYPE_MONSTER) and re:GetHandler():GetSummonLocation()==LOCATION_EXTRA
+	local cd=re:GetHandler()
+	return cd:IsType(TYPE_MONSTER) and cd:GetSummonLocation()==LOCATION_EXTRA
 end
