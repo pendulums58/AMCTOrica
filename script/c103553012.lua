@@ -96,7 +96,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(g,1-tp)
 		if cyan.IsUnlockState(e,tp) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-			and g:GetFirst():IsCanBeSpecialSummoned(e,0,tp,tp,false,false) then
+			and g:GetFirst():IsCanBeSpecialSummoned(e,0,tp,tp,false,false) and Duel.SelectYesNo(tp,aux.Stringid(id,4)) then
 			Duel.SpecialSummon(g:GetFirst(),0,tp,tp,false,false,POS_FACEUP)
 		end
 	end
