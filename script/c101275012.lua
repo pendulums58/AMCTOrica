@@ -68,7 +68,7 @@ function s.acop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.cfilter(c,tp)
-	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsReason(REASON_EFFECT) and c:IsControler()==1-tp and lv>=8
+	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsControler(1-tp) and lv>=8
 end
 function s.accon2(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp)
