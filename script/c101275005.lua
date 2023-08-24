@@ -52,10 +52,8 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 			if Duel.IsPlayerCanDraw(tp,1) and Duel.IsExistingMatchingCard(s.tdfilter,tp,LOCATION_GRAVE,0,3,nil)
 				and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 				local g1=Duel.SelectMatchingCard(tp,s.tdfilter,tp,LOCATION_GRAVE,0,3,3,nil)
-				if g1:GetCount()==3 then
-					Duel.SendtoDeck(g1,nil,2,REASON_EFFECT)
-					Duel.Draw(tp,1)
-				end
+				Duel.SendtoDeck(g1,nil,2,REASON_EFFECT)
+				Duel.Draw(tp,1)
 			end
 		end
 	end
