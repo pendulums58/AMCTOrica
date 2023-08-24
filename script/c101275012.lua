@@ -84,7 +84,7 @@ function s.huntcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ct=Duel.AnnounceLevel(tp,1,mct)
 	if ct>0 then
 		e:SetLabel(ct)
-		c:RemoveCounter(COUNTER_HUNT,ct,REASON_COST)
+		c:RemoveCounter(tp,COUNTER_HUNT,ct,REASON_COST)
 	else
 		e:SetLabel(0)
 	end
