@@ -71,7 +71,7 @@ function s.cfilter(c,tp)
 	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsReason(REASON_EFFECT) and c:IsControler()==1-tp and lv>=8
 end
 function s.accon2(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.cfilter,1,nil)
+	return eg:IsExists(s.cfilter,1,nil,tp)
 end
 function s.acop2(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():IsRelateToEffect(e) then
