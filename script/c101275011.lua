@@ -39,7 +39,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetValue(RESET_TURN_SET)
 		tc:RegisterEffect(e2)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-		if e:GetLabel()==1 then
+		if e:GetLabel()==1 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 			local g=Duel.SelectMatchingCard(tp,Card.IsAbleToRemove,tp,0,LOCATION_ONFIELD,1,1,nil)
 			if g:GetCount()>0 then
 				local g1=g:GetFirst()
