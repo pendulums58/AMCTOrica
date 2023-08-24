@@ -46,7 +46,7 @@ function s.acfilter(c,tp)
 	return c:IsControler()==1-tp and lv>=8
 end
 function s.accon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.acfilter,1,nil,tp) and 
+	return eg:IsExists(s.acfilter,1,nil,tp)
 end
 function s.thfilter(c)
 	return c:IsAbleToHand() and c:IsSetCard(SETCARD_HUNTER) and c:IsType(TYPE_MONSTER)
