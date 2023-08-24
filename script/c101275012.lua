@@ -67,6 +67,8 @@ function s.acop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.cfilter(c,tp)
+	local lv=c:GetLevel()
+	if c:IsType(TYPE_XYZ) then lv=c:GetRank() end
 	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsControler(1-tp) and lv>=8
 end
 function s.accon2(e,tp,eg,ep,ev,re,r,rp)
