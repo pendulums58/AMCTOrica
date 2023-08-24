@@ -40,6 +40,7 @@ function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SEARCH+CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local g=Duel.SelectMatchingCard(tp,s.tgfilter,tp,LOCATION_MZONE,0,1,1,nil,tp)
 	if #g>0 then
 		local tc=g:GetFirst()
