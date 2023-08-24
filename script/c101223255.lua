@@ -11,7 +11,7 @@ end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e1:SetCode(EVENT_UPDATE_ATTACK)
+	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetTargetRange(1,0)
 	e1:SetValue(1000)
 	Duel.RegisterEffect(e1,tp)
