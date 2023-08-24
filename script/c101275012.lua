@@ -15,6 +15,7 @@ function s.initial_effect(c)
 	e2:SetRange(LOCATION_FZONE)
 	e2:SetCountLimit(1)
 	e2:SetCondition(s.accon)
+	e2:SetTarget(s.actg)
 	e2:SetOperation(s.acop)
 	c:RegisterEffect(e2)
 	--레벨 / 랭크 8 이상 필드 벗어날때 카운터
@@ -28,6 +29,16 @@ function s.initial_effect(c)
 	e3:SetOperation(s.acop2)
 	c:RegisterEffect(e3)
 	--카운터 소모
+	local e4=Effect.CreateEffect(c)
+	e4:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
+	e4:SetRange(LOCATION_FZONE)
+	e4:SetType(EFFECT_TYPE_QUICK_O)
+	e4:SetCode(EVENT_FREE_CHAIN)
+	e4:SetCountLimit(1)
+	e4:SetCost(s.huntcost)
+	e4:SetTarget(s.hunttg)
+	e4:SetOperation(s.huntop)
+	c:RegisterEffect(e4)
 end
 function s.acfilter(c,tp)
 	local lv=c:GetLevel()
@@ -45,14 +56,15 @@ function s.actg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND+CATEGORY_SEARCH,nil,1,tp,LOCATION_DECK)
 end
 function s.acop(e,tp,eg,ep,ev,re,r,rp)
-	e:GetHandler():AddCounter(COUNTER_HUNT,1,true)
-	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
-	if g:GetCount()>0 then
-		Duel.SendtoHand(g,nil,REASON_EFFECT)
-		Duel.ConfirmCards(g,1-tp)
+	if e:GetHandler():IsRelateToEffect(e) then
+		e:GetHandler():AddCounter(COUNTER_HUNT,1,true)
+		local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
+		if g:GetCount()>0 then
+			Duel.SendtoHand(g,nil,REASON_EFFECT)
+			Duel.ConfirmCards(g,1-tp)
+		end
 	end
 end
-
 function s.cfilter(c,tp)
 	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsReason(REASON_EFFECT) and c:IsControler()==1-tp and lv>=8
 end
@@ -60,39 +72,67 @@ function s.accon2(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil)
 end
 function s.acop2(e,tp,eg,ep,ev,re,r,rp)
-	e:GetHandler():AddCounter(COUNTER_HUNT,1,true)
+	if e:GetHandler():IsRelateToEffect(e) then
+		e:GetHandler():AddCounter(COUNTER_HUNT,1,true)
+	end
 end
-
-
-
-function s.efilter(e,te)
-	local lv=c:GetLevel()
-	if c:IsType(TYPE_XYZ) then lv=c:GetRank() end
-	return te:GetOwnerPlayer()~=e:GetHandlerPlayer() and te:IsActiveType(TYPE_MONSTER) and lv>=8
+function s.huntcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
+	if chk==0 then return c:GetCounter(COUNTER_HUNT)>0 end
+	local mct=c:GetCounter(COUNTER_HUNT)
+	if mct>3 then mct=3 end
+	local ct=Duel.AnnounceLevel(tp,1,mct)
+	if ct>0 then
+		e:SetLabel(ct)
+		c:RemoveCounter(COUNTER_HUNT,ct,REASON_COST)
+	else
+		e:SetLabel(0)
+	end
 end
-function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-    return not Duel.IsExistingMatchingCard(s.spchk,tp,0,LOCATION_MZONE,1,nil)
+function s.hunttg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local ct=e:GetLabel()
+	if chk==0 then return ct>=1 end
+	if ct>=1 then
+		Duel.SetOperationInfo(0,CATEGORY_TOHAND+CATEGORY_SEARCH,nil,1,tp,LOCATION_DECK)
+	end
+	if ct>=2 then
+		local g=Duel.GetMatchingGroup(aux.TRUE,tp,0,LOCATION_ONFIELD,nil)
+		Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,tp,LOCATION_ONFIELD)
+	end
+	if ct==3 then
+		Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
+	end
 end
-function s.spchk(c)
-    local lv=c:GetLevel()
-    if c:IsType(TYPE_XYZ) then lv=c:GetRank() end
-    return lv>=8
+function s.huntthfilter(c)
+	return c:IsAbleToHand() and c:IsSetCard(SETCARD_HUNTTOOL) and c:IsType(TYPE_SPELL)
 end
-function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.GetLocationCount(1-tp,LOCATION_MZONE)>0 
-        and Duel.IsPlayerCanSpecialSummonMonster(tp,101275999,0xf,0x4011,0,0,8,RACE_DRAGON,ATTRIBUTE_EARTH,POS_FACEUP,1-tp)end
+function s.huntspfilter(c,e,tp)
+	return c:IsCanBeSpecialSummoned(e,0,tp,tp,false,false) and c:IsSetCard(SETCARD_HUNTTARGET) and c:IsType(TYPE_MONSTER)
 end
-function s.spop(e,tp,eg,ep,ev,re,r,rp)
-    local c=e:GetHandler()
-    if c:IsRelateToEffect(e) and Duel.GetLocationCount(1-tp,LOCATION_MZONE)>0 then
-        local token=Duel.CreateToken(tp,101275999)
-        Duel.SpecialSummonStep(token,0,tp,1-tp,false,false,POS_FACEUP)
-        local e1=Effect.CreateEffect(c)
-        e1:SetType(EFFECT_TYPE_SINGLE)
-        e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-        e1:SetCode(EFFECT_CANNOT_BE_LINK_MATERIAL)
-        e1:SetValue(1)
-        token:RegisterEffect(e1)
-        Duel.SpecialSummonComplete()
-    end
+function s.huntop(e,tp,eg,ep,er,re,r,rp)
+	local ct=e:GetLabel()
+	if e:GetHandler():IsRelateToEffect(e) then
+		if ct>=1 and Duel.IsExistingMatchingCard(s.huntthfilter,tp,LOCATION_DECK,0,1,nil) and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOHAND)
+			local thg=Duel.SelectMatchingCard(tp,s.huntthfilter,tp,LOCATION_DECK,0,1,1,nil)
+			if #thg>0 then
+				Duel.SendtoHand(thg,nil,REASON_EFFECT)
+				Duel.ConfirmCards(thg,1-tp)
+			end
+		end
+		if ct>=2 and Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil) and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+			local dg=Duel.SelectMatchingCard(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,1,nil)
+			if #dg>0 then
+				Duel.Destroy(dg,REASON_EFFECT)
+			end
+		end
+		if ct==3 and Duel.IsExistingMatchingCard(s.huntspfilter,tp,LOCATION_DECK,0,1,nil,e,tp) and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+			local spg=Duel.SelectMatchingCard(tp,huntspfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
+			if #spg>0 then
+				Duel.SpecialSummon(spg,0,tp,1-tp,false,false,POS_FACEUP)
+			end
+		end
+	end
 end

@@ -47,5 +47,5 @@ function s.tgfilter(c,e,tp)
 	return c:IsSetCard(SETCARD_HUNTER) and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil,e,tp,c:GetCode())
 end
 function s.spfilter(c,e,tp,code)
-	return c:IsType(TYPE_MONSTER) and c:IsSetCard(SETCARD_HUNTER) and c:IsCanBeSpecialSummoned(e,0,tp,tp,false,false)	and not c:IsCode(code)
+	return c:IsType(TYPE_MONSTER) and c:IsSetCard(SETCARD_HUNTER) and c:IsCanBeSpecialSummoned(e,0,tp,tp,false,false) and not c:IsCode(code)
 end
