@@ -124,11 +124,11 @@ function s.huntop(e,tp,eg,ep,er,re,r,rp)
 				Duel.ConfirmCards(thg,1-tp)
 			end
 		end
-		if ct>=2 and Duel.IsExistingMatchingCard(s.huntsp2filter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp) and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
+		if ct>=2 and Duel.IsExistingMatchingCard(s.huntsp2filter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp) and (Duel.GetLocationCount(tp,LOCATION_MZONE)>0 or Duel.GetLocationCount(tp,LOCATION_SZONE)>0) and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
 			local dg=Duel.SelectMatchingCard(tp,s.huntsp2filter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_GRAVE,0,1,1,nil,e,tp)
-			if #dg>0 and Duel.GetLoctionCount(tp,LOCATION_MZONE)>0 and Duel.GetLoctionCount(tp,LOCATION_SZONE)==0 then
+			if #dg>0 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.GetLocationCount(tp,LOCATION_SZONE)==0 then
 				Duel.SpecialSummon(dg,0,tp,tp,false,false,POS_FACEUP)
-			elseif #dg>0 and Duel.GetLoctionCount(tp,LOCATION_SZONE)>0 and Duel.GetLoctionCount(tp,LOCATION_MZONE)==0 then
+			elseif #dg>0 and Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and Duel.GetLocationCount(tp,LOCATION_MZONE)==0 then
 				Duel.MoveToField(dg,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 				local e1=Effect.CreateEffect(e:GetHandler())
 				e1:SetCode(EFFECT_CHANGE_TYPE)
@@ -137,7 +137,7 @@ function s.huntop(e,tp,eg,ep,er,re,r,rp)
 				e1:SetReset(RESET_EVENT+RESETS_STANDARD-RESET_TURN_SET)
 				e1:SetValue(TYPE_SPELL+TYPE_CONTINUOUS)
 				dg:RegisterEffect(e1)
-			elseif #dg>0 and Duel.GetLoctionCount(tp,LOCATION_MZONE)>0 and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
+			elseif #dg>0 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
 				Duel.SpecialSummon(dg,0,tp,tp,false,false,POS_FACEUP)
 			elseif #dg>0 and Duel.GetLocationCount(tp,LOCATION_SZONE)>0 then
 				Duel.MoveToField(dg,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
@@ -150,7 +150,7 @@ function s.huntop(e,tp,eg,ep,er,re,r,rp)
 				dg:RegisterEffect(e1)
 			end
 		end
-		if ct==3 and Duel.IsExistingMatchingCard(s.huntspfilter,tp,LOCATION_DECK,0,1,nil,e,tp) and Duel.SelectYesNo(tp,aux.Stringid(id,4)) then
+		if ct==3 and Duel.IsExistingMatchingCard(s.huntspfilter,tp,LOCATION_DECK,0,1,nil,e,tp) and Duel.GetLocationCount(1-tp,LOCATION_MZONE)>0 and Duel.SelectYesNo(tp,aux.Stringid(id,4)) then
 			local spg=Duel.SelectMatchingCard(tp,s.huntspfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
 			if #spg>0 then
 				Duel.SpecialSummon(spg,0,tp,1-tp,false,false,POS_FACEUP)
