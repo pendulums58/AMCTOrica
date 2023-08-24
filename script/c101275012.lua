@@ -43,7 +43,7 @@ end
 function s.acfilter(c,tp)
 	local lv=c:GetLevel()
 	if c:IsType(TYPE_XYZ) then lv=c:GetRank() end
-	return c:IsControler()==1-tp and lv>=8
+	return c:IsControler(1-tp) and lv>=8
 end
 function s.accon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.acfilter,1,nil,tp)
