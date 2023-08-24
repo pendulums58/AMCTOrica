@@ -113,7 +113,6 @@ function s.huntop(e,tp,eg,ep,er,re,r,rp)
 	local ct=e:GetLabel()
 	if e:GetHandler():IsRelateToEffect(e) then
 		if ct>=1 and Duel.IsExistingMatchingCard(s.huntthfilter,tp,LOCATION_DECK,0,1,nil) and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
-			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOHAND)
 			local thg=Duel.SelectMatchingCard(tp,s.huntthfilter,tp,LOCATION_DECK,0,1,1,nil)
 			if #thg>0 then
 				Duel.SendtoHand(thg,nil,REASON_EFFECT)
