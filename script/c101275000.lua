@@ -54,7 +54,7 @@ end
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) and Duel.IsChainNegatable(ev)
-		and ep==1-tp and YiPi.IsHuntingTargetExists(tp,0,1) and YiPI.SpellHunterCheck(c)
+		and ep==1-tp and YiPi.IsHuntingTargetExists(tp,0,1) and YiPi.SpellHunterCheck(c)
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
