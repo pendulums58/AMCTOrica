@@ -53,7 +53,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 				and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 				local g1=Duel.SelectMatchingCard(tp,s.tdfilter,tp,LOCATION_GRAVE,0,3,3,nil)
 				Duel.SendtoDeck(g1,nil,2,REASON_EFFECT)
-				Duel.Draw(tp,1)
+				Duel.Draw(tp,1,REASON_EFFECT)
 			end
 		end
 	end
