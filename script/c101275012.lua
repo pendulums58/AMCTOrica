@@ -129,25 +129,27 @@ function s.huntop(e,tp,eg,ep,er,re,r,rp)
 			if #dg>0 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.GetLocationCount(tp,LOCATION_SZONE)==0 then
 				Duel.SpecialSummon(dg,0,tp,tp,false,false,POS_FACEUP)
 			elseif #dg>0 and Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and Duel.GetLocationCount(tp,LOCATION_MZONE)==0 then
-				Duel.MoveToField(dg,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+				local tc=dg:GetFirst()
+				Duel.MoveToField(tc,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 				local e1=Effect.CreateEffect(e:GetHandler())
 				e1:SetCode(EFFECT_CHANGE_TYPE)
 				e1:SetType(EFFECT_TYPE_SINGLE)
 				e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 				e1:SetReset(RESET_EVENT+RESETS_STANDARD-RESET_TURN_SET)
 				e1:SetValue(TYPE_SPELL+TYPE_CONTINUOUS)
-				dg:RegisterEffect(e1)
+				tc:RegisterEffect(e1)
 			elseif #dg>0 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
 				Duel.SpecialSummon(dg,0,tp,tp,false,false,POS_FACEUP)
 			elseif #dg>0 and Duel.GetLocationCount(tp,LOCATION_SZONE)>0 then
-				Duel.MoveToField(dg,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+				local tc=dg:GetFirst()
+				Duel.MoveToField(tc,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 				local e1=Effect.CreateEffect(e:GetHandler())
 				e1:SetCode(EFFECT_CHANGE_TYPE)
 				e1:SetType(EFFECT_TYPE_SINGLE)
 				e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 				e1:SetReset(RESET_EVENT+RESETS_STANDARD-RESET_TURN_SET)
 				e1:SetValue(TYPE_SPELL+TYPE_CONTINUOUS)
-				dg:RegisterEffect(e1)
+				tc:RegisterEffect(e1)
 			end
 		end
 		if ct==3 and Duel.IsExistingMatchingCard(s.huntspfilter,tp,LOCATION_DECK,0,1,nil,e,tp) and Duel.GetLocationCount(1-tp,LOCATION_MZONE)>0 and Duel.SelectYesNo(tp,aux.Stringid(id,4)) then
