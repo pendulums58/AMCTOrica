@@ -20,6 +20,7 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e2:SetCode(EVENT_PHASE+PHASE_STANDBY)
 	e2:SetCountLimit(1)
+	e2:SetCondition(s.atkcon)
 	e2:SetOperation(s.atkop)
 	Duel.RegisterEffect(e2,tp)
 	Duel.SelectYesNo(tp,aux.Stringid(id,0))
@@ -28,4 +29,7 @@ end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local te=e:GetLabelObject()
 	te:SetValue(te:GetValue()+1000)
+end
+function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetTurnPlayer()==tp
 end
