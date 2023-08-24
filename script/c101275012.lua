@@ -90,8 +90,8 @@ function s.huntcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 end
 function s.hunttg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
 	local ct=e:GetLabel()
-	if chk==0 then return ct>=1 end
 	if ct>=1 then
 		Duel.SetOperationInfo(0,CATEGORY_TOHAND+CATEGORY_SEARCH,nil,1,tp,LOCATION_DECK)
 	end
