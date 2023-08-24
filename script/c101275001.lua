@@ -59,6 +59,7 @@ function s.ngtg(e,tp,eg,ep,ev,re,r,rp,chk)
    Duel.SetOperationInfo(0,CATEGORY_DESTROY,cg,cg:GetCount(),tp,LOCATION_ONFIELD)
 end
 function s.ngop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	if e:GetHandler():IsRelateToEffect(e) then
 		local cg=e:GetHandler():GetColumnGroup()
 		Duel.Destroy(cg,REASON_EFFECT)
