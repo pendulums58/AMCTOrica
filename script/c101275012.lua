@@ -59,7 +59,6 @@ function s.acop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():IsRelateToEffect(e) then
 		e:GetHandler():AddCounter(COUNTER_HUNT,1,true)
 		if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
-			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 			local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
 			if g:GetCount()>0 then
 				Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
@@ -117,7 +116,6 @@ function s.huntop(e,tp,eg,ep,er,re,r,rp)
 	local ct=e:GetLabel()
 	if e:GetHandler():IsRelateToEffect(e) then
 		if ct>=1 and Duel.IsExistingMatchingCard(s.huntthfilter,tp,LOCATION_DECK,0,1,nil) and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
-			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOHAND)
 			local thg=Duel.SelectMatchingCard(tp,s.huntthfilter,tp,LOCATION_DECK,0,1,1,nil)
 			if #thg>0 then
 				Duel.SendtoHand(thg,nil,REASON_EFFECT)
@@ -125,7 +123,6 @@ function s.huntop(e,tp,eg,ep,er,re,r,rp)
 			end
 		end
 		if ct>=2 and Duel.IsExistingMatchingCard(huntsp2filter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp) and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
-			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 			local dg=Duel.SelectMatchingCard(tp,huntsp2filter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_GRAVE,0,1,1,nil,e,tp)
 			if #dg>0 and Duel.GetLoactionCount(tp,LOCATION_MZONE)>0 and Duel.GetLoactionCount(tp,LOCATION_SZONE)==0 then
 				Duel.SpecialSummon(dg,0,tp,tp,false,false,POS_FACEUP)
@@ -152,7 +149,6 @@ function s.huntop(e,tp,eg,ep,er,re,r,rp)
 			end
 		end
 		if ct==3 and Duel.IsExistingMatchingCard(s.huntspfilter,tp,LOCATION_DECK,0,1,nil,e,tp) and Duel.SelectYesNo(tp,aux.Stringid(id,4)) then
-			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 			local spg=Duel.SelectMatchingCard(tp,huntspfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
 			if #spg>0 then
 				Duel.SpecialSummon(spg,0,tp,1-tp,false,false,POS_FACEUP)
