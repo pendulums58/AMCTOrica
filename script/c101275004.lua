@@ -1,7 +1,7 @@
---1×6 1×6 1×6
+--수렵자 새
 local s,id=GetID()
 function s.initial_effect(c)
-	--힘을 1 올리는 버프
+	--마함 내리기
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_HAND)
@@ -9,7 +9,7 @@ function s.initial_effect(c)
 	e1:SetTarget(s.tg)
 	e1:SetOperation(s.op)
 	c:RegisterEffect(e1)
-	--압도적인 연타
+	--파괴
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_DESTROY)
 	e2:SetRange(LOCATION_SZONE)
@@ -21,6 +21,12 @@ function s.initial_effect(c)
 	e2:SetTarget(s.destg)
 	e2:SetOperation(s.desop)
 	c:RegisterEffect(e2)
+	--상대턴에도 발동가능
+	local e3=e2:Clone()
+	e3:SetType(EFFECT_TYPE_QUICK_O)
+	e3:SetCode(EVENT_FREE_CHAIN)
+	e3:SetCondition(s.descon2)
+	c:RegisterEffect(e3)
 end
 function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
@@ -41,10 +47,18 @@ end
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	return YiPi.SpellHunterCheck(e:GetHandler())
 end
+function s.desfilter(c)
+	local lv=c:GetLevel()
+	if c:IsType(TYPE_XYZ) then lv=c:GetRank() end
+	return lv>=8 and c:IsType(TYPE_MONSTER)
+end
+function s.descon2(e,tp,eg,ep,ev,re,r,rp)
+	return YiPi.SpellHunterCheck(e:GetHandler()) and c:IsExistingMatchingCard(s.desfilter,tp,0,LOCATION_ONFIELD,1,nil)
+end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return s.desfilter(chkc,tp) and chkc:IsOnField() and chkc:IsControler(1-tp) end
-	if chk==0 then return Duel.IsExistingTarget(s.desfilter,tp,0,LOCATION_ONFIELD,1,nil,tp) end
-	local tc=Duel.SelectTarget(tp,s.desfilter,tp,0,LOCATION_ONFIELD,1,1,nil,tp)
+	if chkc then return chkc:IsOnField() and chkc:IsControler(1-tp) end
+	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil) end
+	local tc=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,tc,1,tp,LOCATION_ONFIELD)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
@@ -52,7 +66,4 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	if tc:IsRelateToEffect(e) and e:GetHandler():IsRelateToEffect(e) then
 		Duel.Destroy(tc,REASON_EFFECT)
 	end
-end
-function s.desfilter(c,tp)
-	return c:IsFacedown() or YiPi.IsHuntingTargetExists(tp,0,1)
 end

@@ -6,7 +6,7 @@ function s.initial_effect(c)
     e1:SetType(EFFECT_TYPE_ACTIVATE)
     e1:SetCode(EVENT_FREE_CHAIN)
     c:RegisterEffect(e1)
-	--표적 특소시 카운터 / 서치
+	--표적 특소시 카운터 / 특소
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
@@ -114,7 +114,7 @@ end
 function s.huntsp2filter(c,e,tp)
 	return c:IsCanBeSpecialSummoned(e,0,tp,tp,false,false) and c:IsSetCard(SETCARD_HUNTER) and c:IsType(TYPE_MONSTER)
 end
-function s.huntop(e,tp,eg,ep,er,re,r,rp)
+function s.huntop(e,tp,eg,ep,ev,re,r,rp)
 	local ct=e:GetLabel()
 	if e:GetHandler():IsRelateToEffect(e) then
 		if ct>=1 and Duel.IsExistingMatchingCard(s.huntthfilter,tp,LOCATION_DECK,0,1,nil) and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
