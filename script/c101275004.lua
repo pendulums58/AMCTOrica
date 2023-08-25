@@ -53,7 +53,7 @@ function s.desfilter(c)
 	return lv>=8 and c:IsType(TYPE_MONSTER)
 end
 function s.descon2(e,tp,eg,ep,ev,re,r,rp)
-	return YiPi.SpellHunterCheck(e:GetHandler()) and c:IsExistingMatchingCard(s.desfilter,tp,0,LOCATION_ONFIELD,1,nil)
+	return YiPi.SpellHunterCheck(e:GetHandler()) and Duel.IsExistingMatchingCard(s.desfilter,tp,0,LOCATION_ONFIELD,1,nil)
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsOnField() and chkc:IsControler(1-tp) end
