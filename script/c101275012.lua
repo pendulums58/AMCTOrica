@@ -36,7 +36,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 			local atkg=Duel.GetMatchingGroup(s.atkfilter,tp,0,LOCATION_MZONE,nil)
 			local tc=Duel.SelectMatchingCard(tp,s.htfilter,tp,LOCATION_MZONE,0,1,1,nil)
 			if #atkg>0 and #tc>0 then
-				local tcc=tc:GetFirst()
+				local tcc=tc:GetFirstTarget()
 				local tg=atkg:GetMaxGroup(Card.GetAttack)
 				local atk=tg:GetFirst():GetAttack()
 				local e1=Effect.CreateEffect(e:GetHandler())
