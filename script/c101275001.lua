@@ -51,6 +51,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.ngcon(e,tp,eg,ep,ev,re,r,rp)
 	local ph=Duel.GetCurrentPhase()
+	local c=e:GetHandler()
 	return (ph==PHASE_MAIN1 or ph==PHASE_MAIN2) and YiPi.SpellHunterCheck(c) and YiPi.IsHuntingTargetExists(tp,0,1)
 end
 function s.ngtg(e,tp,eg,ep,ev,re,r,rp,chk)   
