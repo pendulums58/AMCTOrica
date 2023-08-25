@@ -1,64 +1,68 @@
 --수렵자 코양이
 local s,id=GetID()
 function s.initial_effect(c)
-   --2회 공격
-   local e1=Effect.CreateEffect(c)
-   e1:SetType(EFFECT_TYPE_SINGLE)
-   e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-   e1:SetRange(LOCATION_MZONE)
-   e1:SetCode(EFFECT_EXTRA_ATTACK_MONSTER)
-   e1:SetValue(1)
-   c:RegisterEffect(e1)   
-   --공통 효과
-   local e2=Effect.CreateEffect(c)
-   e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
-   e2:SetRange(LOCATION_SZONE)
-   e2:SetType(EFFECT_TYPE_IGNITION)
-   e2:SetCountLimit(1,id)
-   e2:SetCondition(s.ngcon)
-   e2:SetCost(cyan.dhcost(1))
-   e2:SetTarget(s.ngtg)
-   e2:SetOperation(s.ngop)
-   c:RegisterEffect(e2)
+   --마함 내리기
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetRange(LOCATION_HAND)
+	e1:SetCountLimit(1,id)
+	e1:SetTarget(s.tg)
+	e1:SetOperation(s.op)
+	c:RegisterEffect(e1)
+	--돌리기
+	local e2=Effect.CreateEffect(c)
+	e2:SetCategory(CATEGORY_TOHAND)
+	e2:SetRange(LOCATION_SZONE)
+	e2:SetType(EFFECT_TYPE_IGNITION)
+	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e2:SetCondition(s.descon2)
+	e2:SetCountLimit(1,{id,1})
+	e2:SetTarget(s.destg)
+	e2:SetOperation(s.desop)
+	c:RegisterEffect(e2)
 end
-function s.ngcon(e,tp,eg,ep,ev,re,r,rp)
-   return YiPi.SpellHunterCheck(e:GetHandler()) and Duel.IsExistingMatchingCard(YiPi.HunterCheck,tp,0,LOCATION_MZONE,1,nil)
+function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
 end
-function s.ngtg(e,tp,eg,ep,ev,re,r,rp,chk)
-   if chk==0 then return Duel.IsExistingMatchingCard(s.negfilter,tp,0,LOCATION_MZONE,1,nil) end
+function s.op(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if c:IsRelateToEffect(e) then
+      Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+      local e1=Effect.CreateEffect(c)
+      e1:SetCode(EFFECT_CHANGE_TYPE)
+      e1:SetType(EFFECT_TYPE_SINGLE)
+      e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+      e1:SetReset(RESET_EVENT+RESETS_STANDARD-RESET_TURN_SET)
+      e1:SetValue(TYPE_SPELL+TYPE_CONTINUOUS)
+      c:RegisterEffect(e1)		
+	end
 end
-function s.negfilter(c)
-   return c:IsFaceup() and not c:IsDisabled()
+function s.descon(e,tp,eg,ep,ev,re,r,rp)
+	return YiPi.SpellHunterCheck(e:GetHandler())
 end
-function s.ngop(e,tp,eg,ep,ev,re,r,rp)
-   local c=e:GetHandler()
-   if c:IsRelateToEffect(e) then
-      local tc=Duel.SelectMatchingCard(tp,s.negfilter,tp,0,LOCATION_MZONE,1,1,nil)
-      if tc:GetCount()>0 then
-         tc=tc:GetFirst()
-         if tc:IsNegatable() then
-            local e1=Effect.CreateEffect(c)
-            e1:SetType(EFFECT_TYPE_SINGLE)
-            e1:SetCode(EFFECT_DISABLE)
-            e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-            e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-            tc:RegisterEffect(e1)
-            local e2=Effect.CreateEffect(c)
-            e2:SetType(EFFECT_TYPE_SINGLE)
-            e2:SetCode(EFFECT_DISABLE_EFFECT)
-            e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-            e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-            tc:RegisterEffect(e2)
-            if tc:IsType(TYPE_TRAPMONSTER) then
-               local e3=Effect.CreateEffect(c)
-               e3:SetType(EFFECT_TYPE_SINGLE)
-               e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-               e3:SetCode(EFFECT_DISABLE_TRAPMONSTER)
-               e3:SetReset(RESET_EVENT+RESETS_STANDARD)
-               tc:RegisterEffect(e3)
-            end
-         end         
-      end
-      YiPi.HunterEffect(e)
-   end
+function s.desfilter(c)
+	local lv=c:GetLevel()
+	if c:IsType(TYPE_XYZ) then lv=c:GetRank() end
+	return lv>=8 and c:IsType(TYPE_MONSTER)
+end
+function s.descon2(e,tp,eg,ep,ev,re,r,rp)
+	return YiPi.SpellHunterCheck(e:GetHandler()) and Duel.IsExistingMatchingCard(s.desfilter,tp,0,LOCATION_ONFIELD,1,nil)
+end
+function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsOnField() and chkc:IsControler(1-tp) end
+	if chk==0 then return Duel.IsExistingTarget(Card.IsAbleToHand,tp,0,LOCATION_ONFIELD,1,nil) end
+	e:SetLabel(0)
+	if Duel.IsExistingMatchingCard(s.desfilter,tp,0,LOCATION_ONFIELD,1,nil) then e:SetLabel(1) end
+	local tc=Duel.SelectTarget(tp,Card.IsAbleToHand,tp,0,LOCATION_ONFIELD,1,1,nil)
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,tc,1,tp,LOCATION_ONFIELD)
+end
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
+	local tc=Duel.GetFirstTarget()
+	if e:GetLabel()==1 and tc:IsRelateToEffect(e) and e:GetHandler():IsRelateToEffect(e) then
+		Duel.SendtoDeck(tc,nil,REASON_EFFECT)
+	end
+	elseif e:GetLabel()==1 and tc:IsRelateToEffect(e) and e:GetHandler():IsRelateToEffect(e) then
+		Duel.SendtoHand(tc,nil,REASON_EFFECT)
+	end
+	Duel.SendtoDeck(e:GetHandler(),nil,REASON_EFFECT)
 end
