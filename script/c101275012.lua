@@ -32,19 +32,19 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 			Duel.SendtoHand(g,nil,REASON_EFFECT)
 			Duel.ConfirmCards(g,1-tp)
 		end
-		if e:GetLabel()==1 and Duel.IsExistingMatchingCard(s.htfilter,tp,LOCATION_MZONE,0,1,nil) and Duel.IsExistingMatchingCard(s.atkfilter,tp,0,LOCATION_MZONE,1,nil) and Duel.SelectYesNo(tp,aux.Stringid(0)) then
-			local atkg=Duel.GetMatchingGroup(s.atkfilter,tp,0,LOCATION_MZONE,nil)
-			local tc=Duel.SelectMatchingCard(tp,s.htfilter,tp,LOCATION_MZONE,0,1,1,nil)
-			if #atkg>0 and #tc>0 then
-				local tg=atkg:GetMaxGroup(Card.GetAttack)
-				local atk=tg:GetFirst():GetAttack()
-				local e1=Effect.CreateEffect(e:GetHandler())
-				e1:SetCode(EFFECT_UPDATE_ATTACK)
-				e1:SetType(EFFECT_TYPE_SINGLE)
-				e1:SetValue(atk)
-				e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-				tc:RegisterEffect(e1,true)
-			end
-		end
+		-- if e:GetLabel()==1 and Duel.IsExistingMatchingCard(s.htfilter,tp,LOCATION_MZONE,0,1,nil) and Duel.IsExistingMatchingCard(s.atkfilter,tp,0,LOCATION_MZONE,1,nil) and Duel.SelectYesNo(tp,aux.Stringid(0)) then
+			-- local atkg=Duel.GetMatchingGroup(s.atkfilter,tp,0,LOCATION_MZONE,nil)
+			-- local tc=Duel.SelectMatchingCard(tp,s.htfilter,tp,LOCATION_MZONE,0,1,1,nil)
+			-- if #atkg>0 and #tc>0 then
+				-- local tg=atkg:GetMaxGroup(Card.GetAttack)
+				-- local atk=tg:GetFirst():GetAttack()
+				-- local e1=Effect.CreateEffect(e:GetHandler())
+				-- e1:SetCode(EFFECT_UPDATE_ATTACK)
+				-- e1:SetType(EFFECT_TYPE_SINGLE)
+				-- e1:SetValue(atk)
+				-- e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+				-- tc:RegisterEffect(e1,true)
+			-- end
+		-- end
 	end
 end
