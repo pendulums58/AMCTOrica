@@ -31,7 +31,7 @@ function c103553002.initial_effect(c)
 	--스택 초기화
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	e5:SetCode(EFFECT_LEAVE_FIELD_P)
+	e5:SetCode(EVENT_LEAVE_FIELD_P)
 	e5:SetOperation(c103553002.lfop)
 	c:RegisterEffect(e5)
 end
