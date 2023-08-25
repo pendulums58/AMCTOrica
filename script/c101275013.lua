@@ -24,7 +24,7 @@ function s.efilter(e,re)
 	return e:GetOwnerPlayer()~=re:GetOwnerPlayer()
 end
 function s.thfilter(c)
-	return c:IsSetCard(SETCARD_HUNTER) and c:IsType(TYPE_MONSTER)
+	return c:IsSetCard(SETCARD_HUNTER)
 end
 function s.imop(e,tp,eg,ep,ev,re,r,rp)
 	local ct=e:GetLabel()
