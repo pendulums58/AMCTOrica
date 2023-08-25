@@ -20,7 +20,7 @@ function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND+CATEGORY_SEARCH,nil,1,tp,LOCATION_DECK+LOCATION_GRAVE)
 end
 function s.htfilter(c)
-	return c:IsType(TYPE_MONSTER) and c:IsSetCard(SETCARD_HUNTER) and c:IsAttackAbove() and c:IsFaceup()
+	return c:IsType(TYPE_MONSTER) and c:IsSetCard(SETCARD_HUNTER) and c:IsFaceup()
 end
 function s.atkfilter(c)
 	return c:IsType(TYPE_MONSTER) and c:IsFaceup()
