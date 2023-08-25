@@ -60,7 +60,6 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if e:GetLabel()==1 and tc:IsRelateToEffect(e) and e:GetHandler():IsRelateToEffect(e) then
 		Duel.SendtoDeck(tc,nil,REASON_EFFECT)
-	end
 	elseif e:GetLabel()==1 and tc:IsRelateToEffect(e) and e:GetHandler():IsRelateToEffect(e) then
 		Duel.SendtoHand(tc,nil,REASON_EFFECT)
 	end
