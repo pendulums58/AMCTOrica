@@ -17,11 +17,8 @@ function s.imtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return s.tgfilter(chkc) and chkc:IsLocation(LOCATION_ONFIELD) and chkc:IsControler(tp) end
 	if chk==0 then return Duel.IsExistingTarget(s.tgfilter,tp,LOCATION_ONFIELD,0,1,nil) end
 	local tc=Duel.SelectTarget(tp,s.tgfilter,tp,LOCATION_ONFIELD,0,1,1,nil)
-	if Duel.IsExistingMatchingCard(YiPi.SpellHunterCheck,tp,LOCATION_SZONE,0,1,nil) then
-		e:SetLabel(1)
-	else
-		e:SetLabel(0)
-	end
+	e:SetLabel(0)
+	if Duel.IsExistingMatchingCard(YiPi.SpellHunterCheck,tp,LOCATION_SZONE,0,1,nil) then e:SetLabel(1) end
 end
 function s.efilter(e,re)
 	return e:GetOwnerPlayer()~=re:GetOwnerPlayer()
