@@ -27,7 +27,8 @@ function s.thfilter(c)
 	return c:IsSetCard(SETCARD_HUNTER) and c:IsType(TYPE_MONSTER)
 end
 function s.imop(e,tp,eg,ep,ev,re,r,rp)
-	local ct=e:GetLabel()
+	local chk=0
+	if e:GetLabel()==1 then chk=1 end
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() and tc:IsControler(tp) then
@@ -43,7 +44,7 @@ function s.imop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetOwnerPlayer(tp)
 		tc:RegisterEffect(e1)
 	end
-	if Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_GRAVE,0,1,nil) then
+	if chk==1 and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_GRAVE,0,1,nil) then
 		local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_GRAVE,0,1,1,nil)
 		if #g>0 then
 			Duel.SendtoHand(g,nil,REASON_EFFECT)
