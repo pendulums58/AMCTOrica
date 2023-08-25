@@ -32,7 +32,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 			Duel.SendtoHand(g,nil,REASON_EFFECT)
 			Duel.ConfirmCards(g,1-tp)
 		end
-		if e:GetLabel()==1 and Duel.IsExistingMatchingCard(s.htfilter,tp,LOCATION_MZONE,0,1,nil) and Duel.IsExistingMatchingCard(s.atkfilter,tp,0,LOCATION_MZONE,1,nil) and Duel.SelectYesNo(tp,aux.Stringid(0)) then
+		if e:GetLabel()==1 and Duel.IsExistingMatchingCard(s.htfilter,tp,LOCATION_MZONE,0,1,nil) and Duel.IsExistingMatchingCard(s.atkfilter,tp,0,LOCATION_MZONE,1,nil) and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 			local atkg=Duel.GetMatchingGroup(s.atkfilter,tp,0,LOCATION_MZONE,nil)
 			local tc=Duel.SelectMatchingCard(tp,s.htfilter,tp,LOCATION_MZONE,0,1,1,nil)
 			if #atkg>0 and #tc>0 then
