@@ -119,33 +119,77 @@ function Card.IsCanBeFusionMaterialParareal(c)
 	return true
 end
 
+-- (구) IsSetCardList 함수
+-- EFFECT_ALL_SETCARD 대응을 위해 card / number 패러미터를 card - card 패러미터로 변경
+-- 구 코드의 경우 Additional_setcards와의 호환 오류 문제도 있었음.
+-- function Card.IsSetCardList(c,setcode)
+	-- local set=tonumber(setcode)
+	-- local code=0
+	-- if not set then return false end
+	-- while set>0 do
+		-- code=math.floor(set%0x10000)
+		-- if c:IsSetCard(code) then return true end
+		-- if c:IsHasEffect(EFFECT_ALL_SETCARD) then return true end
+		-- set=math.floor(set/0x10000)
+	-- end
+	-- return false
+-- end
 
-function Card.IsSetCardList(c,setcode)
-	local set=tonumber(setcode)
-	local code=0
-	if not set then return false end
+-- function Card.IsNotSetCardList(c,setcode)
+	-- local set=tonumber(setcode)
+	-- local code=0
+	-- if not set then return true end
+	-- while set>0 do
+		-- code=math.floor(set%0x10000)
+		-- if c:IsSetCard(code) then return false end
+		-- if c:IsHasEffect(EFFECT_ALL_SETCARD) then return false end
+		-- set=math.floor(set/0x10000)
+	-- end
+	-- return true
+-- end
+
+function Card.IsSetCardList(c,tc)
+	if type(tc) == "number" then
+		Debug.Message("Using Old SetCardList Function. returned false as error exception.")
+		return false
+	end
+	local set=c:GetSetCard()
+	while set>0 do
+		code=math.floor(set%0x10000)
+		if tc:IsSetCard(code) then return true end
+		if tc:IsHasEffect(EFFECT_ALL_SETCARD) then return true end
+		set=math.floor(set/0x10000)
+	end	
+	set=tc:GetSetCard()
 	while set>0 do
 		code=math.floor(set%0x10000)
 		if c:IsSetCard(code) then return true end
 		if c:IsHasEffect(EFFECT_ALL_SETCARD) then return true end
 		set=math.floor(set/0x10000)
-	end
+	end		
 	return false
 end
-
-function Card.IsNotSetCardList(c,setcode)
-	local set=tonumber(setcode)
-	local code=0
-	if not set then return true end
+function Card.IsNotSetCardList(c,tc)
+	if type(tc) == "number" then
+		Debug.Message("Using Old NotSetCardList Function. returned false as error exception.")
+		return false
+	end
+	local set=c:GetSetCard()
+	while set>0 do
+		code=math.floor(set%0x10000)
+		if tc:IsSetCard(code) then return false end
+		if tc:IsHasEffect(EFFECT_ALL_SETCARD) then return false end
+		set=math.floor(set/0x10000)
+	end	
+	set=tc:GetSetCard()
 	while set>0 do
 		code=math.floor(set%0x10000)
 		if c:IsSetCard(code) then return false end
 		if c:IsHasEffect(EFFECT_ALL_SETCARD) then return false end
 		set=math.floor(set/0x10000)
-	end
+	end		
 	return true
 end
-
 
 local cisc=Card.IsSetCard
 function Card.IsSetCard(c,sc)
