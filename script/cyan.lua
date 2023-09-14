@@ -28,7 +28,7 @@ global_fusion_processing=false
 function Card.IsOwner(c,p)
 	return c:GetOwner()==p
 end
---Å¬¶óÀÌ¾ğÆ® ºê·ÎÄ¿ / SendtoHand Á¶ÀÛ
+--í´ë¼ì´ì–¸íŠ¸ ë¸Œë¡œì»¤ / SendtoHand ì¡°ì‘
 local dsth=Duel.SendtoHand
 function Duel.SendtoHand(c,p,r)
 	local g=Group.CreateGroup()
@@ -37,9 +37,9 @@ function Duel.SendtoHand(c,p,r)
 	else
 		g:Merge(c)
 	end
-	--µ¦¿¡¼­ µé¾î°¡´Â Ä«µå °É·¯³»±â
+	--ë±ì—ì„œ ë“¤ì–´ê°€ëŠ” ì¹´ë“œ ê±¸ëŸ¬ë‚´ê¸°
 	local g1=g:Filter(Card.IsLocation,nil,LOCATION_DECK)
-	--°¢ ÇÃ·¹ÀÌ¾îº°·Î ÇØ´ç È¿°ú¸¦ Àû¿ëÇÒÁö¸¦ Ã³¸®
+	--ê° í”Œë ˆì´ì–´ë³„ë¡œ í•´ë‹¹ íš¨ê³¼ë¥¼ ì ìš©í• ì§€ë¥¼ ì²˜ë¦¬
 	local spg=g1:Filter(Card.IsOwner,nil,0)
 	local spg1=cyan.brokerprocess(spg,p)
 	g:Merge(spg1)	
@@ -56,24 +56,24 @@ function Duel.SendtoHand(c,p,r)
 	return dsth(g,p,r)
 end
 function cyan.brokerprocess(g,p)
-	--µé¾î¿Â g°¡ ¾øÀ¸¸é ±×´ë·Î Á¾·á
-	--ÃÖÁ¾ÀûÀ¸·Î Ãß°¡µÈ Ä«µå´Â g1ÀÌ µÈ´Ù
+	--ë“¤ì–´ì˜¨ gê°€ ì—†ìœ¼ë©´ ê·¸ëŒ€ë¡œ ì¢…ë£Œ
+	--ìµœì¢…ì ìœ¼ë¡œ ì¶”ê°€ëœ ì¹´ë“œëŠ” g1ì´ ëœë‹¤
 	local g1=Group.CreateGroup()
 	if g:GetCount()==0 then return g1 end
-	--g´Â µ¦¿¡¼­ ÆĞ¿¡ ³Ö¾îÁö´Â Ä«µå, p´Â ±×°ÍÀÌ ´©±¸ÀÇ ÆĞ¿¡ µé¾î°¥Áö(nil·Î ¿ø·¡ ÁÖÀÎ)
+	--gëŠ” ë±ì—ì„œ íŒ¨ì— ë„£ì–´ì§€ëŠ” ì¹´ë“œ, pëŠ” ê·¸ê²ƒì´ ëˆ„êµ¬ì˜ íŒ¨ì— ë“¤ì–´ê°ˆì§€(nilë¡œ ì›ë˜ ì£¼ì¸)
 	local ow=g:GetFirst():GetOwner()
 	if p==nil then p=ow end
-	--ÁÖÀÎ°ú ÆĞ¿¡ ³Ö´Â ÇÃ·¹ÀÌ¾î°¡ ´Ù¸£´Ù¸é ±×´ë·Î Á¾·á
+	--ì£¼ì¸ê³¼ íŒ¨ì— ë„£ëŠ” í”Œë ˆì´ì–´ê°€ ë‹¤ë¥´ë‹¤ë©´ ê·¸ëŒ€ë¡œ ì¢…ë£Œ
 	if p~=ow then return g1 end
-	--ÇØ´ç ÇÃ·¹ÀÌ¾î°¡ È¿°ú¸¦ ¹Ş°í ÀÖ´ÂÁö¸¦ Ã¼Å© ¹×, È¿°ú¸¦ Àû¿ëÇÒ ¼ö ÀÖ´ÂÁö¸¦ Ã¼Å©.
+	--í•´ë‹¹ í”Œë ˆì´ì–´ê°€ íš¨ê³¼ë¥¼ ë°›ê³  ìˆëŠ”ì§€ë¥¼ ì²´í¬ ë°, íš¨ê³¼ë¥¼ ì ìš©í•  ìˆ˜ ìˆëŠ”ì§€ë¥¼ ì²´í¬.
 	if Duel.IsPlayerAffectedByEffect(p,111310081) 
 		and Duel.IsExistingMatchingCard(cyan.brokercheck,p,LOCATION_DECK,0,1,nil,g)
 		and Duel.SelectYesNo(p,aux.Stringid(111310081,0)) then
-		--È¿°ú¸¦ Àû¿ë¹ŞÀ» ¼ö ÀÖ°í, ±×·¯±â¸¦ ¼±ÅÃÇß´Ù¸é È¿°ú Ã³¸®
+		--íš¨ê³¼ë¥¼ ì ìš©ë°›ì„ ìˆ˜ ìˆê³ , ê·¸ëŸ¬ê¸°ë¥¼ ì„ íƒí–ˆë‹¤ë©´ íš¨ê³¼ ì²˜ë¦¬
 		local th=Duel.SelectMatchingCard(p,cyan.brokercheck,p,LOCATION_DECK,0,1,1,nil,g)
 		if th:GetCount()>0 then
 			g1:Merge(th)
-			--Ã³¸®Çß´Ù¸é, ÇØ´ç ÇÃ·¹ÀÌ¾î¿¡°Ô ¿µÇâÀ» ÁÖ´Â Ä«µå Áß ÇÏ³ª¸¦ °ñ¶ó, ½ºÅÃÀ» 1 ¼Ò¸ğÇÑ´Ù.
+			--ì²˜ë¦¬í–ˆë‹¤ë©´, í•´ë‹¹ í”Œë ˆì´ì–´ì—ê²Œ ì˜í–¥ì„ ì£¼ëŠ” ì¹´ë“œ ì¤‘ í•˜ë‚˜ë¥¼ ê³¨ë¼, ìŠ¤íƒì„ 1 ì†Œëª¨í•œë‹¤.
 			local fg=Group.CreateGroup()
 			for i,pe in ipairs({Duel.IsPlayerAffectedByEffect(p,111310081)}) do
 				fg:AddCard(pe:GetHandler())
@@ -163,27 +163,18 @@ function Duel.PayLPCost(p,vl)
 	return dplc(p,vl)	
 end
 
-function Card.IsInterDuoCode(c,hdl)
-	dm("¿À·ù : ¿À·¡µÈ ÀÎÅÍµà¿À ÄÚµå¸¦ »ç¿ëÇÏ°í ÀÖ½À´Ï´Ù.")
-end
-
-
---ÀÚÁÖ ¾²´Â ÇÔ¼öµé
---¹İ¿ª±³Çâ ÇÊÅÍ
-function cyan.MAfilter(c)
-	return (c:IsSetCard(0x60a) or c:IsSetCard(0x60b))
-end
+--ìì£¼ ì“°ëŠ” í•¨ìˆ˜ë“¤
 function Card.IsCreator(c)
 	return c:IsSetCard(0x622) or c:IsSetCard(0x620) or c:IsSetCard(0xfe)
 end
 
---Ä«µå È¿°ú °³Á¶ÇÏ´Â ÇÔ¼ö
+--ì¹´ë“œ íš¨ê³¼ ê°œì¡°í•˜ëŠ” í•¨ìˆ˜
 local cregeff=Card.RegisterEffect
 function Card.RegisterEffect(c,e,forced,...)
 	local code=c:GetOriginalCode()
 	local mt=_G["c"..code]
 	cregeff(c,e,forced,...)
-	--Èæ¹éÀÇ¡ÙÆÄµ¿
+	--í‘ë°±ì˜â˜†íŒŒë™
 	if code==31677606 then
 		e:SetCondition(cyan.bwcon)
 	end
@@ -199,7 +190,7 @@ function Card.RegisterEffect(c,e,forced,...)
 			e:SetCondition(cyan.etxmcon(egc))
 		end
 	end	
-	--±ä±Şµ¿Á¶
+	--ê¸´ê¸‰ë™ì¡°
 	if code==94634433 and mt.eff_ct[c][0]==e then
         e:SetOperation(cyan.tuneop(e:GetOperation()))
     end
@@ -309,9 +300,9 @@ function cyan.addEastStyleEffect(c)
 	e:SetOperation(cyan.eseop)
 	c:RegisterEffect(e)
 end
---¼¼¹ÌÅäÅ« È¿°ú
+--ì„¸ë¯¸í† í° íš¨ê³¼
 function cyan.SemiTokenAttribute(c)
-	--¹¦Áö·Î º¸³»Áø °æ¿ì ¼Ò¸ê
+	--ë¬˜ì§€ë¡œ ë³´ë‚´ì§„ ê²½ìš° ì†Œë©¸
 	local e=Effect.CreateEffect(c)
 	e:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 	e:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
@@ -451,13 +442,13 @@ function Card.IsOriginalCode(c,...)
 	end
 	return cioc(c,...)
 end
--- µå·Î¿ì ¸Å¼ö Á¦ÇÑ È¿°ú (Àå¸·À» °¡¸£´Â ÀÚ, ³ª¸£¼Â)
--- ÇØ´ç ÇÃ·¹ÀÌ¾î°¡ ¸Å ÅÏ¿¡ µå·Î¿ìÇÒ ¼ö ÀÖ´Â ¸Å¼öÀÇ Á¦ÇÑÀ» ¼³Á¤ÇÑ´Ù.
--- ÀÌ´Â ÀÏ¹İ µå·Î¿ìµµ Æ÷ÇÔÇÑ´Ù. ÀÏ¹İ µå·Î¿ìÀÇ ¸Å¼ö¸¦ ¹Ù²Ù´Â È¿°ú¿¡µµ °£¼·ÇØ¾ß ÇÔ (EFFECT_DRAW_COUNT)
+-- ë“œë¡œìš° ë§¤ìˆ˜ ì œí•œ íš¨ê³¼ (ì¥ë§‰ì„ ê°€ë¥´ëŠ” ì, ë‚˜ë¥´ì…‹)
+-- í•´ë‹¹ í”Œë ˆì´ì–´ê°€ ë§¤ í„´ì— ë“œë¡œìš°í•  ìˆ˜ ìˆëŠ” ë§¤ìˆ˜ì˜ ì œí•œì„ ì„¤ì •í•œë‹¤.
+-- ì´ëŠ” ì¼ë°˜ ë“œë¡œìš°ë„ í¬í•¨í•œë‹¤. ì¼ë°˜ ë“œë¡œìš°ì˜ ë§¤ìˆ˜ë¥¼ ë°”ê¾¸ëŠ” íš¨ê³¼ì—ë„ ê°„ì„­í•´ì•¼ í•¨ (EFFECT_DRAW_COUNT)
 
 local rege=Card.RegisterEffect
 function Card.RegisterEffect(c,e,forced,...)
-	--Åë»ó µå·Î¿ì º¯°æ È¿°ú¿¡ °£¼·.
+	--í†µìƒ ë“œë¡œìš° ë³€ê²½ íš¨ê³¼ì— ê°„ì„­.
 	if e:GetCode()==EFFECT_DRAW_COUNT then 
 		local val=e:GetValue()
 		if val then e:SetValue(cyan.dcval(val)) end
@@ -485,29 +476,29 @@ end
 
 local ddr=Duel.Draw
 function Duel.Draw(p,ct,r)
-	--ÇØ´ç ÇÃ·¹ÀÌ¾î°¡ µå·Î¿ì Á¦ÇÑ È¿°ú¸¦ ¹Ş°í ÀÖÀ¸¸é, ÀÌ ÅÏ¿¡ ÇØ´ç ÇÃ·¹ÀÌ¾î°¡ µå·Î¿ìÇÑ ¸Å¼ö¸¦ Ã¼Å©
-	--È¿°ú·Î µå·Î¿ìÇÏ´Â °æ¿ì¿¡´Â Duel.Draw ÀÚÃ¼¿¡ µå·Î¿ìÇÑ ¸Å¼ö¸¸Å­ÀÇ RegisterFlagEffect¸¦ ºÙÀÌ°í, ÀÏ¹İ µå·Î¿ìÀÇ °æ¿ì´Â... ¾îÂ¼Áö
-	--EFFECT_DRAW_COUNT¿¡ CloneÀ¸·Î SetResetÀ» º£³¤ ´ÙÀ½¿¡ ÀÏ¹İµå·Î¿ì¿¡ Æ®¸®°Å Æ¢°Ô ÇÒ±î? ÀÌ°Ô µÇ³ª -> ÀÌ°É·Î ÇØº¸ÀÚ
-	--ÀÌ°Å ¸Â´Â°Å°°Àºµ¥? DRAW_COUNT¿¡ Æ¢°ÔÇØ¼­ µå·Î¿ìÇßÀ¸¸é DRAW_COUNTÀÇ flag°¡ µå·Î¿ì ¼ıÀÚ·Î Æ¢°Ô ÇÏÀÚ.
-	--±×·¯¸é º¯°æµÈ ¸Å¼ö µå·Î¿ìÇßÀ¸¸é ±× ¼ıÀÚ¸¸Å­ lim¿¡¼­ »©°í, flag°¡ ¾ÈÆ¢¾îÀÖÀ¸¸é Æò¹üÇÏ°Ô µå·Î¿ìÇÑ°Å´Ï±î 1À» »©°í
-	--µå·Î¿ìÆäÀÌÁî ½ºÅµµµ ±×°Å¿¡ °°Àº resetÀ¸·Î ²¿¶ó¹Ú¾Æ¼­ ÇÃ·¡±× ³ÖÀÚ. È¥ÀÚ ÇÃ·¡±×¸¦ ¸î°³¸Ô´Â°Å¾ß ÀÌ°Å
+	--í•´ë‹¹ í”Œë ˆì´ì–´ê°€ ë“œë¡œìš° ì œí•œ íš¨ê³¼ë¥¼ ë°›ê³  ìˆìœ¼ë©´, ì´ í„´ì— í•´ë‹¹ í”Œë ˆì´ì–´ê°€ ë“œë¡œìš°í•œ ë§¤ìˆ˜ë¥¼ ì²´í¬
+	--íš¨ê³¼ë¡œ ë“œë¡œìš°í•˜ëŠ” ê²½ìš°ì—ëŠ” Duel.Draw ìì²´ì— ë“œë¡œìš°í•œ ë§¤ìˆ˜ë§Œí¼ì˜ RegisterFlagEffectë¥¼ ë¶™ì´ê³ , ì¼ë°˜ ë“œë¡œìš°ì˜ ê²½ìš°ëŠ”... ì–´ì©Œì§€
+	--EFFECT_DRAW_COUNTì— Cloneìœ¼ë¡œ SetResetì„ ë² ë‚€ ë‹¤ìŒì— ì¼ë°˜ë“œë¡œìš°ì— íŠ¸ë¦¬ê±° íŠ€ê²Œ í• ê¹Œ? ì´ê²Œ ë˜ë‚˜ -> ì´ê±¸ë¡œ í•´ë³´ì
+	--ì´ê±° ë§ëŠ”ê±°ê°™ì€ë°? DRAW_COUNTì— íŠ€ê²Œí•´ì„œ ë“œë¡œìš°í–ˆìœ¼ë©´ DRAW_COUNTì˜ flagê°€ ë“œë¡œìš° ìˆ«ìë¡œ íŠ€ê²Œ í•˜ì.
+	--ê·¸ëŸ¬ë©´ ë³€ê²½ëœ ë§¤ìˆ˜ ë“œë¡œìš°í–ˆìœ¼ë©´ ê·¸ ìˆ«ìë§Œí¼ limì—ì„œ ë¹¼ê³ , flagê°€ ì•ˆíŠ€ì–´ìˆìœ¼ë©´ í‰ë²”í•˜ê²Œ ë“œë¡œìš°í•œê±°ë‹ˆê¹Œ 1ì„ ë¹¼ê³ 
+	--ë“œë¡œìš°í˜ì´ì¦ˆ ìŠ¤í‚µë„ ê·¸ê±°ì— ê°™ì€ resetìœ¼ë¡œ ê¼¬ë¼ë°•ì•„ì„œ í”Œë˜ê·¸ ë„£ì. í˜¼ì í”Œë˜ê·¸ë¥¼ ëª‡ê°œë¨¹ëŠ”ê±°ì•¼ ì´ê±°
 	local lim=99
 	for i,pe in ipairs({Duel.IsPlayerAffectedByEffect(p,EFFECT_DRAW_LIMIT)}) do
 		if lim>pe:GetValue() then lim=pe:GetValue() end
 	end
-	--¿©±â±îÁö ÇØ´ç ÇÃ·¹ÀÌ¾î°¡ ¹Ş°í ÀÖ´Â µå·Î¿ì ¸Å¼ö Á¦ÇÑ Áß °¡Àå ÀÛÀº ¼öÄ¡ ÂüÁ¶(lim). ÀÌ lim¼öÄ¡º¸´Ù ¸¹Àº µå·Î¿ì´Â ±× ÅÏ¿¡ ÇÒ ¼ö ¾øÀ½.
+	--ì—¬ê¸°ê¹Œì§€ í•´ë‹¹ í”Œë ˆì´ì–´ê°€ ë°›ê³  ìˆëŠ” ë“œë¡œìš° ë§¤ìˆ˜ ì œí•œ ì¤‘ ê°€ì¥ ì‘ì€ ìˆ˜ì¹˜ ì°¸ì¡°(lim). ì´ limìˆ˜ì¹˜ë³´ë‹¤ ë§ì€ ë“œë¡œìš°ëŠ” ê·¸ í„´ì— í•  ìˆ˜ ì—†ìŒ.
 	local alr=Duel.GetFlagEffect(p,DRAW_COUNT)
-	--alrÀº ÇØ´ç ÇÃ·¹ÀÌ¾î°¡ ÀÌ ÅÏ¿¡ µå·Î¿ìÇÑ ¸Å¼ö. lim-alrÀÌ ½ÇÁú ³²Àº °¡´É µå·Î¿ì °ª.
+	--alrì€ í•´ë‹¹ í”Œë ˆì´ì–´ê°€ ì´ í„´ì— ë“œë¡œìš°í•œ ë§¤ìˆ˜. lim-alrì´ ì‹¤ì§ˆ ë‚¨ì€ ê°€ëŠ¥ ë“œë¡œìš° ê°’.
 	local can=lim-alr
 	if ct>can then ct=can end
 	local cct=ddr(p,ct,r)
-	--cct´Â ½ÇÁ¦ µå·Î¿ìµÈ ¸Å¼ö. ÀÌ ¼ıÀÚ¸¸Å­ ¸®¹ÌÆ®°ªÀ» ¼Ò¸ğÇÒ °ÍÀÓ
+	--cctëŠ” ì‹¤ì œ ë“œë¡œìš°ëœ ë§¤ìˆ˜. ì´ ìˆ«ìë§Œí¼ ë¦¬ë¯¸íŠ¸ê°’ì„ ì†Œëª¨í•  ê²ƒì„
 	Duel.RegisterFlagEffect(p,DRAW_COUNT,RESET_PHASE+PHASE_END,0,cct+alr)
 	return cct
 end
 
--- È¿°ú ¹«È¿·ÎºÎÅÍ º¸È£(¸ô?·ç ÇÁ·¹ÀÌ¾î)
--- È¿°ú ¹«È¿ (NegateActivation / NegateEffect °èÅë)¿¡ °£¼·ÇÏ¿© ÇØ´ç È¿°ú ¹«È¿¸¦ Ã³¸®ÇÏÁö ¾ÊÀº ÈÄ CountLimit ¼Ò¸ğ
+-- íš¨ê³¼ ë¬´íš¨ë¡œë¶€í„° ë³´í˜¸(ëª°?ë£¨ í”„ë ˆì´ì–´)
+-- íš¨ê³¼ ë¬´íš¨ (NegateActivation / NegateEffect ê³„í†µ)ì— ê°„ì„­í•˜ì—¬ í•´ë‹¹ íš¨ê³¼ ë¬´íš¨ë¥¼ ì²˜ë¦¬í•˜ì§€ ì•Šì€ í›„ CountLimit ì†Œëª¨
 
 
 local dna=Duel.NegateActivation
@@ -555,18 +546,18 @@ end
 
 
 
--- »ó´ë Á¶Á¾ È¿°ú (»ó´ë°¡ °í¸£´Â / ´ë»óÀ¸·Î ÇÏ´Â È¿°úÀÇ ¼±ÅÃ±ÇÀ» ÀÚ½ÅÀÌ »©¾ÑÀ½)
--- ÇØ´çÇÏ´Â ÇÔ¼öµéÀº Select °èÅë Àü¹İ(SelectMatchingCard / SelectSubGroup / GetMatchingGroup + Group °èÅëÀÇ Select ÇÔ¼ö Àü¹İ)
--- ÇØ´ç ÇÃ·¹ÀÌ¾î°¡ È¿°ú¸¦ ¹Ş°í ÀÖÀ¸¸é, ÇØ´ç ÇÃ·¹ÀÌ¾îÀÇ µ¦À» º¸´Â È¿°ú¸¦ ±× ¹İ´ë ÇÃ·¹ÀÌ¾î°¡ °Ë¿­ÇÔ (tp¿¡°Ô Àû¿ëµÇ°í ÀÖÀ¸¸é tp°¡ »ç¿ëÇÏ´Â Áõ¿øÀÌ ¿µÇâÀ» ¹ŞÀ½)
--- ÇØ´ç ÇÔ¼öµéÀÇ ¸Å°³º¯¼ö Áß tpÀÇ LOCATIONÀ» ÀÔ·Â¹Ş¾ÒÀ» ¶§, LOCATION_DECK ³»Áö´Â LOCATION_GRAVE°¡ Æ÷ÇÔµÇ¾î ÀÖÀ¸¸é 1¹ø ¸Å°³º¯¼ö(¼±ÅÃÀÚ)¸¦ µÚÁı´Â´Ù
--- ÇÔ¼ö ¸í´Ü
--- Duel.SelectMatchingCard(¼±ÅÃÀÚ,ÇÊÅÍ,½ÃÁ¡,ÀÚ½ÅÀ§Ä¡,»ó´ëÀ§Ä¡,ÃÖ¼Ò¸Å¼ö,ÃÖ´ë¸Å¼ö,¿¹¿Ü)
--- Duel.SelectTarget(¼±ÅÃÀÚ,ÇÊÅÍ,½ÃÁ¡,ÀÚ½ÅÀ§Ä¡,»ó´ëÀ§Ä¡,ÃÖ¼Ò¸Å¼ö,ÃÖ´ë¸Å¼ö,¿¹¿Ü) -> µ¦¿¡¼­ ´ë»óÁöÁ¤ÇÏÁö´Â ¾ÊÀ¸´Ï »ç½Ç»ó ¹¦Áö Àü¿ë
--- Duel.SelectFusionMaterial(¼±ÅÃÀÚ,)
--- ÀÏ´Ü °¡´ÉÇÑ°Í¸¸ ÇØµÎÀÚ
+-- ìƒëŒ€ ì¡°ì¢… íš¨ê³¼ (ìƒëŒ€ê°€ ê³ ë¥´ëŠ” / ëŒ€ìƒìœ¼ë¡œ í•˜ëŠ” íš¨ê³¼ì˜ ì„ íƒê¶Œì„ ìì‹ ì´ ë¹¼ì•—ìŒ)
+-- í•´ë‹¹í•˜ëŠ” í•¨ìˆ˜ë“¤ì€ Select ê³„í†µ ì „ë°˜(SelectMatchingCard / SelectSubGroup / GetMatchingGroup + Group ê³„í†µì˜ Select í•¨ìˆ˜ ì „ë°˜)
+-- í•´ë‹¹ í”Œë ˆì´ì–´ê°€ íš¨ê³¼ë¥¼ ë°›ê³  ìˆìœ¼ë©´, í•´ë‹¹ í”Œë ˆì´ì–´ì˜ ë±ì„ ë³´ëŠ” íš¨ê³¼ë¥¼ ê·¸ ë°˜ëŒ€ í”Œë ˆì´ì–´ê°€ ê²€ì—´í•¨ (tpì—ê²Œ ì ìš©ë˜ê³  ìˆìœ¼ë©´ tpê°€ ì‚¬ìš©í•˜ëŠ” ì¦ì›ì´ ì˜í–¥ì„ ë°›ìŒ)
+-- í•´ë‹¹ í•¨ìˆ˜ë“¤ì˜ ë§¤ê°œë³€ìˆ˜ ì¤‘ tpì˜ LOCATIONì„ ì…ë ¥ë°›ì•˜ì„ ë•Œ, LOCATION_DECK ë‚´ì§€ëŠ” LOCATION_GRAVEê°€ í¬í•¨ë˜ì–´ ìˆìœ¼ë©´ 1ë²ˆ ë§¤ê°œë³€ìˆ˜(ì„ íƒì)ë¥¼ ë’¤ì§‘ëŠ”ë‹¤
+-- í•¨ìˆ˜ ëª…ë‹¨
+-- Duel.SelectMatchingCard(ì„ íƒì,í•„í„°,ì‹œì ,ìì‹ ìœ„ì¹˜,ìƒëŒ€ìœ„ì¹˜,ìµœì†Œë§¤ìˆ˜,ìµœëŒ€ë§¤ìˆ˜,ì˜ˆì™¸)
+-- Duel.SelectTarget(ì„ íƒì,í•„í„°,ì‹œì ,ìì‹ ìœ„ì¹˜,ìƒëŒ€ìœ„ì¹˜,ìµœì†Œë§¤ìˆ˜,ìµœëŒ€ë§¤ìˆ˜,ì˜ˆì™¸) -> ë±ì—ì„œ ëŒ€ìƒì§€ì •í•˜ì§€ëŠ” ì•Šìœ¼ë‹ˆ ì‚¬ì‹¤ìƒ ë¬˜ì§€ ì „ìš©
+-- Duel.SelectFusionMaterial(ì„ íƒì,)
+-- ì¼ë‹¨ ê°€ëŠ¥í•œê²ƒë§Œ í•´ë‘ì
 local dsmc=Duel.SelectMatchingCard
 function Duel.SelectMatchingCard(sel,fil,pos,sloc,oloc,min,max,...)
-	--¼±ÅÃÀÚ(sel)°¡ ÀÚ½ÅÀÇ µ¦À» È®ÀÎÇÏ´Â °æ¿ì¿¡ Àû¿ëµÇ¾î¾ß ÇÔ. sel==posÀÌ°í slocÀÌ°Å³ª sel!=posÀÌ°í olocÀÌ¾î¾ß ÇÔ.
+	--ì„ íƒì(sel)ê°€ ìì‹ ì˜ ë±ì„ í™•ì¸í•˜ëŠ” ê²½ìš°ì— ì ìš©ë˜ì–´ì•¼ í•¨. sel==posì´ê³  slocì´ê±°ë‚˜ sel!=posì´ê³  olocì´ì–´ì•¼ í•¨.
 	if sel==pos and bit.band(sloc,LOCATION_DECK)==LOCATION_DECK then
 		if Duel.IsPlayerAffectedByEffect(sel,EFFECT_SELECTBY_OPPO) then 
 			sel=1-sel 
@@ -611,10 +602,10 @@ end
 
 
 cyan.PlayerCounter={
---ÇÃ·¹ÀÌ¾î Ä«¿îÅÍ µî·Ï
---Ä«¿îÅÍ(Àç¾ÓÀÇ ÀüÀÌ)
+--í”Œë ˆì´ì–´ ì¹´ìš´í„° ë“±ë¡
+--ì¹´ìš´í„°(ì¬ì•™ì˜ ì „ì´)
 [0x1]={0,0},
---¾ŞÈ­³­¹« ½ºÅÃ
+--ì•µí™”ë‚œë¬´ ìŠ¤íƒ
 [0x2]={0,0},
 }
 
@@ -676,7 +667,7 @@ function Duel.RegisterEffect(e,p)
 		end		
 		local s=cyan.CheckTargetRange[1]
 		local o=cyan.CheckTargetRange[2]
-		--ÇÃ¶ó¿öÈú¿ë ÆĞ¿¡³ÖÀ»¼ö¾ø´Ù ºÎ¿© ¹«È¿È­(ÃßÈÄ ÇÃ¶ó¿öÈú À¯Æ¿ÀÌ ¸¸µé¾îÁö¸é ÀÌµ¿)	
+		--í”Œë¼ì›Œíìš© íŒ¨ì—ë„£ì„ìˆ˜ì—†ë‹¤ ë¶€ì—¬ ë¬´íš¨í™”(ì¶”í›„ í”Œë¼ì›Œí ìœ í‹¸ì´ ë§Œë“¤ì–´ì§€ë©´ ì´ë™)	
 		local ecode=e:GetCode()
 		if ecode==EFFECT_CANNOT_TO_HAND or ecode==EFFECT_CANNOT_DRAW then
 			if Duel.IsPlayerAffectedByEffect(p,FLOWERHILL_THIMMUNE) 
@@ -766,7 +757,7 @@ function Duel.ConfirmCards(p,g)
 	return dcc(p,g)
 end
 
---Á¡¼ú
+--ì ìˆ 
 function Duel.Scry(e,p,ct)
 	if Duel.GetFieldGroupCount(p,LOCATION_DECK,0)<ct then return false end
 	local g=Duel.GetDecktopGroup(p,ct)
