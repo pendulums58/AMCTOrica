@@ -77,7 +77,7 @@ function c101236017.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,1-tp,LOCATION_DECK)
 end
 function c101236017.thfilter(c,tc)
-	return c:IsAbleToHand() and not c:IsCode(tc:GetCode()) and c:IsSetCardList(Duel.ReadCard(tc,CARDDATA_SETCODE)) 
+	return c:IsAbleToHand() and not c:IsCode(tc:GetCode()) and c:IsSetCardList(tc) 
 end
 function c101236017.tgfilter(c,tp)
 	local g=Duel.GetMatchingGroup(c101236017.thfilter,tp,0,LOCATION_DECK,nil,c)

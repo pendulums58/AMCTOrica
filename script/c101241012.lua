@@ -11,12 +11,11 @@ function c101241012.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c101241012.filter1(c,e,tp)
-	local rc=Duel.ReadCard(c,CARDDATA_SETCODE)
-	return rc>0 and c:IsType(TYPE_MONSTER) and Duel.IsExistingMatchingCard(c101241012.filter2,tp,LOCATION_DECK,0,1,nil,e,tp,rc,c)
+	return rc>0 and c:IsType(TYPE_MONSTER) and Duel.IsExistingMatchingCard(c101241012.filter2,tp,LOCATION_DECK,0,1,nil,e,tp,c)
 end
-function c101241012.filter2(c,e,tp,rc,ckc)
+function c101241012.filter2(c,e,tp,ckc)
 	local fc=Duel.ReadCard(c,CARDDATA_SETCODE)
-	return c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsSetCardList(rc)
+	return c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsSetCardList(ckc)
 		and c:IsAttack(ckc:GetAttack()) and c:IsDefense(ckc:GetDefense()) and c:IsLevel(ckc:GetLevel()) and fc>0
 end
 function c101241012.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -29,9 +28,8 @@ function c101241012.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	local tc=Duel.GetFirstTarget()
 	if not tc:IsRelateToEffect(e) then return end
-	local rc=Duel.ReadCard(tc,CARDDATA_SETCODE)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectMatchingCard(tp,c101241012.filter2,tp,LOCATION_DECK,0,1,1,nil,e,tp,rc,tc)
+	local g=Duel.SelectMatchingCard(tp,c101241012.filter2,tp,LOCATION_DECK,0,1,1,nil,e,tp,tc)
 	if g:GetCount()>0 then
 		local gf=g:GetFirst()
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)

@@ -55,8 +55,12 @@ function cyan.lostcon2(con)
 		end
 end
 function Duel.AmassCheck(tp)
-	--나중에 필요하면 만들지 뭐
-	return true
+	if Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_MZONE,0,1,nil,101270000) then
+		return true
+	else
+		return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+			and Duel.IsPlayerCanSpecialSummonMonster(tp,101270000,0,0x4011,0,0,1,RACE_MACHINE,ATTRIBUTE_DARK)
+	end
 end
 function Card.AmassCard(c,chk)
 	return c.AmassEffect==1

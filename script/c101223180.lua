@@ -30,7 +30,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	if g:GetCount()>0 then
 		local tc=g:GetFirst()
 		if Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)~=0 then
-			local g1=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,1,nil,tc:GetSetCard())
+			local g1=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,1,nil,tc)
 			if g1:GetCount()>0 then
 				Duel.SendtoHand(g1,nil,REASON_EFFECT)
 				Duel.ConfirmCards(g1,1-tp)
@@ -41,7 +41,7 @@ end
 function s.rmfilter(c,tp)
 	return c:IsAbleToRemove() and (c:IsAttack(1400) or c:IsDefense(1400))
 		and Duel.IsExistingMatchingCard(s.chkfilter,tp,LOCATION_DECK+LOCATION_ONFIELD+LOCATION_HAND+LOCATION_GRAVE,0,1,c,c:GetSetCard())
-		and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,c,c:GetSetCard())
+		and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,c,c)
 end
 function s.chkfilter(c,sc)
 	return c:IsSetCardList(sc) and c:ListsCode(id)

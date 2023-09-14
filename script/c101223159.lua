@@ -101,8 +101,7 @@ function c101223159.thfilter(c,tp)
 		Duel.IsExistingMatchingCard(c101223159.thchk,tp,LOCATION_MZONE,0,1,nil,c)
 end
 function c101223159.thchk(c,tc)
-	local tcc=Duel.ReadCard(tc,CARDDATA_SETCODE)
-	return c:IsSetCardList(tcc) and c:IsType(TYPE_XYZ) and c:IsFaceup()	
+	return c:IsSetCardList(tc) and c:IsType(TYPE_XYZ) and c:IsFaceup()	
 end
 function c101223159.cfilter2(c,tp)
 	return c:IsType(TYPE_XYZ) and c:IsType(TYPE_MONSTER) and c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousPosition(POS_FACEUP)

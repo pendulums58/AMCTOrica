@@ -25,8 +25,7 @@ function c101223091.pfilter(c)
 	return c:IsRace(RACE_PSYCHO)
 end
 function c101223091.mfilter(c,pair)
-	local tcc=Duel.ReadCard(pair,CARDDATA_SETCODE)
-	return c:IsRace(RACE_SPELLCASTER) and c:IsSetCardList(tcc)
+	return c:IsRace(RACE_SPELLCASTER) and c:IsSetCardList(pair)
 end
 function c101223091.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_REMOVED) and chkc:IsControler(tp) and chkc:IsFacedown() end

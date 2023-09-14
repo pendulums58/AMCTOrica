@@ -138,7 +138,7 @@ end
 
 
 function Card.IsCanBePairingMaterial(c)
-	--임시
+	if c:IsHasEffect(EFFECT_CANNOT_BE_PAIRING_MATERIAL) then return false end
 	return true
 end
 function Card.GetPair(c)

@@ -56,8 +56,7 @@ function s.rvchk(c,tp)
 		and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,c)
 end
 function s.thfilter(c,tc)
-	local sc=tc:GetSetCard()
-	return c:IsType(TYPE_MONSTER) and c:IsAbleToHand() and c:IsSetCardList(sc)
+	return c:IsType(TYPE_MONSTER) and c:IsAbleToHand() and c:IsSetCardList(tc)
 end
 function s.ccon(e,tp,eg,ep,ev,re,r,rp)
 	return ep==tp and eg:IsExists(Card.IsType,1,nil,TYPE_RITUAL)

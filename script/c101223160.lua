@@ -69,8 +69,7 @@ function c101223160.spfilter(c,e,tp)
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c101223160.spchk(c,tc)
-	local tcc=Duel.ReadCard(tc,CARDDATA_SETCODE)
-	return c:IsSetCardList(tcc) and c:IsType(TYPE_ACCESS) and c:IsFaceup()	
+	return c:IsSetCardList(tc) and c:IsType(TYPE_ACCESS) and c:IsFaceup()	
 end
 function c101223160.cfilter2(c,tp)
 	return c:IsType(TYPE_ACCESS) and c:IsType(TYPE_MONSTER) and c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousPosition(POS_FACEUP)

@@ -65,8 +65,7 @@ function c101223157.tgfilter(c,tp)
 		and Duel.IsExistingMatchingCard(c101223157.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil,c)
 end
 function c101223157.thfilter(c,tc)
-	local tcc=Duel.ReadCard(tc,CARDDATA_SETCODE)
-	return c:IsAbleToHand() and c:IsSetCardList(tcc) and not c:IsCode(tc:GetCode()) and c:IsType(TYPE_MONSTER)
+	return c:IsAbleToHand() and c:IsSetCardList(tc) and not c:IsCode(tc:GetCode()) and c:IsType(TYPE_MONSTER)
 end
 function c101223157.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

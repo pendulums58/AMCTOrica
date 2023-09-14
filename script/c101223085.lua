@@ -23,8 +23,7 @@ function c101223085.dfilter(c,e,tp)
 		and Duel.GetMZoneCount(tp,c)>0
 end
 function c101223085.spfilter(c,e,tp,tc)
-	local tcc=Duel.ReadCard(tc,CARDDATA_SETCODE)
-	return c:IsSetCardList(tcc) and c:IsAttack(tc:GetAttack()) and c:IsDefense(tc:GetDefense())
+	return c:IsSetCardList(tc) and c:IsAttack(tc:GetAttack()) and c:IsDefense(tc:GetDefense())
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(tc:GetCode())
 end
 function c101223085.op(e,tp,eg,ep,ev,re,r,rp)

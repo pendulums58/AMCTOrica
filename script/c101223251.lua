@@ -42,18 +42,17 @@ function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SEARCH+CATEGORY_TOHAND,nil,2,tp,LOCATION_DECK+LOCATION_GRAVE)
 end
 function s.thfilter(c,tp)
-	return Duel.IsExistingMatchingCard(s.thfilter1,tp,LOCATION_GRAVE,0,1,nil,c:GetSetCode())
+	return Duel.IsExistingMatchingCard(s.thfilter1,tp,LOCATION_GRAVE,0,1,nil,c)
 		and c:IsAbleToHand() and c:GetSetCode()>0
 end
-function s.thfilter1(c,code)
-	return c:IsSetCardList(code) and c:IsAbleToHand() and c:GetSetCode()>0
+function s.thfilter1(c,tc)
+	return c:IsSetCardList(tc) and c:IsAbleToHand() and c:GetSetCode()>0
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil,tp)
 	if g:GetCount()>0 then
 		local tc=g:GetFirst()
-		local code=tc:GetSetCode()
-		local g1=Duel.SelectMatchingCard(tp,s.thfilter1,tp,LOCATION_GRAVE,0,1,1,nil,code)
+		local g1=Duel.SelectMatchingCard(tp,s.thfilter1,tp,LOCATION_GRAVE,0,1,1,nil,tc)
 		if g1:GetCount()>0 then g:Merge(g1) end
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		local e1=Effect.CreateEffect(e:GetHandler())

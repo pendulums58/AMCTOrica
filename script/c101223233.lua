@@ -24,8 +24,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.mfilter(c,pair)
-	local tcc=pair:GetSetCard()
-	return c:IsSetCardList(tcc)
+	return c:IsSetCardList(pair)
 end
 function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=c:GetMaterial()

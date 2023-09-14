@@ -70,7 +70,6 @@ function s.filter(c,tp)
 	return c:IsFaceup() and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,c)
 end
 function s.thfilter(c,tc)
-	local sc=c:GetSetCard()
-	return c:IsType(TYPE_KEY) and (c:IsRace(tc:GetRace()) or c:IsAttribute(tc:GetAttribute()) or tc:IsSetCardList(sc))
+	return c:IsType(TYPE_KEY) and (c:IsRace(tc:GetRace()) or c:IsAttribute(tc:GetAttribute()) or tc:IsSetCardList(c))
 		and c:IsAbleToHand()
 end

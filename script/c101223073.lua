@@ -23,8 +23,7 @@ function c101223073.initial_effect(c)
 	c:RegisterEffect(e2)	
 end
 function c101223073.mfilter(c,pair)
-	local psc=Duel.ReadCard(pair,CARDDATA_SETCODE)
-	return not c:IsSetCardList(psc)
+	return not c:IsSetCardList(pair)
 end
 function c101223073.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local mc=e:GetHandler():GetMaterialCount()

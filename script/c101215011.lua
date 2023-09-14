@@ -15,7 +15,7 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_SZONE,0,1,nil,tp) end
 	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_SZONE,0,1,1,nil,tp)
 	Duel.SendtoGrave(g,REASON_COST)
-	e:SetLabel(g:GetFirst():GetSetCard())
+	e:SetLabel(g:GetFirst())
 end
 function s.cfilter(c,tp)
 	return c:IsType(TYPE_SPELL) and c:IsType(TYPE_CONTINUOUS)

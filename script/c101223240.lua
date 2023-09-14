@@ -100,7 +100,6 @@ function s.effectfilter(e,ct)
 	return p==tp and te:IsActiveType(TYPE_MONSTER)
 end
 function s.spfilter(c,e,tp,g)
-	local sc=c:GetSetCard()
-	return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and g:IsExists(Card.IsSetCardList,1,nil,sc)
+	return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and g:IsExists(Card.IsSetCardList,1,nil,c)
 		and c:IsType(TYPE_TUNER)
 end
