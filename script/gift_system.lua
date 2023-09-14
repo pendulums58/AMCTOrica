@@ -1,4 +1,5 @@
 TYPE_GIFT=0x10000000
+EVENT_ENCHANTED=15881123
 
 --기프트 시스템
 function Duel.CheckGiftEffect(tp,tf)
@@ -31,6 +32,8 @@ function Duel.AddGiftEffect(e,tf,f,atk,def)
 			e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 			c:RegisterEffect(e1)			
 		end
+		Duel.RaiseSingleEvent(c,EVENT_ENCHANTED,e,0,tp,tp,0)
+		Duel.RaiseEvent(c,EVENT_ENCHANTED,e,0,tp,tp,0)
 	end
 end
 
