@@ -24,6 +24,7 @@ EFFECT_PREVENT_NEGATION=101223182
 EFFECT_ALL_SETCARD=101223229
 
 global_fusion_processing=false
+global_draw_count=false
 
 function Card.IsOwner(c,p)
 	return c:GetOwner()==p
@@ -535,11 +536,25 @@ function Duel.Draw(p,ct,r)
 	--alr은 해당 플레이어가 이 턴에 드로우한 매수. lim-alr이 실질 남은 가능 드로우 값.
 	local can=lim-alr
 	if ct>can then ct=can end
-	local cct=ddr(p,ct,r)
-	--cct는 실제 드로우된 매수. 이 숫자만큼 리미트값을 소모할 것임
-	Duel.RegisterFlagEffect(p,DRAW_COUNT,RESET_PHASE+PHASE_END,0,cct+alr)
-	return cct
+	return ddr(p,ct,r)
 end
+function Cyan.AddGlobalDrawCount(c)
+	if not global_draw_count then
+		global_draw_count=true
+	end
+	local e1=Effect.CreateEffect(c)
+	e1:SetCode(EVENT_DRAW)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetOperation(cyan.drctop)
+	Duel.RegisterEffect(e1,0)
+end
+
+function cyan.drctop(e,tp,eg,ep,ev,re,r,rp)
+	local ct=Duel.GetFlagEffect(ep,DRAW_COUNt)
+	Duel.RegisterFlagEffect(ep,DRAW_COUNT,RESET_PHASE+PHASE_END,0,ct+ev)
+end
+
+
 
 -- 효과 무효로부터 보호(몰?루 프레이어)
 -- 효과 무효 (NegateActivation / NegateEffect 계통)에 간섭하여 해당 효과 무효를 처리하지 않은 후 CountLimit 소모
