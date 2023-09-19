@@ -541,12 +541,12 @@ end
 function Cyan.AddGlobalDrawCount(c)
 	if not global_draw_count then
 		global_draw_count=true
+		local e1=Effect.CreateEffect(c)
+		e1:SetCode(EVENT_DRAW)
+		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e1:SetOperation(cyan.drctop)
+		Duel.RegisterEffect(e1,0)
 	end
-	local e1=Effect.CreateEffect(c)
-	e1:SetCode(EVENT_DRAW)
-	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e1:SetOperation(cyan.drctop)
-	Duel.RegisterEffect(e1,0)
 end
 
 function cyan.drctop(e,tp,eg,ep,ev,re,r,rp)
