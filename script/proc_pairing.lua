@@ -8,6 +8,7 @@ REASON_PAIR=0x80000000
 EFFECT_EXTRA_PAIR=509
 EFFECT_DOUBLE_PMAT=510
 EFFECT_PAIR_DISCOUNT=511
+EFFECT_CANNOT_BE_PAIRING_MATERIAL=512
 
 function cyan.AddPairingProcedure(c,pairf,matf,matcmin,matcmax)
 	if matcmax==nil then matcmax=99 end
