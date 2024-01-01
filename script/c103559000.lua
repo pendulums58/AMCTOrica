@@ -51,14 +51,14 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,LOCATION_HAND,tp)
 end
 function s.tgfilter(c,e,tp)
-	local seq=4-c:GetSequence()
+	local seq=5-c:GetSequence()
 	return e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP,tp,seq)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	local c=e:GetHandler()
 	if tc:IsRelateToEffect(e) then
-		local seq=4-tc:GetSequence()
+		local seq=5-tc:GetSequence()
 		if Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP,seq)~=0 then
 			Duel.Destroy(tc,REASON_EFFECT)
 		end
