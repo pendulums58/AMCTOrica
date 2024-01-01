@@ -37,6 +37,7 @@ function c111331002.target(e,tp,eg,ep,ev,re,r,rp,chk)
 		and Duel.IsExistingMatchingCard(c111331002.filter,tp,LOCATION_DECK,0,1,nil) end
 end
 function c111331002.operation(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=Duel.SelectMatchingCard(tp,c111331002.filter,tp,LOCATION_DECK,0,1,1,nil)
 	if g:GetCount()>0 then
