@@ -74,9 +74,9 @@ end
 function s.spfilter(c,e,tp)
 	return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:IsSetCard(SETCARD_MYSTERY)
 end
-function s.atkcon(e)
-	local c=e:GetHandler()
-	local g=Duel.GetMatchingGroup(s.atkchk1,c:GetControler(),LOCATION_ONFIELD+LOCATION_GRAVE,0,nil)
+function s.atkcon(e,c)
+	local tc=e:GetHandler()
+	local g=Duel.GetMatchingGroup(s.atkchk1,tc:GetControler(),LOCATION_ONFIELD+LOCATION_GRAVE,0,nil)
 	local ct=g:GetClassCount(Card.GetCode)
 	return ct>9
 end

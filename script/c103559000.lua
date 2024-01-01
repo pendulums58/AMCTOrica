@@ -52,7 +52,7 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function s.tgfilter(c,e,tp)
 	local seq=4-c:GetSequence()
-	return e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,tp,false,false,POS_FACEUP,tp,seq)
+	return e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP,tp,seq)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()

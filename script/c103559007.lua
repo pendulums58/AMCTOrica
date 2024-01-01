@@ -42,10 +42,9 @@ function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,tp,LOCATION_ONFIELD)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(s.desfilter,tp,0,LOCATION_ONFIELD,nil,c)
-	local g1=g:Select(tp,1,1,nil)
-	if g1:GetCount()>0 then
-		Duel.Destroy(g1,REASON_EFFECT)
+	local g=Duel.SelectMatchingCard(tp,s.desfilter,tp,0,LOCATION_ONFIELD,1,1,nil,c)
+	if g:GetCount()>0 then
+		Duel.Destroy(g,REASON_EFFECT)
 	end
 end
 function s.desfilter(c,tc)
