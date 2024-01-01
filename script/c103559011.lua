@@ -19,7 +19,7 @@ function s.initial_effect(c)
 	local e3=Effect.CreateEffect(c)
 	e3:SetRange(LOCATION_FZONE)
 	e3:SetType(EFFECT_TYPE_IGNITION)
-	e3:SetCountLimit(1)
+	-- e3:SetCountLimit(1)
 	e3:SetTarget(s.seqtg)
 	e3:SetOperation(s.seqop)
 	c:RegisterEffect(e3)
@@ -41,7 +41,7 @@ function s.atkval(e,c)
 	local atk=c:GetColumnGroup():Filter(s.atkchk,nil,c:GetControler()):GetSum(Card.GetAttack)
 	return atk
 end
-function s.atkchk(c)
+function s.atkchk(c,tp)
 	return c:IsControler(1-tp) and c:IsType(TYPE_MONSTER)
 end
 function s.seqtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
@@ -59,6 +59,7 @@ function s.seqop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOZONE)
 	Duel.MoveSequence(tc,math.log(Duel.SelectDisableField(tp,1,0,LOCATION_MZONE,0)>>16,2))
 	Duel.BreakEffect()
+	Debug.Message(tc:GetSequence())
 	local g=tc:GetColumnGroup()
 	if g:IsExists(s.chk,1,nil,tp) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
 		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,nil,e,tp) and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
