@@ -20,7 +20,7 @@ end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	local c=e:GetHandler()
-	if c:GetColumnGroup():FilterCount(Card.IsControler,1,nil,1-tp)>0 then
+	if c:GetColumnGroup():FilterCount(Card.IsControler,nil,1-tp)>0 then
 		e:SetLabel(1)
 	else
 		e:SetLabel(0)
