@@ -43,7 +43,7 @@ function c111331002.operation(e,tp,eg,ep,ev,re,r,rp)
 	if g:GetCount()>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
-		if c:IsRelateToEffect(e) then Duel.SpecialSummon(e:GetHandler(),0,tp,1-tp,false,false,POS_FACEUP) end
+		Duel.SpecialSummon(e:GetHandler(),0,tp,1-tp,false,false,POS_FACEUP)
 	end
 end
 --무덤 털기
