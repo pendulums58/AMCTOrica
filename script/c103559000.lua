@@ -47,7 +47,7 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and Duel.IsExistingTarget(s.tgfilter,tp,0,LOCATION_ONFIELD,1,nil,e,tp) end
 	local tc=Duel.SelectTarget(tp,s.tgfilter,tp,0,LOCATION_ONFIELD,1,1,nil,e,tp)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,tc,1,nil,tp)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,tc,1,tp,LOCATION_ONFIELD)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,LOCATION_HAND,tp)
 end
 function s.tgfilter(c,e,tp)
@@ -58,7 +58,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	local c=e:GetHandler()
 	if tc:IsRelateToEffect(e) then
-		local seq=5-tc:GetSequence()
+		local seq=tc:GetSequence()-5
 		if Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP,seq)~=0 then
 			Duel.Destroy(tc,REASON_EFFECT)
 		end

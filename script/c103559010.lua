@@ -48,5 +48,5 @@ function s.tgfilter(c)
 	return c:IsSetCard(SETCARD_MYSTERY) and c:IsAbleToGrave()
 end
 function s.spfilter(c,e,tp)
-	return c:IsSetCard(SETCARD_MYSTERY) and c:IsCanBeSpecialSummoned(e,0,tp,tp,false,false,POS_FACEUP)
+	return c:IsSetCard(SETCARD_MYSTERY) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
