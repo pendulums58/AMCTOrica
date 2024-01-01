@@ -11,7 +11,7 @@ function c111331003.initial_effect(c)
 	e1:SetTarget(c111331003.target)
 	e1:SetOperation(c111331003.operation)
 	c:RegisterEffect(e1)
---파괴
+	--파괴
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(111331003,1))
 	e2:SetCategory(CATEGORY_DESTROY)
@@ -41,7 +41,7 @@ function c111331003.operation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,c111331003.tgfilter,tp,LOCATION_DECK,0,1,1,nil)
 	if g:GetCount()>0 then
 		Duel.SendtoGrave(g,REASON_EFFECT)
-		if c:IsRelateToEffect(e) then Duel.SpecialSummon(e:GetHandler(),0,tp,1-tp,false,false,POS_FACEUP) end
+		Duel.SpecialSummon(e:GetHandler(),0,tp,1-tp,false,false,POS_FACEUP)
 	end
 end
 --파괴
