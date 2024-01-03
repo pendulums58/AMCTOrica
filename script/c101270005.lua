@@ -43,7 +43,7 @@ function c101270005.rmop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 		e1:SetCountLimit(1)
 		tc:RegisterEffect(e1,true)		
-		if tc.AmassEffect==1 then
+		if tc.AmassEffect==true then
 			Duel.Amass(e,800)
 		end
 	end

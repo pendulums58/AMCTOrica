@@ -1,5 +1,5 @@
 --묻힌 세계의 익스플로러
-c101270002.AmassEffect=1
+c101270002.AmassEffect=true
 function c101270002.initial_effect(c)
 	--축적
 	local e1=Effect.CreateEffect(c)

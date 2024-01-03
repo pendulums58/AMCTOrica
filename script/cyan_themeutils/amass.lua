@@ -70,5 +70,5 @@ function Duel.AmassCheck(tp)
 	end
 end
 function Card.AmassCard(c,chk)
-	return c.AmassEffect==1
+	return c.AmassEffect==true
 end

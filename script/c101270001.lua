@@ -79,12 +79,12 @@ function c101270001.regop(e,tp,eg,ep,ev,re,r,rp)
 	g=g:Filter(Card.IsRelateToEffect,nil,e)
 	if not g:GetCount()==2 then return end
 	if Duel.SendtoDeck(g,nil,2,REASON_EFFECT)~=0 then
-		local g=Duel.SelectMatchingCard(tp,c101270001.thfilter,tp,LOCATION_DECK,0,1,1,nil)
-		if g:GetCount()>0 then
-			Duel.SendtoHand(g,nil,REASON_EFFECT)
+		local g1=Duel.SelectMatchingCard(tp,c101270001.thfilter,tp,LOCATION_DECK,0,1,1,nil)
+		if g1:GetCount()>0 then
+			Duel.SendtoHand(g1,nil,REASON_EFFECT)
 		end
 	end
 end
 function c101270001.thfilter(c)
-	return c:IsAbleToHand() and c.AmassEffect
+	return c:IsAbleToHand() and c.AmassEffect==true
 end
