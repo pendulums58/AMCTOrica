@@ -1,5 +1,5 @@
 --환상을 보는 파이오니어
-c101270005.AmassEffect=1
+c101270005.AmassEffect=true
 function c101270005.initial_effect(c)
 	--제외
 	local e1=Effect.CreateEffect(c)

@@ -1,5 +1,5 @@
 --소망을 쫓는 어드바이저
-c101270006.AmassEffect=1
+c101270006.AmassEffect=true
 function c101270006.initial_effect(c)
 	--서치?
 	local e1=Effect.CreateEffect(c)

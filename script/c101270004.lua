@@ -1,5 +1,5 @@
 --짙은 미래의 크리에이터
-c101270004.AmassEffect=1
+c101270004.AmassEffect=true
 function c101270004.initial_effect(c)
 	--축적
 	local e1=Effect.CreateEffect(c)

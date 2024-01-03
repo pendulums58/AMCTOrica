@@ -1,5 +1,5 @@
 --최후의 음색
-c101270007.AmassEffect=1
+c101270007.AmassEffect=true
 function c101270007.initial_effect(c)
 	--슈퍼 축적
 	local e1=Effect.CreateEffect(c)
