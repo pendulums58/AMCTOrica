@@ -8,17 +8,24 @@ function Duel.Amass(e,val)
 		if Duel.IsPlayerCanSpecialSummonMonster(tp,101270000,0,0x4011,0,0,1,RACE_MACHINE,ATTRIBUTE_DARK) then
 			local token=Duel.CreateToken(tp,101270000)
 			Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP)
+			if Duel.GetFlagEffect(tp,101270011)>0 then
+				val=Duel.GetFlagEffect(tp,101270010)+val
+			end
 		else
 			return
 		end	
 	end
+
 	local tc=Duel.GetMatchingGroup(Card.IsCode,tp,LOCATION_MZONE,0,nil,101270000):GetFirst()
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 	e1:SetValue(val)
-	tc:RegisterEffect(e1)	
+	tc:RegisterEffect(e1)
+	if Duel.GetFlagEffect(tp,101270011)>0 then	
+		Duel.RegisterFlagEffect(tp,101270010,0,0,val)
+	end
 	Duel.RaiseEvent(e:GetHandler(),EVENT_AMASS,e,REASON_EFFECT,tp,tp,val)
 	Duel.RaiseSingleEvent(e:GetHandler(),EVENT_AMASS,e,REASON_EFFECT,tp,tp,val)	
 end
