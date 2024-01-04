@@ -3,13 +3,18 @@ EVENT_AMASS=101270000
 
 
 function Duel.Amass(e,val)
+	local val1=0
 	local tp=e:GetHandlerPlayer()
 	if not Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_MZONE,0,1,nil,101270000) then
 		if Duel.IsPlayerCanSpecialSummonMonster(tp,101270000,0,0x4011,0,0,1,RACE_MACHINE,ATTRIBUTE_DARK) then
 			local token=Duel.CreateToken(tp,101270000)
 			Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP)
 			if Duel.IsPlayerAffectedByEffect(tp,101270011) then
-				val=Duel.GetFlagEffect(tp,101270010)+val
+				local le={Duel.IsPlayerAffectedByEffect(tp,101270011)}
+				for _,te in pairs(le) do
+					if te then val1=te:GetValue() end
+				end
+				val=val1+val
 			end
 		else
 			return
@@ -23,8 +28,12 @@ function Duel.Amass(e,val)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 	e1:SetValue(val)
 	tc:RegisterEffect(e1)
-	if Duel.IsPlayerAffectedByEffect(tp,101270011) then	
-		Duel.RegisterFlagEffect(tp,101270010,0,0,val)
+	-- if Duel.IsPlayerAffectedByEffect(tp,101270011) then	
+		-- Duel.RegisterFlagEffect(tp,101270010,0,0,val)
+	-- end
+	local le={Duel.IsPlayerAffectedByEffect(tp,101270011)}
+	for _,te in pairs(le) do
+		if te then te:SetValue(te:GetValue()+val) end
 	end
 	Duel.RaiseEvent(e:GetHandler(),EVENT_AMASS,e,REASON_EFFECT,tp,tp,val)
 	Duel.RaiseSingleEvent(e:GetHandler(),EVENT_AMASS,e,REASON_EFFECT,tp,tp,val)	
