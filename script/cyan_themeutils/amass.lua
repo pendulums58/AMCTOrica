@@ -19,7 +19,7 @@ function Duel.Amass(e,val)
 				e1:SetCode(EFFECT_UPDATE_ATTACK)
 				e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 				e1:SetValue(val1)
-				tc:RegisterEffect(e1)
+				token:RegisterEffect(e1)
 			end
 		else
 			return
