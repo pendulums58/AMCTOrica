@@ -29,7 +29,7 @@ function s.rctg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		and Duel.IsExistingTarget(s.tgfilter,tp,LOCATION_MZONE,0,1,nil) end
 	local tc=Duel.SelectTarget(tp,s.tgfilter,tp,LOCATION_MZONE,0,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,tp,LOCATION_HAND)
-	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,tc:GetAttack(),tp,0)
+	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,tc:GetFirst():GetAttack(),tp,0)
 end
 function s.rcop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
