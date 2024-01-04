@@ -41,10 +41,10 @@ end
 function c111330006.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c111330006.deschk,1,nil,tp)
 end
-function c111330006.descchk(c,tp)
+function c111330006.deschk(c,tp)
 	return c:IsPreviousControler(tp) and c:GetPreviousLocation(LOCATION_MZONE)
 end
-function c111330006.descchk1(c,tp)
+function c111330006.deschk1(c,tp)
 	return c:IsPreviousControler(tp) and c:GetPreviousLocation(LOCATION_MZONE) and c:IsType(TYPE_TOKEN)
 end
 function c111330006.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
