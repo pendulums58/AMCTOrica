@@ -15,7 +15,7 @@ function c101223086.costfilter(c)
 end
 function c101223086.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g1=Group.CreateGroup()
-	if chk==0 then return Duel.IsExistingMatchingCard(c101223086.thfilter,tp,LOCATION_ONFIELD+LOCATION_GRAVE,0,1,g1)
+	if chk==0 then return Duel.IsExistingMatchingCard(c101223086.thfilter,tp,LOCATION_ONFIELD+LOCATION_GRAVE,0,1,nil,g1)
 		and Duel.IsExistingMatchingCard(c101223086.costfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil) end
 	local g=Duel.SelectMatchingCard(tp,c101223086.costfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,1,nil)
 	if g:GetCount()>0 then
