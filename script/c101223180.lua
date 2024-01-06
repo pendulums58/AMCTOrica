@@ -30,7 +30,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	if g:GetCount()>0 then
 		local tc=g:GetFirst()
 		if Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)~=0 then
-			local g1=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,1,nil,tc)
+			local g1=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,1,nil,tc:GetSetCard())
 			if g1:GetCount()>0 then
 				Duel.SendtoHand(g1,nil,REASON_EFFECT)
 				Duel.ConfirmCards(g1,1-tp)
@@ -40,7 +40,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.rmfilter(c,tp)
 	return c:IsAbleToRemove() and (c:IsAttack(1400) or c:IsDefense(1400))
-		and Duel.IsExistingMatchingCard(s.chkfilter,tp,LOCATION_DECK+LOCATION_ONFIELD+LOCATION_HAND+LOCATION_GRAVE,0,1,c,c:GetSetCard())
+		and Duel.IsExistingMatchingCard(s.chkfilter,tp,LOCATION_DECK+LOCATION_ONFIELD+LOCATION_HAND+LOCATION_GRAVE,0,1,c,c)
 		and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,c,c)
 end
 function s.chkfilter(c,sc)
@@ -53,7 +53,7 @@ function s.rvop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if eg:IsExists(s.chkfilter1,1,nil) then
 		c:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1)
-		if c:GetFlagEffect(id)==3 then
+		if c:GetFlagEffect(id)== 3 then
 			if Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 				c:ResetFlagEffect(id)
 				Duel.SendtoDeck(c,nil,0,REASON_EFFECT)
