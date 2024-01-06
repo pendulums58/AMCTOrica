@@ -1,4 +1,5 @@
 --개화하는 이상
+local s,id=GetID()
 function c101269003.initial_effect(c)
    --발동
    local e1=Effect.CreateEffect(c)
@@ -15,7 +16,7 @@ function c101269003.initial_effect(c)
    e2:SetCost(aux.bfgcost)
    e2:SetCondition(aux.exccon)
    e2:SetRange(LOCATION_GRAVE)
-   e1:SetCountLimit(1,101269003+100)
+   e2:SetCountLimit(1,{id,1})
    e2:SetType(EFFECT_TYPE_IGNITION)
    cyan.JustSearch(e2,LOCATION_REMOVED,Card.IsSetCard,0x641)
    c:RegisterEffect(e2)

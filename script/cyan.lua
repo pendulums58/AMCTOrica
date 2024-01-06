@@ -155,6 +155,7 @@ function Card.IsSetCardList(c,tc)
 		return false
 	end
 	local set=c:GetSetCard()
+	if not set then return false end
 	while set>0 do
 		code=math.floor(set%0x10000)
 		if tc:IsSetCard(code) then return true end
