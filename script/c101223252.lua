@@ -30,7 +30,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.ffilter(c,fc,sumtype,sp,sub,mg,sg)
-	return not sg or sg:FilterCount(aux.TRUE,c)==0 or (not sg:IsExists(Card.IsNotSetCardList,1,c,c:GetSetCard(),fc,sumtype,sp))
+	return not sg or sg:FilterCount(aux.TRUE,c)==0 or (not sg:IsExists(Card.IsNotSetCardList,1,c,c,fc,sumtype,sp))
 end
 function s.abcon(e,tp,ep,eg,ev,re,r,rp)
 	return Duel.GetTurnCount()==1
