@@ -30,7 +30,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	if g:GetCount()>0 then
 		local tc=g:GetFirst()
 		if Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)~=0 then
-			local g1=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,1,nil,tc:GetSetCard())
+			local g1=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,1,nil,tc)
 			if g1:GetCount()>0 then
 				Duel.SendtoHand(g1,nil,REASON_EFFECT)
 				Duel.ConfirmCards(g1,1-tp)
