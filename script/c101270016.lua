@@ -1,5 +1,5 @@
 --스타더스트 클레릭
-local s,id=GetId()
+local s,id=GetID()
 function s.initial_effect(c)
 	--패 발동
 	local e1=Effect.CreateEffect(c)
