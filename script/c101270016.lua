@@ -30,14 +30,14 @@ function s.drop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e1:SetCondition(s.drcon)
 	e1:SetReset(RESET_PHASE+PHASE_END)
-	e1:SetOperation(s.drop)
+	e1:SetOperation(s.drop1)
 	Duel.RegisterEffect(e1,tp)	
 end
 function s.drcon(e,tp,eg,ep,ev,re,r,rp)
-	local tg=eg:GetFirst()
+	local tg=eg:GetFirst()	
 	return #eg==1 and tg:GetSummonType()==SUMMON_TYPE_SYNCHRO and tg:IsSetCard(SET_STARDUST)
 end
-function s.drop(e,tp,eg,ep,ev,re,r,rp)
+function s.drop1(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Draw(tp,1,REASON_EFFECT)
 end
 function s.efcon(e,tp,eg,ep,ev,re,r,rp)
