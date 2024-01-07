@@ -520,25 +520,25 @@ end
 
 
 
-local ddr=Duel.Draw
-function Duel.Draw(p,ct,r)
-	--해당 플레이어가 드로우 제한 효과를 받고 있으면, 이 턴에 해당 플레이어가 드로우한 매수를 체크
-	--효과로 드로우하는 경우에는 Duel.Draw 자체에 드로우한 매수만큼의 RegisterFlagEffect를 붙이고, 일반 드로우의 경우는... 어쩌지
-	--EFFECT_DRAW_COUNT에 Clone으로 SetReset을 베낀 다음에 일반드로우에 트리거 튀게 할까? 이게 되나 -> 이걸로 해보자
-	--이거 맞는거같은데? DRAW_COUNT에 튀게해서 드로우했으면 DRAW_COUNT의 flag가 드로우 숫자로 튀게 하자.
-	--그러면 변경된 매수 드로우했으면 그 숫자만큼 lim에서 빼고, flag가 안튀어있으면 평범하게 드로우한거니까 1을 빼고
-	--드로우페이즈 스킵도 그거에 같은 reset으로 꼬라박아서 플래그 넣자. 혼자 플래그를 몇개먹는거야 이거
-	local lim=99
-	for i,pe in ipairs({Duel.IsPlayerAffectedByEffect(p,EFFECT_DRAW_LIMIT)}) do
-		if lim>pe:GetValue() then lim=pe:GetValue() end
-	end
-	--여기까지 해당 플레이어가 받고 있는 드로우 매수 제한 중 가장 작은 수치 참조(lim). 이 lim수치보다 많은 드로우는 그 턴에 할 수 없음.
-	local alr=Duel.GetFlagEffect(p,DRAW_COUNT)
-	--alr은 해당 플레이어가 이 턴에 드로우한 매수. lim-alr이 실질 남은 가능 드로우 값.
-	local can=lim-alr
-	if ct>can then ct=can end
-	return ddr(p,ct,r)
-end
+-- local ddr=Duel.Draw
+-- function Duel.Draw(p,ct,r)
+	-- --해당 플레이어가 드로우 제한 효과를 받고 있으면, 이 턴에 해당 플레이어가 드로우한 매수를 체크
+	-- --효과로 드로우하는 경우에는 Duel.Draw 자체에 드로우한 매수만큼의 RegisterFlagEffect를 붙이고, 일반 드로우의 경우는... 어쩌지
+	-- --EFFECT_DRAW_COUNT에 Clone으로 SetReset을 베낀 다음에 일반드로우에 트리거 튀게 할까? 이게 되나 -> 이걸로 해보자
+	-- --이거 맞는거같은데? DRAW_COUNT에 튀게해서 드로우했으면 DRAW_COUNT의 flag가 드로우 숫자로 튀게 하자.
+	-- --그러면 변경된 매수 드로우했으면 그 숫자만큼 lim에서 빼고, flag가 안튀어있으면 평범하게 드로우한거니까 1을 빼고
+	-- --드로우페이즈 스킵도 그거에 같은 reset으로 꼬라박아서 플래그 넣자. 혼자 플래그를 몇개먹는거야 이거
+	-- local lim=99
+	-- for i,pe in ipairs({Duel.IsPlayerAffectedByEffect(p,EFFECT_DRAW_LIMIT)}) do
+		-- if lim>pe:GetValue() then lim=pe:GetValue() end
+	-- end
+	-- --여기까지 해당 플레이어가 받고 있는 드로우 매수 제한 중 가장 작은 수치 참조(lim). 이 lim수치보다 많은 드로우는 그 턴에 할 수 없음.
+	-- local alr=Duel.GetFlagEffect(p,DRAW_COUNT)
+	-- --alr은 해당 플레이어가 이 턴에 드로우한 매수. lim-alr이 실질 남은 가능 드로우 값.
+	-- local can=lim-alr
+	-- if ct>can then ct=can end
+	-- return ddr(p,ct,r)
+-- end
 function Cyan.AddGlobalDrawCount(c)
 	if not global_draw_count then
 		global_draw_count=true
