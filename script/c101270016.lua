@@ -35,14 +35,14 @@ function s.drop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.drcon(e,tp,eg,ep,ev,re,r,rp)
 	local tg=eg:GetFirst()
-	return #eg==1 and tg:GetSummonType()==SUMMON_TYPE_SYNCHRO and tg:IsSetCard(SETCARD_STARDUST)
+	return #eg==1 and tg:GetSummonType()==SUMMON_TYPE_SYNCHRO and tg:IsSetCard(SET_STARDUST)
 end
 function s.drop(e,tp,eg,ep,ev,re,r,rp)
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
 	Duel.Draw(p,d,REASON_EFFECT)
 end
 function s.efcon(e,tp,eg,ep,ev,re,r,rp)
-	return r==REASON_SYNCHRO and e:GetHandler():GetReasonCard():IsSetCard(SETCARD_STARDUST)
+	return r==REASON_SYNCHRO and e:GetHandler():GetReasonCard():IsSetCard(SET_STARDUST)
 end
 function s.efop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

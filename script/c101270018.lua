@@ -17,6 +17,6 @@ function s.ulcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.chk,1,nil) and ep==tp
 end
 function s.chk(c)
-	return c:IsSetCard(SETCARD_STARDUST) and c:IsLevel(10) and c:IsSummonType(SUMMON_TYPE_SYNCHRO)
+	return c:IsSetCard(SET_STARDUST) and c:IsLevel(10) and c:IsSummonType(SUMMON_TYPE_SYNCHRO)
 
 end

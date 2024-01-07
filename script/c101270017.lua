@@ -69,5 +69,5 @@ function s.drcon(e,tp,eg,ep,ev,re,r,rp)
 	return ct>6
 end
 function s.drchk(c)
-	return c:IsType(TYPE_SYNCHRO) and c:IsSetCard(SETCARD_STARDUST)
+	return c:IsType(TYPE_SYNCHRO) and c:IsSetCard(SET_STARDUST)
 end
