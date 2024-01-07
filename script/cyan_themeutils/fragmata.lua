@@ -48,11 +48,11 @@ end
 function cyan.linkoperation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsControler(1-tp) or not c:IsRelateToEffect(e) then return end
-	local g=Duel.GetMatchingGroup(Card.IsLinkSummonable,tp,LOCATION_EXTRA,0,nil,nil,c)
+	local g=Duel.GetMatchingGroup(Card.IsLinkSummonable,tp,LOCATION_EXTRA,0,nil,c)
 	if g:GetCount()>0 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local sg=g:Select(tp,1,1,nil)
-		Duel.LinkSummon(tp,sg:GetFirst(),nil,c)
+		Duel.LinkSummon(tp,sg:GetFirst(),c)
 	end
 end
 function cyan.spcondition(e,tp,eg,ep,ev,re,r,rp)
