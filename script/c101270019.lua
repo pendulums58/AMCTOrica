@@ -34,10 +34,10 @@ end
 function s.lvop(e,tp,eg,ep,ev,re,r,rp)
 	local op=0
 	local c=e:GetHandler()
-	if c:IsLevel(7) and c:IsTuner() then
+	if c:IsLevel(7) and c:IsType(TYPE_TUNER) then
 		op=1
 	else
-		if c:IsLevel(1) and not c:IsTuner() then
+		if c:IsLevel(1) and not c:IsType(TYPE_TUNER) then
 			op=Duel.SelectOption(tp,aux.Stringid(id,0),aux.Stringid(id,1))
 		else
 			op=0

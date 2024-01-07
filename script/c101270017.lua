@@ -44,7 +44,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.thfilter(c,tp)
-	return c:IsAbleToHand() and s.thchk(c,tp) and c:IsSetCard(SET_STARDUST)
+	return c:IsAbleToHand() and s.thchk(c,tp) and c:IsSetCard(SET_STARDUST) and c:IsType(TYPE_MONSTER)
 end
 function s.thchk(c,tp)
 	for i,pe in ipairs({Duel.IsPlayerAffectedByEffect(tp,id)}) do
