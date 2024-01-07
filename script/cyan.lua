@@ -857,6 +857,60 @@ function Duel.CreateToken(p,code)
 end
 
 
+function Synchro.Operation(e,tp,eg,ep,ev,re,r,rp,c,smat,mg)
+	local g=e:GetLabelObject()
+	c:SetMaterial(g)
+	--Execute the operation function of the Synchro Monster's "EFFECT_MATERIAL_CHECK" effect, if it exists ("Cupid Pitch")
+	local mat_check_eff=c:IsHasEffect(EFFECT_MATERIAL_CHECK)
+	if mat_check_eff then
+		local mat_check_op=mat_check_eff:GetOperation()
+		if mat_check_op then mat_check_op(mat_check_eff,c) end
+	end
+	--Use up the count limit of any "EFFECT_SYNCHRO_MAT_FROM_HAND" effect in the material group ("Revolution Synchron")
+	for mc in g:Iter() do
+		local handmatfilter=mc:IsHasEffect(EFFECT_SYNCHRO_MAT_FROM_HAND)
+		if handmatfilter and handmatfilter:GetValue(handmatfilter,mc,c) then
+			handmatfilter:UseCountLimit(tp)
+		end
+	end
+	local tg=g:Filter(Auxiliary.TatsunecroFilter,nil)
+	if #tg>0 then
+		Synchro.Send=2
+		for tc in aux.Next(tg) do tc:ResetFlagEffect(3096468) end
+	end
+	g=g:Filter(cyan.NoGraveSynChk,nil)
+	if Synchro.Send==1 then
+		Duel.SendtoGrave(g,REASON_MATERIAL+REASON_SYNCHRO+REASON_RETURN)
+	elseif Synchro.Send==2 then
+		Duel.Remove(g,POS_FACEUP,REASON_MATERIAL+REASON_SYNCHRO)
+	elseif Synchro.Send==3 then
+		Duel.Remove(g,POS_FACEDOWN,REASON_MATERIAL+REASON_SYNCHRO)
+	elseif Synchro.Send==4 then
+		Duel.SendtoHand(g,nil,REASON_MATERIAL+REASON_SYNCHRO)
+	elseif Synchro.Send==5 then
+		Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_MATERIAL+REASON_SYNCHRO)
+	elseif Synchro.Send==6 then
+		Duel.Destroy(g,REASON_MATERIAL+REASON_SYNCHRO)
+	else
+		Duel.SendtoGrave(g,REASON_MATERIAL+REASON_SYNCHRO)
+	end
+	Synchro.Send=0
+	Synchro.CheckAdditional=nil
+	g:DeleteGroup()
+end
+function cyan.NoGraveSynChk(c)
+	return not c:IsHasEffect(101270019)
+end
+
+
+
+
+
+
+
+
+
+
 function Card.AddStoryTellerAttribute(c,tc)
 	local e1=Effect.CreateEffect(tc)
 	e1:SetType(EFFECT_TYPE_SINGLE)

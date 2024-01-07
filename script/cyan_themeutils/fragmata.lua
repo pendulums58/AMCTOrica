@@ -76,14 +76,7 @@ function Duel.DecreaseMaxHandSize(c,p,ct)
 	local val=6
 	for i,pe in ipairs({Duel.IsPlayerAffectedByEffect(p,EFFECT_HAND_LIMIT)}) do
 		if val>pe:GetValue() then
-			val=pe:GetValue()
+			pe:SetValue(pe:GetValue()-ct)
 		end
 	end
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetCode(EFFECT_HAND_LIMIT)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e1:SetTargetRange(1,0)
-	e1:SetValue(val-ct)
-	Duel.RegisterEffect(e1,p)
 end
