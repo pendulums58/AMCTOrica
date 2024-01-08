@@ -227,8 +227,10 @@ SETCARD_UNDERTHEMOON=0x642	-- 월하
 -- ■ 펜듈럼
 
 -- ■ 액세스
+SETCARD_CR=0x641	-- CR(크로니클 레플리카)
 
 -- ■ 링크
+SETCARD_FRAGMATA=0x633	-- 플래그마타
 
 -- ■ 페어링
 
