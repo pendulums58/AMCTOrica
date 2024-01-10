@@ -202,6 +202,7 @@ SETCARD_MEMORYCURE=0x623	-- 메모리큐어
 -- ■ 펜듈럼
 
 -- ■ 액세스
+SETCARD_PHANTOMTHIEF=0xefb	-- 괴도
 
 -- ■ 링크
 SETCARD_UNDERTHEMOON=0x642	-- 월하

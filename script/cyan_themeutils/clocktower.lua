@@ -113,6 +113,10 @@ function cyan.twssop1(e,tp,eg,ep,ev,re,r,rp)
 		local g2=Duel.GetMatchingGroup(cyan.clockssfilter1,tp,LOCATION_DECK+LOCATION_GRAVE,0,nil,e,tp,ct)
 		g:Merge(g2)
 	end
+	if Duel.IsPlayerAffectedByEffect(c:GetControler(),116000006) then		
+		local g2=Duel.GetMatchingGroup(cyan.clockssfilter2,tp,LOCATION_DECK+LOCATION_GRAVE,0,nil,e,tp,ct)
+		g:Merge(g2)
+	end
 	if not c:IsRelateToEffect(e) then return end
 	local ct=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	if ct>2 then ct=2 end
@@ -129,4 +133,7 @@ function cyan.clockssfilter1(c,e,tp,lv)
 	local sslv=c:GetLevel()
 	if c:IsType(TYPE_XYZ) then sslv=c:GetRank() end
 	return c:IsSetCard(0x60a) and sslv>0 and sslv<=lv and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+end
+function cyan.clockssfilter2(c,e,tp,lv)
+	return c:IsSetCard(SETCARD_PHANTOMTHIEF) c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
