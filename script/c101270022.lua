@@ -1,0 +1,55 @@
+--스펠인튜너즈 ♣(클로버)
+local s,id=GetID()
+function s.initial_effect(c)
+	--패 발동
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_QUICK_O)
+	e1:SetCode(EVENT_CHAINING)
+	e1:SetRange(LOCATION_HAND)
+	e1:SetCost(cyan.selftgcost)
+	e1:SetCountLimit(1,id)
+	e1:SetCondition(s.con)
+	e1:SetOperation(s.op)
+	c:RegisterEffect(e1)
+end
+function s.con(e,tp,eg,ep,ev,re,r,rp)
+	local tc=re:GetHandler()
+	return tc:GetSummonLocation()==LOCATION_EXTRA and tc:IsType(TYPE_MONSTER)
+		and tc:IsControler(1-tp)
+end
+function s.op(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCountLimit(1)
+	e1:SetCode(EVENT_PREDRAW)
+	e1:SetCondition(s.spcon)
+	e1:SetOperation(s.spop)
+	e1:SetReset(RESET_PHASE+PHASE_STANDBY+RESET_SELF_TURN)
+	Duel.RegisterEffect(e1,tp)
+	if Duel.GetTurnPlayer()==1-tp then
+		Duel.Scry(e,tp,2)
+	end
+end
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetTurnPlayer()==tp
+end
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_FIELD)
+	e4:SetCode(EFFECT_CANNOT_INACTIVATE)
+	e4:SetValue(s.effval)
+	e4:SetReset(RESET_PHASE+PHASE_END)
+	Duel.RegisterEffect(e4,tp)
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_FIELD)
+	e5:SetCode(EFFECT_CANNOT_DISEFFECT)
+	e5:SetValue(s.effval)
+	e5:SetReset(RESET_PHASE+PHASE_END)	
+	Duel.RegisterEffect(e5,tp)
+end
+function s.effval(e,ct)
+	local trig_p,trig_typ,setcodes=Duel.GetChainInfo(ct,CHAININFO_TRIGGERING_PLAYER,CHAININFO_TRIGGERING_TYPE,CHAININFO_TRIGGERING_SETCODES)
+	return trig_p==e:GetHandlerPlayer()
+end

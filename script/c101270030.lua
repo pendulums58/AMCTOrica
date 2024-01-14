@@ -1,0 +1,35 @@
+--천령지심 - 오버라이트
+local s,id=GetID()
+function s.initial_effect(c)
+	--공격력
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_EQUIP)
+	e1:SetCode(EFFECT_UPDATE_ATTACK)
+	e1:SetValue(1000)
+	c:RegisterEffect(e1)
+	--대상 내성
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_EQUIP)
+	e2:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
+	e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
+	e2:SetValue(aux.tgoval)
+	c:RegisterEffect(e2)
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_EQUIP)
+	e3:SetCode(EFFECT_CANNOT_BE_BATTLE_TARGET)
+	e3:SetValue(aux.imval1)
+	c:RegisterEffect(e3)
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_EQUIP)
+	e4:SetCode(EFFECT_DIRECT_ATTACK)
+	e4:SetCondition(s.dircon)
+	c:RegisterEffect(e4)
+end
+function s.dircon(e)
+	local ec=e:GetHandler():GetEquipTarget()
+	local tp=ec:GetHandlerPlayer()
+	return not Duel.IsExistingMatchingCard(s.dirfilter,e:GetHandlerPlayer(),0,LOCATION_MZONE,1,nil,ec)
+end
+function s.dirfilter(c,ec)
+	return c:IsFaceup() and c:GetAttack()>ec:GetAttack()
+end
