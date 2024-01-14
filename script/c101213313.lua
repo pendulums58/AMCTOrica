@@ -1,8 +1,8 @@
 --시계탑의 지배자
 function c101213313.initial_effect(c)
 	--싱크로 소환
-	aux.AddSynchroMixProcedure(c,aux.Tuner(nil),aux.Tuner(nil),nil,c101213313.sfilter,1,1)
 	c:EnableReviveLimit()
+	Synchro.AddProcedure(c,nil,2,2,c101213313.sfilter,1,1)
 	--드로우
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_DRAW)

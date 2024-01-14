@@ -55,7 +55,7 @@ function c101213320.indtg(e,c)
 	return c:IsSetCard(0x60a)
 end
 function c101213320.indval(e,c)
-	local dam=Duel.GetBattleDamage(tp)
+	local dam=Duel.GetBattleDamage(c:GetControler())
 	if dam<e:GetLabel() then return true end
 	return false
 end
