@@ -28,13 +28,13 @@ function s.abcon(e,tp,ep,eg,ev,re,r,rp)
 	return Duel.GetTurnCount()==1
 end
 function s.abtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_HAND+LOCATION_DECK,0,1,aux.TRUE,tp) end
+	if chk==0 then return Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_EXTRA,0,1,aux.TRUE,tp) end
 end
 	
 function s.abop(e,tp,ep,eg,ev,re,r,rp)
 	local c=e:GetHandler()
-	local DeckCount = Duel.GetFieldGroupCount(tp,LOCATION_DECK+LOCATION_HAND,0)
-	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_DECK+LOCATION_HAND,0,nil)	
+	local DeckCount = Duel.GetFieldGroupCount(tp,LOCATION_DECK+LOCATION_HAND+LOCATION_EXTRA,0)
+	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_EXTRA,0,nil)	
 	if g:GetCount()>0 then
 		local tc=g:GetFirst()
 		while tc do
