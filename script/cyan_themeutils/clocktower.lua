@@ -3,6 +3,7 @@
 
 local cregeff=Card.RegisterEffect
 function Card.RegisterEffect(c,e,forced,...)
+	Debug.Message("Clocktower script loaded")
 	local code=c:GetOriginalCode()
 	local mt=_G["c"..code]
 	cregeff(c,e,forced,...)	
