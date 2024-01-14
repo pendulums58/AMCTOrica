@@ -31,7 +31,7 @@ function s.unlockeff(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e1:SetCode(116000006)
 	e1:SetTargetRange(1,0)
-	Duel:RegisterEffect(e1,tp)
+	Duel.RegisterEffect(e1,tp)
 end
 s.listed_series={0xefb}
 s.listed_names={id}
