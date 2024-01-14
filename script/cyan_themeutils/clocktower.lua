@@ -42,6 +42,7 @@ function cyan.addctop(e,tp,eg,ep,ev,re,r,rp)
 	e:GetHandler():AddCounter(0x1b,ct+1)
 end
 function cyan.twsscon(e,tp,eg,ep,ev,re,r,rp)
+	Debug.Message("Clocktower con check")
 	local c=e:GetHandler()
 	if not c:IsReason(REASON_DESTROY) then return false end
 	if e:GetLabelObject():GetLabel()>=4 then return true end
