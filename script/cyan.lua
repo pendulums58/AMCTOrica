@@ -163,6 +163,7 @@ function Card.IsSetCardList(c,tc)
 		set=math.floor(set/0x10000)
 	end	
 	set=tc:GetSetCard()
+	if set==nil then return false end
 	while set>0 do
 		code=math.floor(set%0x10000)
 		if c:IsSetCard(code) then return true end
@@ -185,6 +186,7 @@ function Card.IsNotSetCardList(c,tc)
 		set=math.floor(set/0x10000)
 	end	
 	set=tc:GetSetCard()
+	if set==nil then return true end
 	while set>0 do
 		code=math.floor(set%0x10000)
 		if c:IsSetCard(code) then return false end
