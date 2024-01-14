@@ -12,10 +12,11 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,1,nil,Duel.GetTurnCount()) end
+	local ct=Duel.GetTurnCount()
+	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,1,nil,ct) end
 	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_GRAVE,0,1,1,nil,Duel.GetTurnCount())
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
-function s.cfilter(c)
+function s.cfilter(c,id)
 	return c:GetTurnID()==id and c:IsAbleToRemoveAsCost()
 end
