@@ -19,7 +19,6 @@ function Card.RegisterEffect(c,e,forced,...)
 	end
 	--특수 소환 변경
 	if code==75041269 and mt.eff_ct[c][4]==e then
-		Debug.Message("Clocktower patch check")
 		e:SetCondition(cyan.twsscon)
 		e:SetTarget(cyan.twsstg)
 		e:SetOperation(cyan.twssop)
@@ -44,14 +43,8 @@ function cyan.addctop(e,tp,eg,ep,ev,re,r,rp)
 	e:GetHandler():AddCounter(0x1b,ct+1)
 end
 function cyan.twsscon(e,tp,eg,ep,ev,re,r,rp)
-	Debug.Message("Clocktower con check")
 	local c=e:GetHandler()
-	if not c:IsReason(REASON_DESTROY) then return false end
-	if e:GetLabelObject():GetLabel()>=4 then return true end
-	if Duel.IsPlayerAffectedByEffect(c:GetControler(),101213304) then return true end
-	if Duel.IsPlayerAffectedByEffect(c:GetControler(),101213309) then return true end
-	if Duel.IsPlayerAffectedByEffect(c:GetControler(),116000006) then return true end
-	return false
+	return c:IsReason(REASON_DESTROY) and (e:GetLabelObject():GetLabel()>=4 or Duel.IsPlayerAffectedByEffect(c:GetControler(),101213304) or Duel.IsPlayerAffectedByEffect(c:GetControler(),101213309))
 end
 function cyan.twigcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsPlayerAffectedByEffect(tp,101213319)
@@ -67,10 +60,6 @@ function cyan.twigcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if Duel.IsPlayerAffectedByEffect(c:GetControler(),101213309) then		
 		local g2=Duel.GetMatchingGroup(cyan.clockssfilter1,tp,LOCATION_DECK+LOCATION_GRAVE,0,nil,e,tp,ct)
 		g:Merge(g2)
-	end
-	if Duel.IsPlayerAffectedByEffect(c:GetControler(),116000006) then		
-		local g3=Duel.GetMatchingGroup(cyan.clockssfilter2,tp,LOCATION_DECK+LOCATION_GRAVE,0,nil,e,tp,ct)
-		g:Merge(g3)
 	end
 	if chk==0 then return g:GetCount()>0 end
 end
@@ -103,10 +92,6 @@ function cyan.twssop(e,tp,eg,ep,ev,re,r,rp)
 		local g2=Duel.GetMatchingGroup(cyan.clockssfilter1,tp,LOCATION_DECK+LOCATION_GRAVE,0,nil,e,tp,e:GetLabelObject():GetLabel())
 		g:Merge(g2)
 	end
-	if Duel.IsPlayerAffectedByEffect(c:GetControler(),116000006) then		
-		local g3=Duel.GetMatchingGroup(cyan.clockssfilter2,tp,LOCATION_DECK+LOCATION_GRAVE,0,nil,e,tp,e:GetLabelObject():GetLabel())
-		g:Merge(g3)
-	end
 	local ct=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	if ct>2 then ct=2 end
 	if not Duel.IsPlayerAffectedByEffect(c:GetControler(),101213328) then ct=1 end
@@ -129,10 +114,10 @@ function cyan.twssop1(e,tp,eg,ep,ev,re,r,rp)
 		local g2=Duel.GetMatchingGroup(cyan.clockssfilter1,tp,LOCATION_DECK+LOCATION_GRAVE,0,nil,e,tp,ct)
 		g:Merge(g2)
 	end
-	if Duel.IsPlayerAffectedByEffect(c:GetControler(),116000006) then		
-		local g3=Duel.GetMatchingGroup(cyan.clockssfilter2,tp,LOCATION_DECK+LOCATION_GRAVE,0,nil,e,tp,ct)
-		g:Merge(g3)
-	end
+
+
+
+
 	if not c:IsRelateToEffect(e) then return end
 	local ct=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	if ct>2 then ct=2 end
@@ -149,7 +134,7 @@ function cyan.clockssfilter1(c,e,tp,lv)
 	local sslv=c:GetLevel()
 	if c:IsType(TYPE_XYZ) then sslv=c:GetRank() end
 	return c:IsSetCard(0x60a) and sslv>0 and sslv<=lv and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
-end
-function cyan.clockssfilter2(c,e,tp,lv)
-	return c:IsSetCard(SETCARD_PHANTOMTHIEF) c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+
+
+
 end
