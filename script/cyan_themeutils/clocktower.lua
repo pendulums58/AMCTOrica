@@ -43,7 +43,12 @@ function cyan.addctop(e,tp,eg,ep,ev,re,r,rp)
 end
 function cyan.twsscon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return c:IsReason(REASON_DESTROY) and (e:GetLabelObject():GetLabel()>=4 or Duel.IsPlayerAffectedByEffect(c:GetControler(),101213304) or Duel.IsPlayerAffectedByEffect(c:GetControler(),101213309) or Duel.IsPlayerAffectedByEffect(c:GetControler(),116000006))
+	if not c:IsReason(REASON_DESTROY) then return false end
+	if e:GetLabelObject():GetLabel()>=4 then return true end
+	if Duel.IsPlayerAffectedByEffect(c:GetControler(),101213304) then return true end
+	if Duel.IsPlayerAffectedByEffect(c:GetControler(),101213309) then return true end
+	if Duel.IsPlayerAffectedByEffect(c:GetControler(),116000006) then return true end
+	return false
 end
 function cyan.twigcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsPlayerAffectedByEffect(tp,101213319)
