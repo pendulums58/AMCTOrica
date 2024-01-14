@@ -18,6 +18,7 @@ function Card.RegisterEffect(c,e,forced,...)
 	end
 	--특수 소환 변경
 	if code==75041269 and mt.eff_ct[c][4]==e then
+		Debug.Message("Clocktower patch check")
 		e:SetCondition(cyan.twsscon)
 		e:SetTarget(cyan.twsstg)
 		e:SetOperation(cyan.twssop)
