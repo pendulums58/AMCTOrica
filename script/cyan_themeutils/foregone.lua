@@ -38,7 +38,7 @@ function cyan.fgop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetCode(EFFECT_CANNOT_ATTACK)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 		tc:RegisterEffect(e1,true)
-		tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1)
+		tc:RegisterFlagEffect(65450690,RESET_EVENT+RESETS_STANDARD,0,1)
 		--Destroy it during end phase
 		local e2=Effect.CreateEffect(e:GetHandler())
 		e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
