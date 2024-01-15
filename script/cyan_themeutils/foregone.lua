@@ -14,6 +14,9 @@ function Card.RegisterEffect(c,e,forced,...)
 	end
 
 end
+function Card.IsRitualMonster(c)
+	return c:IsType(TYPE_MONSTER) and c:IsType(TYPE_RITUAL)
+end
 function cyan.fgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local loc=LOCATION_HAND
 	if Duel.IsPlayerAffectedByEffect(tp,101252000) then loc=loc+LOCATION_DECK end
