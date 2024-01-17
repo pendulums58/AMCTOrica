@@ -9,6 +9,8 @@ function Card.RegisterEffect(c,e,forced,...)
 	local mt=_G["c"..code]
 	cregeff(c,e,forced,...)	
 	if code==65450690 then
+		e:SetCountLimit(999)
+		e:SetCost(cyan.fgcost)
 		e:SetTarget(cyan.fgtg)
 		e:SetOperation(cyan.fgop)
 	end
@@ -16,6 +18,11 @@ function Card.RegisterEffect(c,e,forced,...)
 end
 function Card.IsRitualMonster(c)
 	return c:IsType(TYPE_MONSTER) and c:IsType(TYPE_RITUAL)
+end
+function cyan.fgcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsPlayerAffectedByEffect(tp,101252003)
+		or Duel.GetFlagEffect(tp,65450690)==0 end
+	Duel.RegisterFlagEffect(tp,65450690,RESET_PHASE+PHASE_END,0,1)
 end
 function cyan.fgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local loc=LOCATION_HAND
