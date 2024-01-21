@@ -483,6 +483,20 @@ end
 function Card.IsNormalTrap(c)
 	return c:GetType()==TYPE_TRAP
 end
+
+function Card.GetStar(c)
+	local lv=c:GetLevel()
+	if c:IsType(TYPE_XYZ) then lv=c:GetRank() end
+	return lv
+end
+function Card.IsStarAbove(c,lv)
+	if c:IsLevelAbove(lv) or c:IsRankAbove(lv) then return true end
+	return false
+end
+function Card.IsStarBelow(c,lv)
+	if c:IsLevelBelow(lv) or c:IsRankBelow(lv) then return true end
+	return false
+end
 -- 축약자(constant 계통 코드의 축약. 편의성용)
 -------------예시 스크립트------------- ☆Ctrl + Q로 주석 추가 / 해제하여 확인 가능.
 -- e1:SetCode(EV_SPSC)	◁ 특수 소환 성공시(EVENT_SPSUMMON_SUCCESS)의 축약
