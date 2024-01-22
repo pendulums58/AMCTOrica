@@ -23,7 +23,6 @@ function s.matfilter1(c)
 end
 function s.extraop(mat,e,tp,eg,ep,ev,re,r,rp,tc)
 	local mat2=mat
-	mat:Sub(mat2)
 	Duel.Destroy(mat2,REASON_EFFECT+REASON_MATERIAL+REASON_RITUAL)
 end
 function s.stage2(mat,e,tp,eg,ep,ev,re,r,rp,tc)
