@@ -70,7 +70,7 @@ function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		and s.thfilter(chkc) end
 	local c=e:GetHandler()
 	if chk==0 then return c:IsDestructable() and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_GRAVE,0,1,nil) end
-	local tc=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_GRAVE,0,1,1,nil)
+	local tc=Duel.SelectTarget(tp,s.thfilter,tp,LOCATION_GRAVE,0,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,c,1,tp,LOCATION_MZONE)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,tc,1,tp,LOCATION_GRAVE)
 end
