@@ -62,3 +62,5 @@ function cyan.fgop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.RegisterEffect(e2,tp)
 	end
 end
+
+pcall(dofile,"repositories/delta-puppet/script/proc_ritual.lua")
