@@ -94,7 +94,6 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.spfilter(c,e,tp)
 	return c:IsSetCard(SETCARD_FOREGONE) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
-		and not c:IsType(TYPE_RITUAL)
 end
 function s.thfilter(c)
 	return c:IsSetCard(SETCARD_FOREGONE) and c:IsAbleToHand()
