@@ -43,6 +43,10 @@ function c101223033.compop(e,tp,ep,eg,ev,re,r,rp)
 		e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 		e2:SetTargetRange(1,0)
 		Duel.RegisterEffect(e2,tp)
+		if not c:IsLocation(LOCATION_HAND) then 
+			Duel.SendtoHand(c,nil,REASON_EFFECT)
+			Duel.ConfirmCards(1-tp,c)
+		end		
 	end
 end
 function c101223033.condition(e,tp,eg,ep,ev,re,r,rp)
