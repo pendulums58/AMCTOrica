@@ -20,8 +20,9 @@ function Card.IsRitualMonster(c)
 	return c:IsType(TYPE_MONSTER) and c:IsType(TYPE_RITUAL)
 end
 function cyan.fgcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsPlayerAffectedByEffect(tp,101252003)
-		or Duel.GetFlagEffect(tp,65450690)==0 end
+	if chk==0 then return (Duel.IsPlayerAffectedByEffect(tp,101252003)
+		or Duel.GetFlagEffect(tp,65450690)==0) and Duel.CheckLPCost(tp,1000) end
+	Duel.PayLPCost(tp,1000)
 	Duel.RegisterFlagEffect(tp,65450690,RESET_PHASE+PHASE_END,0,1)
 end
 function cyan.fgtg(e,tp,eg,ep,ev,re,r,rp,chk)

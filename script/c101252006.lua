@@ -1,88 +1,80 @@
 --한정해제식『몽상가』
-function c101252006.initial_effect(c)
-	--의식 소환
-	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetTarget(c101252006.target)
-	e1:SetOperation(c101252006.activate)
+local s,id=GetID()
+function s.initial_effect(c)
+	--의식
+	local e1=Ritual.CreateProc({handler=c,lvtype=RITPROC_EQUAL,location=LOCATION_DECK|LOCATION_GRAVE,filter=aux.FilterBoolFunction(Card.IsSetCard,SETCARD_FOREGONE),matfilter=s.matfilter1,
+								extraop=s.extraop,stage2=s.stage2})
+	e1:SetCountLimit(1,id)
 	c:RegisterEffect(e1)
-	--서치
+	--덱특소
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(101252006,0))
-	e2:SetType(EFFECT_TYPE_TRIGGER_O+EFFECT_TYPE_FIELD)
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e2:SetCode(EVENT_PHASE+PHASE_STANDBY)
+	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_GRAVE)
-	e2:SetCost(c101252006.thcost)
-	e2:SetCondition(c101252006.condition)
-	e2:SetTarget(c101252006.target1)
-	e2:SetOperation(c101252006.operation1)
+	e2:SetCountLimit(1,id)
+	e2:SetCondition(s.con)
+	e2:SetCost(s.cost)
+	e2:SetTarget(s.tg)
+	e2:SetOperation(s.op)
 	c:RegisterEffect(e2)
 end
-function c101252006.filter(c,e,tp)
-	return c:IsSetCard(0x625)
+function s.matfilter1(c)
+	return c:IsDestructable() and c:IsLevelAbove(1)
 end
-function c101252006.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then
-		local mg=Duel.GetRitualMaterial(tp)
-		return Duel.IsExistingMatchingCard(aux.RitualUltimateFilter,tp,LOCATION_GRAVE,0,1,nil,c101252006.filter,e,tp,mg,nil,Card.GetLevel,"Equal")
-	end
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE)
+function s.extraop(mat,e,tp,eg,ep,ev,re,r,rp,tc)
+	local mat2=mat
+	mat:Sub(mat2)
+	Duel.Destroy(mat2,REASON_EFFECT+REASON_MATERIAL+REASON_RITUAL)
 end
-function c101252006.activate(e,tp,eg,ep,ev,re,r,rp)
-	local mg=Duel.GetRitualMaterial(tp)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local tg=Duel.SelectMatchingCard(tp,aux.RitualUltimateFilter,tp,LOCATION_GRAVE,0,1,1,nil,c101252006.filter,e,tp,mg,nil,Card.GetLevel,"Equal")
-	local tc=tg:GetFirst()
-	if tc then
-		mg=mg:Filter(Card.IsCanBeRitualMaterial,tc,tc)
-		if tc.mat_filter then
-			mg=mg:Filter(tc.mat_filter,tc,tp)
-		else
-			mg:RemoveCard(tc)
-		end
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
-		aux.GCheckAdditional=aux.RitualCheckAdditional(tc,tc:GetLevel(),"Equal")
-		local mat=mg:SelectSubGroup(tp,aux.RitualCheck,false,1,tc:GetLevel(),tp,tc,tc:GetLevel(),"Equal")
-		aux.GCheckAdditional=nil
-		if not mat or mat:GetCount()==0 then return end
-		tc:SetMaterial(mat)
-		Duel.Destroy(mat,REASON_EFFECT)
-		Duel.BreakEffect()
-		Duel.SpecialSummon(tc,SUMMON_TYPE_RITUAL,tp,tp,false,true,POS_FACEUP)
-		tc:CompleteProcedure()
+function s.stage2(mat,e,tp,eg,ep,ev,re,r,rp,tc)
+	if tc:GetPreviousLocation()==LOCATION_DECK then
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_SET_ATTACK_FINAL)
+		e1:SetValue(0)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+		tc:RegisterEffect(e1)	
+		local e2=Effect.CreateEffect(e:GetHandler())
+		e2:SetDescription(3302)
+		e2:SetType(EFFECT_TYPE_SINGLE)
+		e2:SetCode(EFFECT_CANNOT_TRIGGER)
+		e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_CLIENT_HINT)
+		e2:SetReset(RESET_EVENT+RESETS_STANDARD)
+		tc:RegisterEffect(e2)			
 	end
 end
-function c101252006.condition(e,tp,eg,ep,ev,re,r,rp)
+function s.splimit(e,c,sump,sumtype,sumpos,targetp)
+	return c:IsLocation(LOCATION_EXTRA)
+end
+function s.con(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return tp==Duel.GetTurnPlayer() and Duel.GetFieldGroupCount(c:GetControler(),LOCATION_MZONE,0)==0
+	return Duel.GetFieldGroupCount(c:GetControler(),LOCATION_MZONE,0)==0
 end
-function c101252006.cfilter(c)
-	return c:IsSetCard(0x625) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemoveAsCost()
-end
-function c101252006.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return e:GetHandler():IsAbleToRemoveAsCost()
-		and Duel.IsExistingMatchingCard(c101252006.cfilter,tp,LOCATION_GRAVE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectMatchingCard(tp,c101252006.cfilter,tp,LOCATION_GRAVE,0,1,1,nil)
-	g:AddCard(e:GetHandler())
-	Duel.Remove(g,POS_FACEUP,REASON_COST)
-end
-function c101252006.spfilter(c,e,tp)
-	return c:IsSetCard(0x1625) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
-end
-function c101252006.target1(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(c101252006.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) end
+		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
-function c101252006.operation1(e,tp,eg,ep,ev,re,r,rp,chk)
-	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
-	local g=Duel.SelectMatchingCard(tp,c101252006.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
-	local tc=g:GetFirst()
-	if tc then
-		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
+function s.spfilter(c,e,tp)
+	return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:IsSetCard(SETCARD_FOREGONER)
+end
+function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
+	if chk==0 then return c:IsAbleToRemoveAsCost() and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,1,nil) end
+	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_GRAVE,0,1,1,nil)
+	if g:GetCount()>0 then
+		g:AddCard(c)
+		Duel.Remove(g,POS_FACEUP,REASON_COST)
+	end
+end
+function s.cfilter(c)
+	return c:IsRitualMonster() and c:IsAbleToRemoveAsCost()
+end
+function s.op(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then
+		local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
+		if g:GetCount()>0 then
+			Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
+		end
 	end
 end

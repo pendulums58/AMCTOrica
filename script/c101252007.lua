@@ -1,81 +1,64 @@
 --한정해제-통찰
-function c101252007.initial_effect(c)
+local s,id=GetID()
+function s.initial_effect(c)
 	c:EnableReviveLimit()
-	--파괴 내성
+	--패 발동
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_DESTROY_REPLACE)
-	e1:SetCondition(c101252007.condition)
-	e1:SetCountLimit(1,101252007)
-	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetTarget(c101252007.desreptg)
-	c:RegisterEffect(e1)	
-	--세트할 수 없다
+	e1:SetCategory(CATEGORY_DESTROY)
+	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetRange(LOCATION_HAND)
+	e1:SetCountLimit(1,id)
+	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e1:SetTarget(s.destg)
+	e1:SetOperation(s.desop)
+	c:RegisterEffect(e1)
+	--특소 성공시
 	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_FIELD)
-	e2:SetCode(EFFECT_CANNOT_MSET)
-	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e2:SetRange(LOCATION_MZONE)
-	e2:SetTargetRange(0,1)
-	e2:SetTarget(aux.TRUE)
+	e2:SetCategory(CATEGORY_TODECK)
+	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e2:SetProperty(EFFECT_FLAG_DELAY)
+	e2:SetCountLimit(1,{id,1})
+	e2:SetTarget(s.tg)
+	e2:SetOperation(s.op)
 	c:RegisterEffect(e2)
-	local e3=e2:Clone()
-	e3:SetCode(EFFECT_CANNOT_SSET)
-	c:RegisterEffect(e3)
-	local e4=e2:Clone()
-	e4:SetCode(EFFECT_CANNOT_TURN_SET)
-	c:RegisterEffect(e4)
-	local e5=e2:Clone()
-	e5:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
-	e5:SetTarget(c101252007.sumlimit)
-	c:RegisterEffect(e5)
-	--묘지 회수
-	local e6=Effect.CreateEffect(c)
-	e6:SetDescription(aux.Stringid(101252007,0))
-	e6:SetCategory(CATEGORY_TOHAND)
-	e6:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e6:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
-	e6:SetCode(EVENT_TO_GRAVE)
-	e6:SetCondition(c101252007.thcon)
-	e6:SetTarget(c101252007.thtg)
-	e6:SetOperation(c101252007.thop)
-	c:RegisterEffect(e6)
 end
-function c101252007.condition(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	return c:IsStatus(STATUS_SPSUMMON_TURN)
+function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return false end
+	if chk==0 then Duel.IsExistingTarget(s.desfilter1,tp,LOCATION_MZONE,0,1,nil)
+		and Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil) end
+	local g1=Duel.SelectTarget(tp,s.desfilter1,tp,LOCATION_MZONE,0,1,1,nil)
+	local g2=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,1,nil)
+	g1:Merge(g2)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g1,2,0,0)	
 end
-function c101252007.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return not e:GetHandler():IsReason(REASON_REPLACE)
-		and Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil) end
-	if Duel.SelectEffectYesNo(tp,e:GetHandler(),96) then
-		local tc=Duel.SelectMatchingCard(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,1,nil)
-		if Duel.SendtoGrave(tc,REASON_EFFECT)~=0 then
-			return true
-		end
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
+	local tg=g:Filter(Card.IsRelateToEffect,nil,e)
+	if #tg>0 then
+		Duel.Destroy(tg,REASON_EFFECT)
 	end
-	return false
 end
-function c101252007.sumlimit(e,c,sump,sumtype,sumpos,targetp)
-	return bit.band(sumpos,POS_FACEDOWN)>0
+function s.desfilter1(c)
+	return c:IsFaceup() and c:IsSetCard(SETCARD_FOREGONE)
 end
-function c101252007.thcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsPreviousLocation(LOCATION_ONFIELD)
+function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local g=Duel.GetMatchingGroup(aux.TRUE,tp,0,LOCATION_HAND,nil)
+	if chk==0 then return #g>0 end
+	s.announce_filter={TYPE_EXTRA,OPCODE_ISTYPE,TYPE_MONSTER,OPCODE_ISTYPE,OPCODE_AND,OPCODE_NOT}
+	local ac=Duel.AnnounceCard(tp,table.unpack(s.announce_filter))
+	Duel.SetTargetParam(ac)
+	Duel.SetOperationInfo(0,CATEGORY_ANNOUNCE,nil,0,tp,ANNOUNCE_CARD_FILTER)
+	Duel.SetChainLimit(s.chlimit,ac)
 end
-function c101252007.thfilter(c)
-	return c:IsSetCard(0x625) and c:IsType(TYPE_SPELL) and c:IsAbleToHand()
-end
-function c101252007.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and c101252007.thfilter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(c101252007.thfilter,tp,LOCATION_GRAVE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g=Duel.SelectTarget(tp,c101252007.thfilter,tp,LOCATION_GRAVE,0,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,1,0,0)
-end
-function c101252007.thop(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) then
-		Duel.SendtoHand(tc,nil,REASON_EFFECT)
+function s.op(e,tp,eg,ep,ev,re,r,rp)
+	local ac=Duel.GetChainInfo(0,CHAININFO_TARGET_PARAM)
+	local g=Duel.GetMatchingGroup(Card.IsCode,tp,0,LOCATION_HAND,nil,ac)
+	if #g>0 then
+		Duel.SendtoDeck(g,nil,2,REASON_EFFECT)
 	end
+end
+
+function s.chlimit(e,ep,tp,code)
+	return tp==ep or not e:GetHandler():IsCode(code)
 end
