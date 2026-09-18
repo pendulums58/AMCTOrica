@@ -58,14 +58,14 @@ end
 function c103548017.splimit(e,c,sump,sumtype,sumpos,targetp,se)
 	return not c:IsRace(RACE_PSYCHO)
 end
-function c103548017.cfilter(c)
+function c103548017.cfilter1(c)
 	return c:IsSetCard(0xac5) and c:IsAbleToRemoveAsCost() and not c:IsCode(103548017)
 end
 function c103548017.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToRemoveAsCost() 
-		and Duel.IsExistingMatchingCard(c103548017.cfilter,tp,LOCATION_GRAVE,0,1,nil) end
+		and Duel.IsExistingMatchingCard(c103548017.cfilter1,tp,LOCATION_GRAVE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local rg=Duel.SelectMatchingCard(tp,c103548017.cfilter,tp,LOCATION_GRAVE,0,1,1,nil)
+	local rg=Duel.SelectMatchingCard(tp,c103548017.cfilter1,tp,LOCATION_GRAVE,0,1,1,nil)
 	Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_COST)
 	Duel.Remove(rg,POS_FACEUP,REASON_COST)
 end
