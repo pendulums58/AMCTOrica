@@ -27,7 +27,7 @@ function c103548006.initial_effect(c)
 	e2:SetOperation(c103548006.spop)
 	c:RegisterEffect(e2)
 end
-function c103548006.spcon(e,c)
+function c103548006.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and Duel.IsExistingMatchingCard(c103548006.filter,tp,LOCATION_GRAVE,0,1,nil)
 end
