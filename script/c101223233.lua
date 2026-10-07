@@ -27,6 +27,7 @@ function s.mfilter(c,pair)
 	return c:IsSetCardList(pair)
 end
 function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
 	local g=c:GetMaterial()
 	local val=g:GetSum(Card.GetAttack)
 	if chk==0 then return val>0 end

@@ -26,8 +26,8 @@ end
 function c111310119.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) and Duel.Destroy(tc,REASON_EFFECT)~=0
-		and Duel.GetAdminCount(tp,1,nil)>0 and Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,e:GetHandler()) and Duel.SelectYesNo(tp,aux.Stringid(111310119,0)) then
-		if Duel.RemoveAdmin(tp,1,0,1,1,REASON_EFFECT)~=0 then
+		and cyan.GetAdminCount(tp,1,nil)>0 and Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,e:GetHandler()) and Duel.SelectYesNo(tp,aux.Stringid(111310119,0)) then
+		if cyan.RemoveAdmin(tp,1,0,1,1,REASON_EFFECT)~=0 then
 			local g1=Duel.SelectMatchingCard(tp,aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,e:GetHandler())
 			if g1:GetCount()>0 then Duel.Destroy(g1,REASON_EFFECT) end
 		end

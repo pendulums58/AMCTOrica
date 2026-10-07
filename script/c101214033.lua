@@ -45,6 +45,5 @@ function c101214033.activate(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 		e1:SetValue(1000)
 		sc:RegisterEffect(e1)
-		sc:CompleteProcedure()
 	end
 end

@@ -38,7 +38,6 @@ function c101213015.activate(e,tp,eg,ep,ev,re,r,rp)
 		sc:SetMaterial(Group.FromCards(tc))
 		Duel.SendtoGrave(tc,REASON_EFFECT+REASON_MATERIAL+REASON_LINK)
 		Duel.SpecialSummon(sc,SUMMON_TYPE_LINK,tp,tp,false,false,POS_FACEUP)
-		sc:CompleteProcedure()
 	end
 	local g=Duel.GetMatchingGroup(c101213015.cfilter,tp,LOCATION_GRAVE,0,nil)
 	if g:GetClassCount(Card.GetCode)>=5 and Duel.SelectYesNo(tp,aux.Stringid(101213015,0)) then 

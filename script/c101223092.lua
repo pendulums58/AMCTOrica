@@ -50,7 +50,6 @@ function c101223092.operation(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetLabel(Duel.GetTurnCount())
 		e1:SetLabelObject(g1)
 		Duel.RegisterEffect(e1,tp)
-		g1:CompleteProcedure()
 	end
 end
 function c101223092.tgfilter(c,e,tp)

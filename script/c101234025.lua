@@ -58,6 +58,5 @@ function c101234025.activate(e,tp,eg,ep,ev,re,r,rp)
 		sc:SetMaterial(Group.FromCards(tc))
 		Duel.SendtoGrave(tc,REASON_EFFECT+REASON_MATERIAL+REASON_PAIRING)
 		Duel.SpecialSummon(sc,SUMMON_TYPE_PAIRING,tp,tp,false,false,POS_FACEUP)
-		sc:CompleteProcedure()
 	end
 end

@@ -1,6 +1,3 @@
-TYPE_GIFT=0x10000000
-EVENT_ENCHANTED=15881123
-
 --기프트 시스템
 function Duel.CheckGiftEffect(tp,tf)
 	return Duel.IsExistingMatchingCard(Card.EgoCheckFaceup,tp,LOCATION_MZONE,0,1,nil,tf)
@@ -51,21 +48,3 @@ function Duel.AddGiftEffect(e,tf,f,atk,def)
 	end
 end
 
-
-
---융합 속성 삭제
-local cit=Card.IsType
-function Card.IsType(c,ty)
-	if cit(c,TYPE_GIFT) and bit.band(ty,TYPE_FUSION)==TYPE_FUSION then
-		return false
-	end
-	return cit(c,ty)
-end
-local cgt=Card.GetType
-function Card.GetType(c)
-	if cit(c,TYPE_GIFT) then
-		local ty=cgt(c)
-		return ty-TYPE_FUSION
-	end
-	return cgt(c)
-end

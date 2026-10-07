@@ -60,7 +60,6 @@ function s.rop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ReleaseRitualMaterial(rg)
 		Duel.BreakEffect()
 		Duel.SpecialSummon(c,SUMMON_TYPE_RITUAL,tp,tp,false,true)
-		c:CompleteProcedure()
 	end
 end
 function s.rfilter(c)

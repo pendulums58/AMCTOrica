@@ -32,9 +32,9 @@ function c111310017.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,g)
 		local tc=g:GetFirst()
 		if tc:IsType(TYPE_MONSTER) and tc:GetLevel()<=4 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-			and Duel.GetAdminCount(tp,1,nil)>0
+			and cyan.GetAdminCount(tp,1,nil)>0
 			and Duel.SelectYesNo(tp,aux.Stringid(111310017,0)) then
-			if Duel.RemoveAdmin(tp,1,0,1,1,REASON_EFFECT)~=0 then
+			if cyan.RemoveAdmin(tp,1,0,1,1,REASON_EFFECT)~=0 then
 				Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
 			end
 		end

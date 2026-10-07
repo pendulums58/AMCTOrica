@@ -42,7 +42,6 @@ function c111336003.atop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.SelectMatchingCard(tp,c111336003.filter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,nil):GetFirst()
 	if tc then
 		Duel.SpecialSummon(tc,SUMMON_TYPE_FUSION,tp,tp,false,false,POS_FACEUP)
-		tc:CompleteProcedure()
 		Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end
 end

@@ -103,7 +103,6 @@ function c101234010.activate(e,tp,eg,ep,ev,re,r,rp)
 			local fop=ce:GetOperation()
 			fop(ce,e,tp,tc,mat2)
 		end
-		tc:CompleteProcedure()
 		if Duel.IsExistingTarget(c101234010.filter4,tp,LOCATION_MZONE,0,1,tc) and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 			and Duel.SelectYesNo(tp,aux.Stringid(101234010,0)) then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)

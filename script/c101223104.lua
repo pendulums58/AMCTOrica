@@ -48,7 +48,6 @@ function c101223104.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if not c:IsRelateToEffect(e) then return end
 	if Duel.SpecialSummon(c,0,tp,tp,true,false,POS_FACEUP)~=0 then
-		c:CompleteProcedure()
 	end
 end
 function c101223104.gain(e,tp,eg,ep,ev,re,r,rp)

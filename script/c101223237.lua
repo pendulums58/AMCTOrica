@@ -88,7 +88,7 @@ function s.cop(e,tp,eg,ep,ev,re,r,rp)
 				end
 			end
 		end
-		if c:GetCounter(COUNTER_ASCENDANCY)==2 and Duel.RemoveAdmin(tp,1,1,1,1,REASON_EFFECT)>0 then
+		if c:GetCounter(COUNTER_ASCENDANCY)==2 and cyan.RemoveAdmin(tp,1,1,1,1,REASON_EFFECT)>0 then
 			Duel.Draw(tp,1,REASON_EFFECT)
 		end
 		if c:GetCount(COUNTER_ASCENDANCY)==3 then

@@ -81,7 +81,6 @@ function c111333007.activate(e,tp,eg,ep,ev,re,r,rp)
 			local fop=ce:GetOperation()
 			fop(ce,e,tp,tc,mat2)
 		end
-		tc:CompleteProcedure()
 	end
 end
 --회수

@@ -42,7 +42,6 @@ function c101223003.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local tc1=Duel.SelectMatchingCard(tp,c101223003.tgfilter1,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil,e,tp,tc:GetCode())		
 		if tc1 and Duel.SpecialSummon(tc1,0,tp,tp,true,false,POS_FACEUP)>0 then
-			tc1:GetFirst():CompleteProcedure()
 		end	
 	end
 end

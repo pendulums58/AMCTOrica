@@ -30,8 +30,8 @@ function c111310058.condition1(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentChain()==0
 end
 function c111310058.cost1(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetAdminCount(tp,1,nil)>0 end
-	Duel.RemoveAdmin(tp,1,0,1,1,REASON_EFFECT)
+	if chk==0 then return cyan.GetAdminCount(tp,1,nil)>0 end
+	cyan.RemoveAdmin(tp,1,0,1,1,REASON_EFFECT)
 end
 function c111310058.target1(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
@@ -46,8 +46,8 @@ function c111310058.condition2(e,tp,eg,ep,ev,re,r,rp)
 	return re:IsHasType(EFFECT_TYPE_ACTIVATE) and Duel.IsChainNegatable(ev)
 end
 function c111310058.cost2(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetAdminCount(tp,1,nil)>0 end
-	Duel.RemoveAdmin(tp,1,0,1,1,REASON_EFFECT)
+	if chk==0 then return cyan.GetAdminCount(tp,1,nil)>0 end
+	cyan.RemoveAdmin(tp,1,0,1,1,REASON_EFFECT)
 end
 function c111310058.target2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

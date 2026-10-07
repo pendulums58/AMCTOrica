@@ -8,23 +8,8 @@ FV=87902575
 
 local dm=Debug.Message
 RACE_SIXH=0x2000000
-EFFECT_TYPE_ADMIN=0x8000
-EFFECT_CHANGE_RECOVER=101237004
-EFFECT_CYAN_ADDCODE=15881119	
-EFFECT_ORIGINAL_CODE=15881120
-EFFECT_DRAW_LIMIT=15881121
-DRAW_COUNT=15881122
-EFFECT_SELECTBY_OPPO=15881122
-EFFECT_DESTROY_CANCEL=101223078
-EFFECT_REMOVE_CANCEL=101223079
-EFFECT_OPPO_FIELD_FUSION=101223080
-EFFECT_LP_CANNOT_CHANGE=101223150
-FLOWERHILL_THIMMUNE=103554020
-EFFECT_PREVENT_NEGATION=101223182
-EFFECT_ALL_SETCARD=101223229
 
 global_fusion_processing=false
-global_draw_count=false
 
 function Card.IsOwner(c,p)
 	return c:GetOwner()==p
@@ -243,14 +228,6 @@ function Card.RegisterEffect(c,e,forced,...)
 	if code==94634433 and mt.eff_ct[c][0]==e then
         e:SetOperation(cyan.tuneop(e:GetOperation()))
     end
-	if et&EFFECT_TYPE_ADMIN==EFFECT_TYPE_ADMIN then
-		e:SetType(et-EFFECT_TYPE_ADMIN+EFFECT_TYPE_XMATERIAL)
-		local egc=e:GetCondition()
-		if type(egc)=="function" then e:SetCondition(cyan.etacon(egc)) 
-		else
-			e:SetCondition(cyan.etacon(egc))
-		end
-	end
 
 
 	if e:IsHasCategory(CATEGORY_FUSION_SUMMON) then
@@ -491,74 +468,6 @@ function Card.IsOriginalCode(c,...)
 	end
 	return cioc(c,...)
 end
--- 드로우 매수 제한 효과 (장막을 가르는 자, 나르셋)
--- 해당 플레이어가 매 턴에 드로우할 수 있는 매수의 제한을 설정한다.
--- 이는 일반 드로우도 포함한다. 일반 드로우의 매수를 바꾸는 효과에도 간섭해야 함 (EFFECT_DRAW_COUNT)
-
-local rege=Card.RegisterEffect
-function Card.RegisterEffect(c,e,forced,...)
-	--통상 드로우 변경 효과에 간섭.
-	if e:GetCode()==EFFECT_DRAW_COUNT then 
-		local val=e:GetValue()
-		if val then e:SetValue(cyan.dcval(val)) end
-	end
-	rege(c,e,forced,...)
-	
-end
-
-function cyan.dcval(val)
-	return function(e)
-		local tp=e:GetHandlerPlayer()
-		local ct=0
-		if type(val)=="function" then ct=val(e)
-		else ct=val
-		end
-		
-		for i,pe in ipairs({Duel.IsPlayerAffectedByEffect(tp,EFFECT_DRAW_LIMIT)}) do
-			if ct>pe:GetValue() then ct=pe:GetValue() end
-		end		
-		return ct
-	end
-end
-
-
-
--- local ddr=Duel.Draw
--- function Duel.Draw(p,ct,r)
-	-- --해당 플레이어가 드로우 제한 효과를 받고 있으면, 이 턴에 해당 플레이어가 드로우한 매수를 체크
-	-- --효과로 드로우하는 경우에는 Duel.Draw 자체에 드로우한 매수만큼의 RegisterFlagEffect를 붙이고, 일반 드로우의 경우는... 어쩌지
-	-- --EFFECT_DRAW_COUNT에 Clone으로 SetReset을 베낀 다음에 일반드로우에 트리거 튀게 할까? 이게 되나 -> 이걸로 해보자
-	-- --이거 맞는거같은데? DRAW_COUNT에 튀게해서 드로우했으면 DRAW_COUNT의 flag가 드로우 숫자로 튀게 하자.
-	-- --그러면 변경된 매수 드로우했으면 그 숫자만큼 lim에서 빼고, flag가 안튀어있으면 평범하게 드로우한거니까 1을 빼고
-	-- --드로우페이즈 스킵도 그거에 같은 reset으로 꼬라박아서 플래그 넣자. 혼자 플래그를 몇개먹는거야 이거
-	-- local lim=99
-	-- for i,pe in ipairs({Duel.IsPlayerAffectedByEffect(p,EFFECT_DRAW_LIMIT)}) do
-		-- if lim>pe:GetValue() then lim=pe:GetValue() end
-	-- end
-	-- --여기까지 해당 플레이어가 받고 있는 드로우 매수 제한 중 가장 작은 수치 참조(lim). 이 lim수치보다 많은 드로우는 그 턴에 할 수 없음.
-	-- local alr=Duel.GetFlagEffect(p,DRAW_COUNT)
-	-- --alr은 해당 플레이어가 이 턴에 드로우한 매수. lim-alr이 실질 남은 가능 드로우 값.
-	-- local can=lim-alr
-	-- if ct>can then ct=can end
-	-- return ddr(p,ct,r)
--- end
-function Cyan.AddGlobalDrawCount(c)
-	if not global_draw_count then
-		global_draw_count=true
-		local e1=Effect.CreateEffect(c)
-		e1:SetCode(EVENT_DRAW)
-		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		e1:SetOperation(cyan.drctop)
-		Duel.RegisterEffect(e1,0)
-	end
-end
-
-function cyan.drctop(e,tp,eg,ep,ev,re,r,rp)
-	local ct=Duel.GetFlagEffect(ep,DRAW_COUNt)
-	Duel.RegisterFlagEffect(ep,DRAW_COUNT,RESET_PHASE+PHASE_END,0,ct+ev)
-end
-
-
 
 -- 효과 무효로부터 보호(몰?루 프레이어)
 -- 효과 무효 (NegateActivation / NegateEffect 계통)에 간섭하여 해당 효과 무효를 처리하지 않은 후 CountLimit 소모
@@ -946,13 +855,17 @@ end
 
 Debug.Message("Cyan.lua Version 23/09/14 loaded.")
 pcall(dofile,"repositories/OricaPack/script/orica_constant.lua")
+pcall(dofile,"repositories/OricaPack/script/orica_constants.lua")
 pcall(dofile,"repositories/OricaPack/script/cyan_utility.lua")
 pcall(dofile,"repositories/OricaPack/script/key_system.lua")
 pcall(dofile,"repositories/OricaPack/script/gift_system.lua")
---pcall(dofile,"repositories/OricaPack/script/proc_xyz_additional.lua")
+--pcall(dofile,"repositories/OricaPack/script/proc_xyz_additional.lua") -- B10: line 28 syntax error (incomplete if). pcall이 파싱 실패를 먹어 주석 해제해도 조용히 무시됐을 것
 -- pcall(dofile,"repositories/OricaPack/script/cyan_themeutils/interduo.lua")
 pcall(dofile,"repositories/OricaPack/script/proc_access.lua")
 pcall(dofile,"repositories/OricaPack/script/proc_pairing.lua")
+if not TYPE_UNLOCKED or TYPE_KEY~=0x8 then
+	Debug.Message("ORICA: orica_constants.lua 로드 실패 또는 값 불일치")
+end
 pcall(dofile,"repositories/OricaPack/script/bossraid_battle.lua")
 pcall(dofile,"repositories/OricaPack/script/cyan_themeutils/clocktower.lua")
 pcall(dofile,"repositories/OricaPack/script/cyan_themeutils/starsnow.lua")

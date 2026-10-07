@@ -50,7 +50,6 @@ function c101217002.activate(e,tp,eg,ep,ev,re,r,rp)
 		sc:SetMaterial(Group.FromCards(tc))
 		Duel.Overlay(sc,Group.FromCards(tc))
 		Duel.SpecialSummon(sc,SUMMON_TYPE_XYZ,tp,tp,false,false,POS_FACEUP)
-		sc:CompleteProcedure()
 	end
 	local dc=Duel.GetMatchingGroup(c101217002.rmfilter,tp,LOCATION_EXTRA+LOCATION_GRAVE,0,nil)
 	Duel.Remove(dc,POS_FACEUP,REASON_EFFECT)

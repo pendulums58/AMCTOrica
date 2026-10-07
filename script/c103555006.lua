@@ -123,7 +123,6 @@ function c103555006.activate(e,tp,eg,ep,ev,re,r,rp)
 		local fop=ce:GetOperation()
 		fop(ce,e,tp,tc,mat2)
 	end
-	tc:CompleteProcedure()
 end
 function c103555006.handcon(e)
 	return Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_ONFIELD,0)==0

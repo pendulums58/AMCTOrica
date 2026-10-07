@@ -77,7 +77,7 @@ function c101255011.cost1(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SendtoGrave(g,REASON_COST)
 end
 function c101255011.cfilter2(c,tp)
-	return c:IsFaceup() and c:IsSetCard(0x627) and c:IsType(TYPE_ACCESS) and c:CheckRemoveAdmin(tp,1,REASON_COST)
+	return c:IsFaceup() and c:IsSetCard(0x627) and c:IsType(TYPE_ACCESS) and cyan.CheckRemoveAdmin(c,tp,1,REASON_COST)
 end
 function c101255011.target1(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

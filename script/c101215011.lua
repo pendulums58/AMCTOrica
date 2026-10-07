@@ -24,7 +24,7 @@ end
 function s.cfilter1(c,tc)
 	local tp=c:GetControler()
 	return c:CheckUniqueOnField(tp,LOCATION_ONFIELD,tc) and c:IsType(TYPE_SPELL) and c:IsType(TYPE_CONTINUOUS)
-		and c:IsSetCardList(tc:GetSetCard()) and not c:IsForbidden() 
+		and c:IsSetCardList(tc) and not c:IsForbidden() 
 end
 function s.cfilter2(c,code)
 	local tp=c:GetControler()

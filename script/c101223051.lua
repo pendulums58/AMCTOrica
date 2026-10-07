@@ -117,7 +117,7 @@ function c101223051.op(e,tp,eg,ep,ev,re,r,rp)
 	end
 	local val=e:GetLabel()
 	if bit.band(val,1)==1 then
-		Duel.RemoveAdmin(tp,1,0,1,1,REASON_EFFECT)
+		cyan.RemoveAdmin(tp,1,0,1,1,REASON_EFFECT)
 	end
 	if bit.band(val,2)==2 then
 		local e2=Effect.CreateEffect(e:GetHandler())

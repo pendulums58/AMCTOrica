@@ -59,7 +59,6 @@ function c103554008.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ReleaseRitualMaterial(mat)
 		Duel.BreakEffect()
 		Duel.SpecialSummon(tc,SUMMON_TYPE_RITUAL,tp,tp,false,true,POS_FACEUP)
-		tc:CompleteProcedure()
 	end
 end
 function c103554008.costfilter(c,tp)

@@ -1,35 +1,22 @@
-SUMMON_TYPE_ACCESS=0x40003000
-TYPE_ACCESS=0x8000000
-REASON_ACCESS=0x20000000
-CYAN_EFFECT_CANNOT_BE_ACCESS_MATERIAL=500
-CYAN_EFFECT_ACCESS_LEVEL=501
-CYAN_EFFECT_ACCESS_ATTACK=502
-CYAN_EFFECT_CANNOT_BE_ADMIN=503
-ALREADY_HIJJACKED=504
-EFFECT_CANNOT_HIJJACK=505	
-EFFECT_MUST_ADMIN=506
-EFFECT_HIIJACK_ACCESS=507
-ADDITIONAL_HIIJACK=508
+CYAN_EFFECT_CANNOT_BE_ACCESS_MATERIAL=EFFECT_CANNOT_BE_ACCESS_MATERIAL
+CYAN_EFFECT_ACCESS_LEVEL=EFFECT_ACCESS_LEVEL
+CYAN_EFFECT_ACCESS_ATTACK=EFFECT_ACCESS_ATTACK
+CYAN_EFFECT_CANNOT_BE_ADMIN=EFFECT_CANNOT_BE_ADMIN
+ALREADY_HIJJACKED=EFFECT_HIJACK_USED
+EFFECT_CANNOT_HIJJACK=EFFECT_CANNOT_HIJACK
+EFFECT_HIIJACK_ACCESS=EFFECT_HIJACK_ACCESS
+ADDITIONAL_HIIJACK=EFFECT_ADDITIONAL_HIJACK
 
 local ov=Duel.Overlay
 function Duel.Overlay(xc,mt)
-	if type(mt)=="Group" then
-			local tc=mt:GetFirst()
-			while tc do
-				if tc:IsType(TYPE_ACCESS) then
-					local ad=tc:GetAdmin()
-					if ad then Duel.SendtoGrave(ad,REASON_RULE) end
-				end
-				tc=mt:GetNext()
-			end
+	if xc:IsType(TYPE_ACCESS) and xc:GetAdmin() then
+		if type(mt)=="Group" then
+			Duel.SendtoGrave(mt,REASON_RULE)
 		else
-			if mt:IsType(TYPE_ACCESS) then
-				local ad=mt:GetAdmin()
-				if ad then
-					Duel.SendtoGrave(ad,REASON_RULE)
-				end
-			end
+			Duel.SendtoGrave(mt,REASON_RULE)
 		end
+		return
+	end
 	return ov(xc,mt)
 end
 -- function Duel.Overlay(xc,mt)
@@ -97,29 +84,13 @@ function Card.IsCanBeAccessMaterial(c,acc)
 	return true
 end
 function cyan.IsCanBeAccessMaterial(c,acc)
-	if c:IsForbidden() then
-		return false 
-	end
-	local le={c:IsHasEffect(CYAN_EFFECT_CANNOT_BE_ACCESS_MATERIAL)}
-	for _,te in pairs(le) do
-		local f=te:GetValue()
-		if f==1 then return false end
-		if f and f(te,acc) then return false end
-	end
-	return true
-end
-function cyan.GetAccessLevel(c,acc)
-	local le={c:IsHasEffect(CYAN_EFFECT_ACCESS_LEVEL)}
-	for _,te in pairs(le) do
-		local f=te:GetValue()
-		if f then return f(te,acc) end 
-	end
-	return c:GetLevel()
+	return Card.IsCanBeAccessMaterial(c,acc)
 end
 function Duel.SetAdmin(acc,ad,e)
 	if not acc:IsType(TYPE_ACCESS) then return false end
-	if acc:GetAdmin() then return false end
-	Duel.Overlay(acc,ad)
+	local res=ad:SetAdmin(acc)
+	if not res then return false end
+	local tp=acc:GetControler()
 	Duel.RaiseEvent(acc,EVENT_GET_ADMIN,e,0,tp,tp,0)
 	Duel.RaiseSingleEvent(acc,EVENT_GET_ADMIN,e,0,tp,tp,0)
 end
@@ -132,14 +103,6 @@ function cyan.IsCanBeAdmin(c,acc)
 		if f and f(te,acc) then return false end
 	end
 	return true
-end
-function cyan.GetAccessAttack(c,acc)
-	local le={c:IsHasEffect(CYAN_EFFECT_ACCESS_ATTACK)}
-	for _,te in pairs(le) do
-		local f=te:GetValue()
-		if f then return f(te,c,acc) end 
-	end
-	return c:GetAttack()
 end
 function Auxiliary.acclimit(e,se,sp,st)
 	return st&SUMMON_TYPE_ACCESS==SUMMON_TYPE_ACCESS
@@ -159,7 +122,7 @@ function Duel.DetachAdmin()
 
 
 end
---¾×¼¼½º ¼ÒÈ¯
+--ï¿½×¼ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
 function cyan.AddAccessProcedure(c,f1,f2,f3)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
@@ -183,8 +146,6 @@ function cyan.scomp(e,tp,eg,ep,ev,re,r,rp)
 	return c:GetSummonType()==SUMMON_TYPE_ACCESS
 end
 function cyan.scompop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	c:CompleteProcedure()
 end
 function cyan.NoLevelFilter(c)
 	return not (c:IsType(TYPE_XYZ) or c:IsType(TYPE_LINK))
@@ -192,23 +153,23 @@ end
 function cyan.AccessFilter1(c,ac,f1,f2,f3,tp)
 	if f1(c) and c:IsFaceup() and cyan.IsCanBeAccessMaterial(c,ac) then
 		local mg=Group.CreateGroup()
-		if cyan.GetAccessAttack(c,ac)>ac:GetAttack()
+		if c:GetAccessAttack(ac)>ac:GetAttack()
 			or c:GetAttack()>ac:GetAttack() then
 			local g1=Duel.GetMatchingGroup(cyan.AccessFilter2,tp,LOCATION_MZONE,0,c,ac,f2)
 			mg:Merge(g1)
 		end
-		if cyan.GetAccessAttack(c,ac)<ac:GetAttack()
+		if c:GetAccessAttack(ac)<ac:GetAttack()
 			or c:GetAttack()<ac:GetAttack()	then
 			local g2=Duel.GetMatchingGroup(cyan.AccessFilter3,tp,LOCATION_MZONE,0,c,ac,f2)
 			mg:Merge(g2)
 		end
 		if not c:IsType(TYPE_LINK+TYPE_XYZ) then
-			if cyan.GetAccessLevel(c,ac)>ac:GetLevel() 
+			if c:GetAccessLevel(ac)>ac:GetLevel() 
 				or c:GetLevel()>ac:GetLevel() then
 				local g3=Duel.GetMatchingGroup(cyan.AccessFilter4,tp,LOCATION_MZONE,0,c,ac,f2)				
 			mg:Merge(g3)
 			end
-			if cyan.GetAccessLevel(c,ac)<ac:GetLevel() 
+			if c:GetAccessLevel(ac)<ac:GetLevel() 
 				or c:GetLevel()<ac:GetLevel()then
 				local g4=Duel.GetMatchingGroup(cyan.AccessFilter5,tp,LOCATION_MZONE,0,c,ac,f2)
 				mg:Merge(g4)
@@ -229,20 +190,20 @@ function cyan.mustacheck(c)
 end
 function cyan.AccessFilter2(c,ac,f)
 	return f(c) and c:IsFaceup() 
-		and (cyan.GetAccessAttack(c,ac)<ac:GetAttack() or c:GetAttack()<ac:GetAttack())
+		and (c:GetAccessAttack(ac)<ac:GetAttack() or c:GetAttack()<ac:GetAttack())
 end
 function cyan.AccessFilter3(c,ac,f)
 	return f(c) and c:IsFaceup() 
-		and (cyan.GetAccessAttack(c,ac)>ac:GetAttack() or c:GetAttack()>ac:GetAttack())
+		and (c:GetAccessAttack(ac)>ac:GetAttack() or c:GetAttack()>ac:GetAttack())
 end
 function cyan.AccessFilter4(c,ac,f)
 	return f(c) and c:IsFaceup() 
-		and (cyan.GetAccessLevel(c,ac)<ac:GetLevel() or c:GetLevel()<ac:GetLevel())
+		and (c:GetAccessLevel(ac)<ac:GetLevel() or c:GetLevel()<ac:GetLevel())
 		and not c:IsType(TYPE_LINK+TYPE_XYZ)
 end
 function cyan.AccessFilter5(c,ac,f)
 	return f(c) and c:IsFaceup() 
-		and (cyan.GetAccessLevel(c,ac)>ac:GetLevel() or c:GetLevel()>ac:GetLevel())
+		and (c:GetAccessLevel(ac)>ac:GetLevel() or c:GetLevel()>ac:GetLevel())
 		and not c:IsType(TYPE_LINK+TYPE_XYZ)	
 end
 function cyan.AccessFilter6(c,ac,f)
@@ -261,12 +222,6 @@ function cyan.AccessCondition(f1,f2,f3)
 end
 function cyan.AccMaterialEvent(g,e,tp)
 	Duel.SendtoGrave(g,REASON_MATERIAL+REASON_ACCESS)
-	local tc=g:GetFirst()
-	while tc do
-		Duel.RaiseSingleEvent(tc,EVENT_BE_MATERIAL,e,REASON_ACCESS,tp,tp,0)
-		tc=g:GetNext()
-	end
-	Duel.RaiseEvent(g,EVENT_BE_MATERIAL,e,REASON_ACCESS,tp,tp,0)
 end
 function cyan.HiiJackCheck(c,acc,hj,e)
 	local tp=c:GetControler()
@@ -292,7 +247,7 @@ function cyan.AccessOperation(f1,f2,f3)
 			local tc=g:GetFirst()
 			local mg=Group.CreateGroup()
 			
-			if cyan.GetAccessAttack(tc,ac)>c:GetAttack()
+			if tc:GetAccessAttack(c)>c:GetAttack()
 				or tc:GetAttack()>c:GetAttack() then
 				local g1=Duel.GetMatchingGroup(cyan.AccessFilter2,tp,LOCATION_MZONE,0,tc,c,f2)
 				mg:Merge(g1)
@@ -301,7 +256,7 @@ function cyan.AccessOperation(f1,f2,f3)
 					mg:Merge(g5)
 				end
 			end
-			if cyan.GetAccessAttack(tc,ac)<c:GetAttack() 
+			if tc:GetAccessAttack(c)<c:GetAttack() 
 				or tc:GetAttack()<c:GetAttack()then
 				local g2=Duel.GetMatchingGroup(cyan.AccessFilter3,tp,LOCATION_MZONE,0,tc,c,f2)
 				mg:Merge(g2)
@@ -311,7 +266,7 @@ function cyan.AccessOperation(f1,f2,f3)
 				end
 			end
 			if not c:IsType(TYPE_LINK+TYPE_XYZ) then
-				if cyan.GetAccessLevel(tc,ac)>c:GetLevel() 
+				if tc:GetAccessLevel(c)>c:GetLevel() 
 					or tc:GetLevel()>c:GetLevel() then
 					local g3=Duel.GetMatchingGroup(cyan.AccessFilter4,tp,LOCATION_MZONE,0,tc,c,f2)
 					mg:Merge(g3)
@@ -320,7 +275,7 @@ function cyan.AccessOperation(f1,f2,f3)
 						mg:Merge(g7)
 					end
 				end
-				if cyan.GetAccessLevel(tc,ac)<c:GetLevel()
+				if tc:GetAccessLevel(c)<c:GetLevel()
 					or tc:GetLevel()<c:GetLevel() then
 					local g4=Duel.GetMatchingGroup(cyan.AccessFilter5,tp,LOCATION_MZONE,0,tc,c,f2)
 					mg:Merge(g4)
@@ -331,11 +286,11 @@ function cyan.AccessOperation(f1,f2,f3)
 				end
 			end
 			if c:IsHasEffect(EFFECT_MUST_ADMIN) then mg=mg:Filter(cyan.mustacheck,nil) end
-			if not cyan.IsCanBeAdmin(tc,ac) then
+			if not cyan.IsCanBeAdmin(tc,c) then
 				mg=mg:Filter(cyan.AccessFilter6,nil)
 			end
-			mg=mg:Filter(cyan.IsCanBeAccessMaterial,nil,ac)
-			if f3 ~=nil then mg=mg:Filter(f3,nil,tc,ac) end
+			mg=mg:Filter(cyan.IsCanBeAccessMaterial,nil,c)
+			if f3 ~=nil then mg=mg:Filter(f3,nil,tc,c) end
 			local ag=mg:Select(tp,0,1,nil)
 			if ag:GetCount()==0 then return end
 			g:Merge(ag)
@@ -363,7 +318,7 @@ function cyan.AccessOperation(f1,f2,f3)
 			if Duel.GetFlagEffect(tp,ALREADY_HIJJACKED)==2 then
 				hiijackable=false
 			end
-			Duel.Overlay(c,xg)
+			xc:SetAdmin(c)
 			local hj=g:GetFirst()
 			if Duel.IsExistingMatchingCard(cyan.HiiJackCheck,tp,LOCATION_EXTRA,0,1,nil,c,hj,e) 
 				and hiijackable and Duel.SelectYesNo(tp,680) then
@@ -381,13 +336,18 @@ function cyan.AccessOperation(f1,f2,f3)
 						if hj:IsType(TYPE_ACCESS) and mg5 then
 							Duel.SendtoGrave(mg5,REASON_RULE)
 						end
-						Duel.Overlay(ha,hj)
+						hj:SetAdmin(ha)
 						sg:AddCard(ha)
 						if Duel.GetFlagEffect(tp,ALREADY_HIJJACKED)==1 and Duel.GetFlagEffect(tp,ADDITIONAL_HIIJACK)==1 then
 							Duel.RegisterFlagEffect(tp,ALREADY_HIJJACKED,RESET_PHASE+PHASE_END,0,2)
 						else
 							Duel.RegisterFlagEffect(tp,ALREADY_HIJJACKED,RESET_PHASE+PHASE_END,0,1)
 						end
+						g:AddCard(xc)
+						c:SetMaterial(g)
+						g:RemoveCard(xc)
+						g:RemoveCard(hj)
+						g:DeleteGroup()
 					else
 						g:AddCard(xc)
 						c:SetMaterial(g)
@@ -414,129 +374,23 @@ function cyan.AccessOperation(f1,f2,f3)
 			-- g:DeleteGroup()
 		end
 end
---¾×¼¼½º ÀÌ¿ÜÀÇ ¼Ó¼º »èÁ¦
-   local type=Card.GetType
-   Card.GetType=function(c)
-	  if bit.band(type(c),TYPE_ACCESS)==TYPE_ACCESS then
-		 return bit.bor(type(c),TYPE_FUSION)-TYPE_FUSION
-	  end
-	  return type(c)
-   end
-   local otype=Card.GetOriginalType
-   Card.GetOriginalType=function(c)
-	  if bit.band(otype(c),TYPE_ACCESS)==TYPE_ACCESS then
-		 return bit.bor(otype(c),TYPE_FUSION)-TYPE_FUSION
-	  end
-	  return otype(c)
-   end
-   local ptype=Card.GetPreviousTypeOnField
-   Card.GetPreviousTypeOnField=function(c)
-	  if bit.band(ptype(c),TYPE_ACCESS)==TYPE_ACCESS then
-		 return bit.bor(ptype(c),TYPE_FUSION)-TYPE_FUSION
-	  end
-	  return ptype(c)
-   end
    local itype=Card.IsType
-   Card.IsType=function(c,t)
-	  if itype(c,TYPE_ACCESS) then
-		 if t==TYPE_FUSION then
-			return false
-		 end
-		 return itype(c,bit.bor(t,TYPE_FUSION)-TYPE_FUSION)
-	  end
-	  return itype(c,t)
-   end
 
-	local covg=Card.GetOverlayGroup
-	Card.GetAdmin=function(c)
-		if itype(c,TYPE_ACCESS) then
-			local cadm=covg(c)
-			if cadm then
-				local adm=cadm:GetFirst()
-				return adm
-			end
-		end
-		return nil
-	end
-	Card.GetOverlayGroup=function(c)
-		if itype(c,TYPE_ACCESS) then
-			local g=Group.CreateGroup()
-			return g
-		end
-		return covg(c)
-	end
-	local covct=Card.GetOverlayCount
-	Card.GetOverlayCount=function(c)
-		if itype(c,TYPE_ACCESS) then
-			return 0
-		end
-		return covct(c)
-	end
 	local covchk=Card.CheckRemoveOverlayCard
-	Card.CheckRemoveOverlayCard=function(c,tp,ct,r)
-		if itype(c,TYPE_ACCESS) then
-			return false
-		end
-		return covchk(c,tp,ct,r)
-	end
-	Card.CheckRemoveAdmin=function(c,tp,ct,r)
+	cyan.CheckRemoveAdmin=function(c,tp,ct,r)
 		if itype(c,TYPE_ACCESS) then
 			return covchk(c,tp,ct,r)
 		end
 		return false
 	end
-	Duel.GetOverlayGroup=function(tp,s,o)
-		local g=Group.CreateGroup()
-		if s then
-			local sg=Duel.GetMatchingGroup(aux.TRUE,tp,s*LOCATION_MZONE,0,nil)
-			local sc=sg:GetFirst()
-			while sc do
-				local smg=sc:GetOverlayGroup()
-				g:Merge(smg)
-				sc=sg:GetNext()
-			end
-		end
-		if o then
-			local og=Duel.GetMatchingGroup(aux.TRUE,tp,0,o*LOCATION_MZONE,nil)
-			local oc=og:GetFirst()
-			while oc do
-				local omg=oc:GetOverlayGroup()
-				g:Merge(omg)
-				oc=og:GetNext()
-			end
-		end
-		return g
-	end
-	Duel.GetOverlayCount=function(tp,s,o)
-		local ct=0
-		if s ~= 0 then
-			local sg=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
-			local sc=sg:GetFirst()
-			while sc do
-				local sct=sc:GetOverlayCount()
-				ct=ct+sct
-				sc=sg:GetNext()
-			end
-		end
-		if o ~= 0 then
-			local og=Duel.GetFieldGroup(tp,0,LOCATION_MZONE)
-			local oc=og:GetFirst()
-			while oc do
-				local oct=oc:GetOverlayCount()
-				ct=ct+oct
-				oc=og:GetNext()
-			end
-		end
-		return ct
-	end
-		Duel.GetAdminCount=function(tp,s,o)
+	cyan.GetAdminCount=function(tp,s,o)
 		local ct=0
 		if s then
 			local sg=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
 			local sc=sg:GetFirst()
 			while sc do
 				local sct=sc:GetAdmin()
-				if sct then 
+				if sct then
 					ct=ct+1
 				end
 				sc=sg:GetNext()
@@ -547,7 +401,7 @@ end
 			local oc=og:GetFirst()
 			while oc do
 				local oct=oc:GetAdmin()
-				if oct then 
+				if oct then
 					ct=ct+1
 				end
 				oc=og:GetNext()
@@ -555,34 +409,19 @@ end
 		end
 		return ct
 	end
-	Duel.CheckRemoveOverlayCard=function(tp,s,o,ct,r)
-		--ÀÓ½Ã
-		return Duel.GetOverlayCount(tp,s,o)>=ct
+	cyan.CheckRemoveAdminCount=function(tp,s,o,ct,r)
+		return cyan.GetAdminCount(tp,s,o)>=ct
 	end
-	Duel.CheckRemoveAdmin=function(tp,s,o,ct,r)
-		--ÀÓ½Ã
-		return Duel.GetAdminCount(tp,s,o)>=ct
-	end
-	Duel.RemoveOverlayCard=function(tp,s,o,mi,ma,r)
-		local val=0
-		repeat
-			local g=Duel.GetMatchingGroup(Card.CheckRemoveOverlayCard,tp,s*LOCATION_MZONE,o*LOCATION_MZONE,nil,tp,1,r)
-			local tc=g:Select(tp,1,1,nil):GetFirst()
-			tc:RemoveOverlayCard(tp,1,1,r)
-			val=val+1
-		until val==ma or (val>=mi and Duel.SelectYesNo(tp,12))
-		return val
-	end
-	Duel.RemoveAdmin=function(tp,s,o,mi,ma,r)
+	cyan.RemoveAdmin=function(tp,s,o,mi,ma,r)
 		local mg=Group.CreateGroup()
 		local g=Duel.GetMatchingGroup(Card.GetAdmin,tp,s*LOCATION_MZONE,o*LOCATION_MZONE,nil,tp,1,r)
-			tc=g:GetFirst()
+			local tc=g:GetFirst()
 			while tc do
-				sg=tc:GetAdmin()
+				local sg=tc:GetAdmin()
 				if sg then
 					mg:AddCard(sg)
-					tc=g:GetNext()
 				end
+				tc=g:GetNext()
 			end
 			local rm=mg:Select(tp,mi,ma,nil)
 			return Duel.SendtoGrave(rm,r)

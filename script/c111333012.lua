@@ -136,7 +136,6 @@ function c111333012.spop(e,tp,eg,ep,ev,re,r,rp)
 			local fop=ce:GetOperation()
 			fop(ce,e,tp,tc,mat2)
 		end
-		tc:CompleteProcedure()
 	end
 	if c:IsRelateToEffect(e) then
 		local e1=Effect.CreateEffect(c)

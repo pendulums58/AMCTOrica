@@ -28,9 +28,9 @@ function c111310100.activate(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,c111310100.filter,tp,LOCATION_DECK,0,1,1,nil)
 	if g:GetCount()>0 then
 		Duel.SendtoGrave(g,REASON_EFFECT)
-		if Duel.GetAdminCount(tp,1,nil)>0 and Duel.IsExistingMatchingCard(Card.IsAbleToGrave,tp,LOCATION_DECK,0,1,nil)
+		if cyan.GetAdminCount(tp,1,nil)>0 and Duel.IsExistingMatchingCard(Card.IsAbleToGrave,tp,LOCATION_DECK,0,1,nil)
 			and Duel.SelectYesNo(tp,aux.Stringid(111310100,0)) then
-			if Duel.RemoveAdmin(tp,1,0,1,1,REASON_EFFECT)~=0 then
+			if cyan.RemoveAdmin(tp,1,0,1,1,REASON_EFFECT)~=0 then
 				local g1=Duel.SelectMatchingCard(tp,Card.IsAbleToGrave,tp,LOCATION_DECK,0,1,1,nil)
 				if g1:GetCount()>0 then Duel.SendtoGrave(g1,REASON_EFFECT) end
 			end

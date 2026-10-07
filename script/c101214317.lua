@@ -53,7 +53,6 @@ function c101214317.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.RaiseSingleEvent(tc,EVENT_BE_MATERIAL,e,REASON_SYNCHRO,tp,tp,0)
 		Duel.RaiseEvent(tc,EVENT_BE_MATERIAL,e,REASON_SYNCHRO,tp,tp,0)
 		Duel.SpecialSummon(sc,SUMMON_TYPE_SYNCHRO,tp,tp,false,false,POS_FACEUP)
-		sc:CompleteProcedure()
 	end
 end
 function c101214317.filter11(c,e,tp)
@@ -87,6 +86,5 @@ function c101214317.activate1(e,tp,eg,ep,ev,re,r,rp)
 		Duel.RaiseSingleEvent(tc,EVENT_BE_MATERIAL,e,REASON_SYNCHRO,tp,tp,0)
 		Duel.RaiseEvent(tc,EVENT_BE_MATERIAL,e,REASON_SYNCHRO,tp,tp,0)
 		Duel.SpecialSummon(sc,SUMMON_TYPE_SYNCHRO,tp,tp,false,false,POS_FACEUP)
-		sc:CompleteProcedure()
 	end
 end

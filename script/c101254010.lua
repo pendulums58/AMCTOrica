@@ -69,7 +69,6 @@ function c101254010.activate(e,tp,eg,ep,ev,re,r,rp)
 		sc:SetMaterial(Group.FromCards(tc))
 		Duel.Overlay(sc,Group.FromCards(tc))
 		Duel.SpecialSummon(sc,SUMMON_TYPE_XYZ,tp,tp,false,false,POS_FACEUP)
-		sc:CompleteProcedure()
 	end
 end
 function c101254010.setcon(e,tp,eg,ep,ev,re,r,rp)

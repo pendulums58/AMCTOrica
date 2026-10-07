@@ -1,15 +1,3 @@
-SUMMON_TYPE_PAIRING=0x40005000
-TYPE_PAIRING=0x40000000
-REASON_PAIRING=0x40000000
-EFFECT_PRE_PAIRED=506
-EFFECT_COMP_PAIRED=507
-EFFECT_INDESTRUCTABLE_PAIR=508
-REASON_PAIR=0x80000000
-EFFECT_EXTRA_PAIR=509
-EFFECT_DOUBLE_PMAT=510
-EFFECT_PAIR_DISCOUNT=511
-EFFECT_CANNOT_BE_PAIRING_MATERIAL=512
-
 function cyan.AddPairingProcedure(c,pairf,matf,matcmin,matcmax)
 	if matcmax==nil then matcmax=99 end
 	local e1=Effect.CreateEffect(c)
@@ -91,7 +79,7 @@ function cyan.PairingTarget(pairf,matcmin,matcmax,matf)
 		local pg=Duel.GetMatchingGroup(cyan.PairingCheckFilter,tp,LOCATION_MZONE,0,nil,tp,pairf,matcmin,matf,c)
 		local og=Duel.GetMatchingGroup(cyan.OppoPairFilter,tp,0,LOCATION_MZONE,nil,tp,pairf,matcmin,matf,c)
 		pg:Merge(og)
-		Duel.Hint(HINT_SELECTMSG,tp,681)
+		Duel.Hint(HINT_SELECTMSG,tp,1096)
 		local cancel=Duel.GetCurrentChain()==0
 		local pr=pg:Select(tp,1,1,nil)
 		local ct=matcmin
@@ -127,12 +115,6 @@ function cyan.PairingOperation()
 		local g=e:GetLabelObject()
 		c:SetMaterial(g)
 		Duel.SendtoGrave(g,REASON_MATERIAL+REASON_PAIRING)
-		local tc=g:GetFirst()
-		while tc do
-			Duel.RaiseSingleEvent(tc,EVENT_BE_MATERIAL,e,REASON_PAIRING,tp,tp,0)
-			tc=g:GetNext()
-		end
-		Duel.RaiseEvent(g,EVENT_BE_MATERIAL,e,REASON_PAIRING,tp,tp,0)
 		g:DeleteGroup()
 	end
 end
@@ -141,32 +123,6 @@ end
 function Card.IsCanBePairingMaterial(c)
 	if c:IsHasEffect(EFFECT_CANNOT_BE_PAIRING_MATERIAL) then return false end
 	return true
-end
-function Card.GetPair(c)
-	local pg=Group.CreateGroup()
-	local tp=c:GetControler()
-	if c:IsType(TYPE_PAIRING) then
-		local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-		local tc=g:GetFirst()
-		while tc do
-			local le={tc:IsHasEffect(EFFECT_COMP_PAIRED)}
-			for _,te in pairs(le) do
-				local pr=te:GetLabelObject()
-				if pr and pr==c then pg:AddCard(tc) end 
-			end	
-			tc=g:GetNext()
-		end
-	else
-		local le={c:IsHasEffect(EFFECT_COMP_PAIRED)}
-		for _,te in pairs(le) do
-			local pr=te:GetLabelObject()
-			if pr then pg:AddCard(pr) end 
-		end			
-	end
-	return pg
-end
-function Card.GetPairCount(c)
-	return c:GetPair():GetCount()
 end
 function cyan.prepaircancel(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -189,22 +145,15 @@ function cyan.paircomplete(e,tp,eg,ep,ev,re,r,rp)
 		local le={tc:IsHasEffect(EFFECT_PRE_PAIRED)}
 		for _,te in pairs(le) do
 			local pr=te:GetLabelObject()
-			if pr and pr==c then 
-				local e0=Effect.CreateEffect(c)
-				e0:SetType(EFFECT_TYPE_SINGLE)
-				e0:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_IGNORE_IMMUNE)
-				e0:SetCode(EFFECT_COMP_PAIRED)
-				e0:SetReset(RESET_EVENT+RESETS_STANDARD)
-				e0:SetLabelObject(c)
-				tc:RegisterEffect(e0)
+			if pr and pr==c then
+				c:SetPair(tc)
 				c:SetCardTarget(tc)
 				te:Reset()
 				return true
 			end
-			
-		end	
+		end
 		tc=g:GetNext()
-	end	
+	end
 end
 function cyan.pairingdesop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -262,93 +211,8 @@ end
 function cyan.repop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=e:GetLabelObject()
 	tc:SetStatus(STATUS_DESTROY_CONFIRMED,false)
-	Duel.Destroy(tc,REASON_EFFECT+REASON_REPLACE)
+	Duel.Destroy(tc,REASON_EFFECT+REASON_REPLACE+REASON_PAIR)
 end
 function Auxiliary.pairlimit(e,se,sp,st)
 	return st&SUMMON_TYPE_PAIRING==SUMMON_TYPE_PAIRING
-end
-
-
-
-function Duel.CancelPair(c)
-	if c:IsType(TYPE_PAIRING) then
-		local c=c:GetPair()
-	end
-	if c:GetPair()~=nil then
-		local le={c:IsHasEffect(EFFECT_COMP_PAIRED)}
-		for _,te in pairs(le) do
-			te:Reset()
-		end	
-	end
-end
-function Card.SetPair(c,pr)
-	if c:IsType(TYPE_PAIRING) then
-		if aux.GetValueType(pr)=="Group" then
-			local tc=pr:GetFirst()
-			while tc do
-				if tc:IsType(TYPE_PAIRING) then
-					cyan.SetPair2(c,tc)
-					cyan.SetPair2(tc,c)
-				else
-					cyan.SetPair2(c,tc)
-				end
-				
-				tc=pr:GetNext()
-			end
-		else
-			cyan.SetPair2(c,pr)
-		end
-	else
-		if aux.GetValueType(pr)=="Group" then
-			Debug.Message("Card.SetPair : Parameter 2 Should Be \"Card\" when param 1 is not Pairing monster.")
-			return 0
-		else
-			if not pr:IsType(TYPE_PAIRING) then
-				Debug.Message("Card.SetPair : At least 1 parameter must be Pairing monster.")
-			else
-				cyan.SetPair2(pr,c)
-			end
-		end
-	end
-end
-function cyan.SetPair2(c,prc)
-	local e0=Effect.CreateEffect(c)
-	e0:SetType(EFFECT_TYPE_SINGLE)
-	e0:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_IGNORE_IMMUNE)
-	e0:SetCode(EFFECT_COMP_PAIRED)
-	e0:SetReset(RESET_EVENT+RESETS_STANDARD)
-	e0:SetLabelObject(c)
-	prc:RegisterEffect(e0)
-	c:SetCardTarget(prc)
-end
---페어링 외 속성 삭제
-local ty=Card.GetType
-function Card.GetType(c)
-	if bit.band(ty(c),TYPE_PAIRING)==TYPE_PAIRING then
-		return bit.bor(ty(c),TYPE_FUSION)-TYPE_FUSION
-	end
-	return ty(c)
-end
-local ity=Card.IsType
-function Card.IsType(c,tp)
-	if bit.band(ty(c),TYPE_PAIRING)==TYPE_PAIRING then
-		if tp==TYPE_FUSION then return false end
-		return ity(c,bit.bor(tp,TYPE_FUSION)-TYPE_FUSION)
-	end	
-	return ity(c,tp)
-end
-function Card.IsPairContains(c,g)
-	if not c:IsType(TYPE_PAIRING) then 
-		Debug.Message("Card.IsPairContains : Parameter 1 should be pairing monster.")
-		return false
-	end
-	local g1=c:GetPair()
-	local tc=g1:GetFirst()
-	while tc do
-		if g:IsContains(tc) then
-			return true
-		end
-		tc=g1:GetNext()
-	end
-	return false
 end

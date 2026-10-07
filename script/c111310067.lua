@@ -23,6 +23,7 @@ function c111310067.tdop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoDeck(c,nil,2,REASON_RULE)
 end
 function c111310067.cyanop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Announce("Announce 테스트.")
 	local op=Duel.SelectOption(tp,aux.Stringid(111310067,0),aux.Stringid(111310067,1),aux.Stringid(111310067,2),aux.Stringid(111310067,3))
 	if op==3 then
 		op=3+Duel.SelectOption(tp,aux.Stringid(111310067,4),aux.Stringid(111310067,5),aux.Stringid(111310067,6),aux.Stringid(111310067,3))

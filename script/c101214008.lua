@@ -49,7 +49,6 @@ function c101214008.activate(e,tp,eg,ep,ev,re,r,rp)
 		sc:SetMaterial(Group.FromCards(tc))
 		Duel.SendtoGrave(tc,REASON_EFFECT+REASON_MATERIAL+REASON_SYNCHRO)
 		Duel.SpecialSummon(sc,SUMMON_TYPE_SYNCHRO,tp,tp,false,false,POS_FACEUP)
-		sc:CompleteProcedure()
 	end
 end
 function c101214008.cost(e,tp,eg,ep,ev,re,r,rp,chk)

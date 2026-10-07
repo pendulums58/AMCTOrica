@@ -73,9 +73,9 @@ end
 function c111310078.prop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc:GetPairCount()>0 and tc:IsRelateToEffect(e) then
-		Duel.CancelPair(tc)
+		tc:UnpairAll()
 		local g=Duel.SelectMatchingCard(tp,Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,tc)
-		if g:GetCount()>0 then c:SetPair(g) end
+		if g:GetCount()>0 then e:GetHandler():SetPair(g) end
 	end
 end
 function c111310078.spfilter(c,e,tp)

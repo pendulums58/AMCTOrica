@@ -113,6 +113,5 @@ function c103557007.spop(e,tp,eg,ep,ev,re,r,rp)
 		tc:SetMaterial(nil)
 		Duel.SpecialSummonStep(tc,SUMMON_TYPE_SYNCHRO,tp,tp,false,false,POS_FACEUP)
 		Duel.SpecialSummonComplete()
-		tc:CompleteProcedure()
 	end
 end

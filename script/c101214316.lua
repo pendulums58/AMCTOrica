@@ -60,7 +60,6 @@ function c101214316.activate(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetOwnerPlayer(tp)
 		sc:RegisterEffect(e1)
 		Duel.SpecialSummonComplete()
-		sc:CompleteProcedure()
 	end
 end
 function c101214316.con(e,tp,eg,ep,ev,re,r,rp)

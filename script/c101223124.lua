@@ -151,7 +151,6 @@ function c101223124.op(e,tp,eg,ep,ev,re,r,rp)
 			Duel.ReleaseRitualMaterial(mat)
 			Duel.BreakEffect()
 			Duel.SpecialSummon(rc,SUMMON_TYPE_RITUAL,tp,tp,false,true,POS_FACEUP)
-			rc:CompleteProcedure()
 		end
 	end
 	if bit.band(val,2)==2 then
